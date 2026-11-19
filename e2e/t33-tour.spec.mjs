@@ -1,13 +1,14 @@
 // T33 B2 — tour hướng dẫn (js/tour.js, plan docs/dtms/T33-goi-prototype-khach-ke-hoach.md §3.3).
 // Mỗi tour chạy hết bằng Tiếp (bước chờ thao tác thì Tiếp tự Làm hộ); mọi bước tìm thấy phần tử cần chỉ; bật / tắt giữ sau khi tải lại;
 // ?capture=1 không hiện tour; ?tour=n mở thẳng; hồ sơ đang chạy dở thì hỏi xác nhận.
-// T83: tour chia tab (Đề xuất mua sắm, Khoản đầu tư); mã tour <tab>-<n>, số 1..7 cũ = dxms-1..7.
+// T83: tour chia tab (Đề xuất mua sắm, Khoản đầu tư, Thầu, Hợp đồng); mã tour <tab>-<n>, số 1..7 cũ = dxms-1..7.
 import { test, expect } from '@playwright/test';
 import { fresh, open, INDEX } from './helpers.mjs';
 
 const pop = (page) => page.locator('.tour-pop');
 
-const IDS = ['dxms-1', 'dxms-2', 'dxms-3', 'dxms-4', 'dxms-5', 'dxms-6', 'dxms-7', 'dxms-8', 'dxms-9', 'dxms-10', 'kdt-1', 'kdt-2', 'kdt-3', 'kdt-4'];
+const IDS = ['dxms-1', 'dxms-2', 'dxms-3', 'dxms-4', 'dxms-5', 'dxms-6', 'dxms-7', 'dxms-8', 'dxms-9', 'dxms-10', 'kdt-1', 'kdt-2', 'kdt-3', 'kdt-4',
+  'thau-1', 'thau-2', 'thau-3', 'thau-4', 'thau-5', 'hd-1', 'hd-2', 'hd-3', 'hd-4', 'hd-5', 'hd-6'];
 const BA = /SCR-|UC-|task \d|Prototype|minh hoạ|GIẢ LẬP|P-\d{2,3}\b|DX-\d/;
 for (const id of IDS) {
   const [tab, n] = id.split('-');
@@ -58,7 +59,7 @@ test('Nút Hướng dẫn luôn hiện; bỏ chọn "Tự hiện" không làm m�
   await expect(page.locator('#tour-btn')).toBeVisible();
   await page.locator('#tour-btn').click();
   // T83: tab Đề xuất mua sắm (10 tour) mặc định; đổi tab Khoản đầu tư (4 tour), mở lại vẫn ở tab đã chọn.
-  await expect(page.locator('.overlay.tour-menu [data-tour-tab]')).toHaveText(['Đề xuất mua sắm', 'Khoản đầu tư']);
+  await expect(page.locator('.overlay.tour-menu [data-tour-tab]')).toHaveText(['Đề xuất mua sắm', 'Khoản đầu tư', 'Thầu', 'Hợp đồng']);
   await expect(page.locator('.tour-list button')).toHaveCount(10);
   await page.locator('.overlay.tour-menu [data-tour-tab="kdt"]').click();
   await expect(page.locator('.tour-list button')).toHaveCount(4);
