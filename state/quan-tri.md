@@ -8,13 +8,13 @@
 
 ## Now
 
-**2026-11-19 — T80 L7 xong (nhánh `quan-tri/t80-ncc`, chưa commit):** SCR-31 Nhà cung cấp thêm liên danh (Điều 24 khoản 4) và người đại diện, chức vụ, đăng ký kinh doanh, ngày thành lập, tài khoản ngân hàng, fax (HT-THAU-VID §5). Chờ người dùng duyệt để commit / PR.
+**2026-11-19 — T80 L7 xong (nhánh `quan-tri/t80-ncc`, PR #2):** SCR-31 Nhà cung cấp thêm liên danh (Điều 24 khoản 4) và người đại diện, chức vụ, đăng ký kinh doanh, ngày thành lập, tài khoản ngân hàng, fax (HT-THAU-VID §5). Chờ người tích hợp review / merge.
 
 ## Việc đang làm
 
 | Nhánh | Việc | Pha | PR |
 |---|---|---|---|
-| `quan-tri/t80-ncc` | T80 L7 — SCR-31 Nhà cung cấp: liên danh, người đại diện, trường hệ thống cũ | VERIFY | — |
+| `quan-tri/t80-ncc` | T80 L7 — SCR-31 Nhà cung cấp: liên danh, người đại diện, trường hệ thống cũ | PR #2 chờ review | #2 |
 
 ## Quyết định chờ người tích hợp chốt
 
