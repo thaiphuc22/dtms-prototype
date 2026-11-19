@@ -891,33 +891,50 @@
   /* T67 T5 (D-118) — MS19 Tổ chức lựa chọn nhà thầu, một hồ sơ cho mỗi gói (BPMN-MS19, THAU-TT-1311 §4). Hồ sơ con của gói thầu (đối tượng cha).
      Bước 2 đọc hình thức / phương thức đã duyệt trong KHLCNT → cổng G1 chọn quy trình con. Q7 = A: rộng rãi 1 túi (3.1–3.6) và chỉ định thầu (7.1–7.4)
      chi tiết theo gạch đầu dòng của BPMN; 8 hình thức còn lại một bước gộp (chính task quy trình con 4, 5, 6, 8–12 — GIẢ LẬP, P-235).
-     Mua sắm trực tiếp không có trong BPMN-MS19 → đi theo chỉ định thầu (GIẢ LẬP, P-235). Thuộc tính lc = trạng thái gói (THAU-TT-1311 §4.1).
+     T80 L1 (D-132 Q3 = A): quy trình con 7 tách theo hình thức — chỉ định thầu thông thường 7.1–7.4 (HSYC → HSĐX); chỉ định thầu rút gọn
+     7.5 → 7.4 (QC-12869 Điều 16 khoản 5); mua sắm trực tiếp 7.6 → 7.5 → 7.4, thương thảo không thành mời nhà thầu xếp hạng tiếp theo (Điều 15
+     khoản 2–4). BPMN-MS19 chưa có nhánh này → DX-19, số bước 7.5 / 7.6 GIẢ LẬP (P-235). Thuộc tính lc = trạng thái gói (THAU-TT-1311 §4.1).
      Vai GIẢ LẬP: TTMS / Tổ chuyên gia = thau; Tổ thẩm định = lan; người có thẩm quyền ký qua VOffice (bước hệ thống). */
   const LC19 = 'SCR-102';
   D.lcRoute = (form, method) => ({ DTRR: method === '1GD2T' ? '4' : '3', DTHC: '5', CGTT: '6', CDT_TT: '7', CDT_RG: '7', MSTT: '7', DPTT: '8', DAT_HANG: '9',
     GIAO_NV: '10', TU_TH: '11', DAC_BIET: '12' }[form] || '12');
   const SUB19 = { 3.1: ['Lập HSMT', 'LC-01'], 3.2: ['Thẩm định, phê duyệt HSMT', 'LC-02', 'Tổ thẩm định'], 3.3: ['Phát hành HSMT', 'LC-03'], 3.4: ['Đóng thầu, mở HSDT', 'LC-05'],
     3.5: ['Đánh giá HSDT', 'LC-06'], 3.6: ['Thương thảo hợp đồng', 'LC-07'],
-    7.1: ['Lập, phê duyệt HSYC', 'LC-01'], 7.2: ['Gửi HSYC cho nhà thầu dự kiến', 'LC-04'], 7.3: ['Nhận và đánh giá HSĐX', 'LC-06'], 7.4: ['Thương thảo, hoàn thiện hợp đồng', 'LC-07'] };
+    7.1: ['Lập, phê duyệt HSYC', 'LC-01'], 7.2: ['Gửi HSYC cho nhà thầu dự kiến', 'LC-04'], 7.3: ['Nhận và đánh giá HSĐX', 'LC-06'], 7.4: ['Thương thảo, hoàn thiện hợp đồng', 'LC-07'],
+    7.5: ['Gửi thư mời thương thảo kèm dự thảo hợp đồng', 'LC-04'], 7.6: ['Kiểm tra điều kiện mua sắm trực tiếp', 'LC-01'] };
+  /* T80 L1: 7.5, 7.6 chưa có trong BPMN-MS19 — dựng theo đề xuất DX-19. */
+  const DX19 = { 7.5: 'QC-12869 Điều 15 khoản 4 điểm a, Điều 16 khoản 5 điểm a', 7.6: 'QC-12869 Điều 15 khoản 2' };
   if (window.BPMN_FLOWS && window.BPMN_FLOWS.MS19) Object.entries(SUB19).forEach(([k, [name, , actor]]) => {
-    window.BPMN_FLOWS.MS19.tasks[k] = { name, actor: actor || 'TTMS / Tổ chuyên gia', type: 'user', form: 'eForm', note: `Bước của quy trình con ${k.split('.')[0]} (gạch đầu dòng BPMN-MS19)`, lane: actor || 'TTMS / Tổ chuyên gia', sub: k.split('.')[0] };
+    window.BPMN_FLOWS.MS19.tasks[k] = { name, actor: actor || 'TTMS / Tổ chuyên gia', type: 'user', form: 'eForm', lane: actor || 'TTMS / Tổ chuyên gia', sub: k.split('.')[0],
+      note: DX19[k] ? `Bước đề xuất DX-19 (${DX19[k]}) — BPMN-MS19 chưa có` : `Bước của quy trình con ${k.split('.')[0]} (gạch đầu dòng BPMN-MS19)` };
   });
+  /* Bước đầu của quy trình con 7 theo hình thức (T80 L1). Hồ sơ cũ chưa ghi v.form thì đọc hình thức của gói. */
+  const formOf19 = (v) => v.form || ((window.Thau && window.Thau.pkOf(v.goi)) || {}).form;
+  D.lcFirst7 = (form) => (form === 'MSTT' ? '7.6' : form === 'CDT_RG' ? '7.5' : '7.1');
   const sub19 = (k, o) => Object.assign({ who: k === '3.2' ? 'lan' : 'thau', scr: LC19, nlv: 1, lc: SUB19[k][1] }, o);
   const gop19 = () => ({ who: 'thau', scr: LC19, nlv: 5, lc: 'LC-01', q: ['P-235'], actionLabel: 'Hoàn thành', next: 'g2' });
   D.flows.MS19 = {
     1: { who: 'thau', scr: LC19, nlv: 0.5, lc: 'LC-01', actionLabel: 'Khởi tạo tổ chức LCNT', next: 2 },
-    2: { nlv: 0.5, lc: 'LC-01', run: (v) => { const g = window.Thau ? window.Thau.pkOf(v.goi) : null; if (g) v.route = D.lcRoute(g.form, g.method); }, next: 'g1' },
-    g1: { gw: true, when: (v) => (v.route === '3' ? '3.1' : v.route === '7' ? '7.1' : Number(v.route)) },
+    2: { nlv: 0.5, lc: 'LC-01', run: (v) => { const g = window.Thau ? window.Thau.pkOf(v.goi) : null; if (g) { v.route = D.lcRoute(g.form, g.method); v.form = g.form; } }, next: 'g1' },
+    g1: { gw: true, when: (v) => (v.route === '3' ? '3.1' : v.route === '7' ? D.lcFirst7(formOf19(v)) : Number(v.route)) },
     3.1: sub19('3.1', { actionLabel: 'Trình thẩm định HSMT', next: '3.2' }),
     3.2: sub19('3.2', { choices: [{ label: 'Đạt — phê duyệt HSMT', to: '3.3', main: true }, { label: 'Không đạt — trả sửa', to: '3.1', kind: 'secondary', reason: true }] }),
     3.3: sub19('3.3', { nlv: 0.5, actionLabel: 'Phát hành', next: '3.4' }),
-    3.4: sub19('3.4', { actionLabel: 'Hoàn thành mở thầu', next: '3.5' }),
+    3.4: sub19('3.4', { actionLabel: 'Hoàn thành mở thầu', next: 'g34', q: ['P-THAU-01'] }),
     3.5: sub19('3.5', { nlv: 3, actionLabel: 'Hoàn thành đánh giá', next: '3.6' }),
     3.6: sub19('3.6', { nlv: 2, actionLabel: 'Hoàn thành thương thảo', next: 'g2' }),
     7.1: sub19('7.1', { actionLabel: 'Hoàn thành HSYC', next: '7.2' }),
     7.2: sub19('7.2', { nlv: 0.5, actionLabel: 'Gửi HSYC', next: '7.3' }),
     7.3: sub19('7.3', { nlv: 2, actionLabel: 'Hoàn thành đánh giá', next: '7.4' }),
-    7.4: sub19('7.4', { nlv: 2, actionLabel: 'Hoàn thành thương thảo', next: 'g2' }),
+    7.4: sub19('7.4', { nlv: 2, actionLabel: 'Hoàn thành thương thảo', next: 'g7' }),
+    /* T80 L1: mua sắm trực tiếp — điều kiện Điều 15 khoản 2 do bộ xử lý hành động kiểm khi xác nhận (EVars.check), không đạt thì không chuyển bước. */
+    7.6: sub19('7.6', { nlv: 1, actionLabel: 'Xác nhận đủ điều kiện', next: '7.5', q: ['P-235'] }),
+    7.5: sub19('7.5', { nlv: 0.5, actionLabel: 'Gửi thư mời thương thảo', next: '7.4', q: ['P-235'] }),
+    /* G7 (DX-19): thương thảo mua sắm trực tiếp không thành → mời nhà thầu xếp hạng tiếp theo của gói tham chiếu (Điều 15 khoản 3) → 7.5. */
+    /* T80 L5 (QC-12869 Điều 36 khoản 5 điểm a): chỉ 01 HSDT, Chủ đầu tư gia hạn đóng thầu → bước 3.4 mở lại, chờ thời điểm đóng thầu mới (GIẢ LẬP P-THAU-01, DX-20). */
+    g34: { gw: true, run: (v, u) => { v.lcXlTh = u.lcXlTh === 'GIA_HAN' ? 'GIA_HAN' : 'MO'; u.lcXlTh = ''; }, when: (v) => (v.lcXlTh === 'GIA_HAN' ? '3.4' : '3.5') },
+    g7: { gw: true, run: (v, u) => { v.lcTtKq = u.lcTtKq === 'KHONG' ? 'KHONG' : 'OK'; if (v.lcTtKq === 'KHONG') { u.lcMoiTiep = (u.lcMoiTiep || 0) + 1; u.lcTtKq = ''; } },
+      when: (v) => (v.lcTtKq === 'KHONG' && formOf19(v) === 'MSTT' ? '7.5' : 'g2') },
     4: gop19(), 5: gop19(), 6: gop19(), 8: gop19(), 9: gop19(), 10: gop19(), 11: gop19(), 12: gop19(),
     g2: { gw: true, next: 13 },
     13: { who: 'thau', scr: LC19, nlv: 1, lc: 'LC-08', actionLabel: 'Trình thẩm định KQLCNT', next: 14 },
@@ -932,13 +949,13 @@
       when: (v) => (v.lcKq === 'ERR' ? 20 : v.lcKq === 'REJ' ? 21 : 22) },
     20: { nlv: 0.5, lc: 'LC-08', next: 17 },
     21: { who: 'thau', scr: LC19, nlv: 1, lc: 'LC-08', optional: true, actionLabel: 'Chuyển chỉnh sửa', next: 16 },
-    22: { who: 'thau', scr: LC19, nlv: 0.5, lc: 'LC-09', actionLabel: 'Đăng tải KQLCNT', next: 23 },
+    22: { who: 'thau', scr: LC19, nlv: 0.5, lc: 'LC-09', actionLabel: 'Đăng tải KQLCNT', next: 23, q: ['P-THAU-04'] },
     23: { nlv: 0.5, lc: 'LC-09', next: 24 },
     /* 24: đóng tổ chức LCNT, gói có KQLCNT (Chuyển ký hợp đồng) — Tạo hợp đồng ở Chi tiết gói thầu khởi tạo MS22 (H3). */
     24: { nlv: 0.5, lc: 'LC-10', run: (v) => { if (window.Thau) window.Thau.lcFlowDone(v.goi); }, next: 'END' },
   };
   /* Thứ tự bước hiện ở timeline hồ sơ: bước con nằm sau task quy trình con của nó. */
-  const ORDER19 = [1, 2, 3, '3.1', '3.2', '3.3', '3.4', '3.5', '3.6', 4, 5, 6, 7, '7.1', '7.2', '7.3', '7.4', 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
+  const ORDER19 = [1, 2, 3, '3.1', '3.2', '3.3', '3.4', '3.5', '3.6', 4, 5, 6, 7, '7.6', '7.1', '7.2', '7.3', '7.5', '7.4', 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
   D.hdProcesses.MS19 = { name: 'Tổ chức lựa chọn nhà thầu', page: 'MS19', type: 'Tổ chức LCNT', prefix: 'HSLC-', strip: 3, order: ORDER19,
     end: 'Kết thúc — KQLCNT đã phê duyệt và công khai, gói chuyển ký hợp đồng', done: 'KQLCNT đã phê duyệt và công khai; gói chuyển ký hợp đồng.',
     obj: { label: 'Mã gói thầu', tail: ['Hình thức lựa chọn nhà thầu', 'Giá gói thầu'], find: (c) => (window.Thau ? window.Thau.lcCase(c) : null), href: (c) => 'goi-thau/' + encodeURIComponent(c) } };
@@ -956,7 +973,9 @@
   D.naOf = (v) => (D.familyOf(v.process) === 'MS18' ? (v.level === 'TD' ? [10, 11] : [12, 13, 14, 15])
     /* T67 T5: MS19 — task quy trình con 3 / 7 chỉ là khung (bước con hiện thay); quy trình con của hình thức khác không áp dụng. */
     : D.familyOf(v.process) === 'MS19' ? [3, 7].concat([4, 5, 6, 8, 9, 10, 11, 12].filter((n) => String(n) !== v.route),
-      v.route === '3' ? [] : [3.1, 3.2, 3.3, 3.4, 3.5, 3.6], v.route === '7' ? [] : [7.1, 7.2, 7.3, 7.4])
+      v.route === '3' ? [] : [3.1, 3.2, 3.3, 3.4, 3.5, 3.6],
+      /* T80 L1: bước con 7 không thuộc hình thức của gói thì không áp dụng. */
+      v.route !== '7' ? [7.1, 7.2, 7.3, 7.4, 7.5, 7.6] : D.lcFirst7(formOf19(v)) === '7.1' ? [7.5, 7.6] : D.lcFirst7(formOf19(v)) === '7.5' ? [7.1, 7.2, 7.3, 7.6] : [7.1, 7.2, 7.3])
     : D.familyOf(v.process) === 'MS02' ? D.notApplicable[D.adjBranch(v).replace('MS02', 'MS01')]
     /* DX-10 (b): người khởi tạo là Chỉ huy ĐVĐX → bước 5.1 không áp dụng. */
     : (D.notApplicable[v.process] || []).concat(v.creatorCh ? [5.1] : []));
@@ -1522,7 +1541,7 @@
     'P-230': { q: 'Trình ký Quyết định KHLCNT: ai chọn VOffice hay ký cứng, khi nào bắt buộc ký cứng (hồ sơ Mật?); người ký theo cấp phê duyệt', src: 'BPMN-MS18-TOBE cổng Phương thức ký?, THAU-TT-1311 §5', def: 'GIẢ LẬP — người lập chọn bằng nút ở bước 11 / 15; người ký TGĐ Tổng Công ty (VHT) hoặc TGĐ Tập đoàn (Tập đoàn)' },
     'P-231': { q: 'Bản cam kết Tổ thẩm định: số CCCD, địa chỉ lấy từ hồ sơ nhân sự hay người cam kết tự nhập; căn cứ Điều 66 QĐ 1340 (MSTX) có áp cho KHLCNT Theo luật không', src: 'BM-KHLCNT Bản cam kết, hien-trang-he-thong-thau §8 câu 7', def: 'GIẢ LẬP — người cam kết tự nhập trong eForm bước 8, mỗi thành viên một việc' },
     'P-232': { q: 'Nhánh BPMN MS18 chưa vẽ: cổng Có kết quả ký hợp lệ? chỉ có nhánh Có; đăng tải lỗi; trả sửa về bước 5 có phải chọn lại và cam kết lại Tổ thẩm định không', src: 'BPMN-MS18-TOBE, plan T67 §3 T1', def: 'GIẢ LẬP — theo đúng mũi tên BPMN: trả sửa về 5 → 6 → 7 → 8 (cam kết lại); không vẽ nhánh Không và lỗi đăng tải' },
-    'P-235': { q: 'Quy trình con của từng hình thức LCNT (MS19 bước 3–12): BPMN-MS19 chỉ ghi gạch đầu dòng, chưa có sơ đồ con; mua sắm trực tiếp không có trong cổng Hình thức LCNT', src: 'BPMN-MS19, THAU-TT-1311 §4.2–4.10', def: 'GIẢ LẬP (D-118 Q7 = A) — rộng rãi 1 túi (3.1–3.6) và chỉ định thầu (7.1–7.4) chi tiết theo gạch đầu dòng; 8 hình thức còn lại một bước gộp hiện trình tự chỉ xem; mua sắm trực tiếp đi theo chỉ định thầu', scr: 'SCR-82' },
+    'P-235': { q: 'Quy trình con của từng hình thức LCNT (MS19 bước 3–12): BPMN-MS19 chỉ ghi gạch đầu dòng, chưa có sơ đồ con; mua sắm trực tiếp không có trong cổng Hình thức LCNT', src: 'BPMN-MS19, THAU-TT-1311 §4.2–4.10', def: 'GIẢ LẬP (D-118 Q7 = A) — rộng rãi 1 túi (3.1–3.6) và chỉ định thầu thông thường (7.1–7.4) chi tiết theo gạch đầu dòng; 8 hình thức còn lại một bước gộp hiện trình tự chỉ xem. Mua sắm trực tiếp (7.6 kiểm tra điều kiện → 7.5 thư mời thương thảo kèm dự thảo hợp đồng → 7.4) và chỉ định thầu rút gọn (7.5 → 7.4) theo QC-12869 Điều 15, Điều 16 khoản 5 (D-132) — BPMN-MS19 chưa có, đề xuất DX-19; số bước 7.5 / 7.6 GIẢ LẬP', scr: 'SCR-82' },
     'P-236': { q: 'Mẫu hợp đồng: quy tắc chọn mẫu (đơn giản / đầy đủ, sẵn có / theo yêu cầu, nước ngoài); thư trao hợp đồng (trường trộn so_thu_trao_hd) do bước nào của MS19 phát hành; xây lắp chưa có mẫu', src: 'BM-HD-2026, T66 §3, H-Q2 / H-Q6', def: 'GIẢ LẬP — gợi ý theo Loại gói thầu (MS_HH 1.0, HH_LD 1.6, PM 1.8, PTV 3.0, TV 5; nhà thầu nước ngoài 9 / 10; xây lắp 1.6), người lập HSMT chọn lại; thư trao hợp đồng để trống', scr: 'SCR-103' },
     'P-272': { q: 'Nghiệm thu hợp đồng: hệ thống cũ có HOC / PAC / FAC / Thanh lý (nghiệm thu tạm và nghiệm thu cuối); quy trình mới MS23.03 chỉ có một loại biên bản nghiệm thu — có cần hai mức PAC / FAC không, áp dụng cho loại hợp đồng nào', src: 'HT-HD-IMG2 6524; DG-MS23.03', def: 'GIẢ LẬP — một mức nghiệm thu (MS23.03); card Mốc biên bản hiện HOC (bàn giao), Biên bản nghiệm thu, Biên bản thanh lý', scr: 'SCR-86' },
     'P-273': { q: 'Định dạng số biên bản bàn giao, serial hàng nhận, số đề nghị thanh toán, số SAP (HĐ, PO, hóa đơn, bảng tổng hợp thanh toán); ngày thanh toán dự kiến lấy từ đâu; tỷ lệ bảo lãnh bảo hành', src: 'HT-HD-IMG2 6523, 6527, 6528–6531; BM-HD-2026', def: 'GIẢ LẬP — số suy từ mã hợp đồng / mã đợt; ngày dự kiến = mốc điều kiện + 15 ngày (tạm ứng: ngày hiệu lực + 15); bảo lãnh bảo hành 3% giá trị, mẫu 1.x, từ nghiệm thu đến hết bảo hành', scr: 'SCR-86' },

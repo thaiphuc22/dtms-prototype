@@ -54,7 +54,7 @@
       write: (v) => pick(v, GT_VHT.map((x) => x[0])) },
     6: { id: 'dtms-ms18-t06-to-tham-dinh',
       schema: () => ({ components: [head(),
-        dlAdd('khTtd', 'Thành viên Tổ thẩm định', [sel('nguoi', 'Họ và tên', req({ valuesKey: 'nguoiOptions', searchable: true, layout: { columns: 6 } })),
+        dlAdd('khTtd', 'Thành viên Tổ thẩm định', [sel('nguoi', 'Họ và tên', req({ valuesKey: 'nguoiOptions', searchable: true, layout: { columns: 6 }, description: 'Phải có chứng chỉ đào tạo về đấu thầu (QC-12869 Điều 2 khoản 28)' })),
           sel('vaiTro', 'Vai trò trong Tổ thẩm định', req({ values: opts(['Tổ trưởng', 'Thành viên']), layout: { columns: 4 } })),
           tf('phanCong', 'Phân công công việc', req({ layout: { columns: 6 } }))])] }),
       notes: () => ['Hoàn thành → bước 7 (hệ thống) tạo việc Xác nhận cam kết cho từng thành viên (multi-instance trên danh sách này). Danh sách là Phụ lục vai trò và phân công của BM01 / BM03.'],
@@ -164,6 +164,11 @@
   function reqDocs(tok) { return (REQ[tok.task] || []).map(([key, name]) => ({ key, name, have: !!Flow.ui[key] })); }
   /* Kiểm tra phía BE khi xác nhận (EVars.check): kết quả từng tiêu chí phải khớp nút đã chọn. */
   function check(tok, choice, vals) {
+    /* T80 L6: thành viên Tổ thẩm định phải có chứng chỉ đào tạo về đấu thầu (QC-12869 Điều 2 khoản 28) — đọc danh sách chứng chỉ (GIẢ LẬP P-THAU-03). */
+    if (vals && String(tok.task) === '6' && vals.khTtd) {
+      const thieu = vals.khTtd.map((r) => (D.personas.find((p) => p.id === r.nguoi) || {}).name).filter((ten) => ten && !window.Thau.certOf(ten).ok);
+      if (thieu.length) return 'Thành viên Tổ thẩm định chưa có chứng chỉ đào tạo về đấu thầu: ' + thieu.join(', ') + ' (QC-12869 Điều 2 khoản 28).';
+    }
     if (!vals || !choice) return null;
     const n = String(tok.task), yes = choice.main;
     if (n === '10' && vals.khKiemTra) {
