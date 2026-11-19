@@ -8,7 +8,7 @@
 
 ## Now
 
-Chưa có việc.
+T79 BUILD xong (2026-11-19, D-131, người tích hợp) — nhánh `hop-dong/t79-ht-cu`, chưa commit: PAC / FAC, Hóa đơn, XNK (DX-18), Mã tài sản, lọc Phân loại / Nguồn hình thành, HĐ từ tờ trình (DX-17), nhóm 3; P-HD-01…06; e2e `hop-dong-t79` xanh. Plan ở cds-vht `docs/dtms/prototype-T79-hop-dong-convert-1911.md` §6.
 
 ## Việc đang làm
 
