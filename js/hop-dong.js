@@ -450,6 +450,20 @@
   const staffOf = (h) => ({ payer: h.payer || PAYERS[0], focal: h.focal || UNIT_FOCAL[h.unit] || h.owner,
     kcs: h.kcs || (fieldOf(h) === 'Hàng hóa' ? KCS_HH : 'Đơn vị sử dụng — ' + (h.focal || UNIT_FOCAL[h.unit] || h.owner)),
     ctkt: h.ctkt || (h.pkg ? `YCKT-HSMT-${h.pkg}.pdf` : h.src === 'IMPORT' ? `CTKT-${hdNum(h)}.pdf` : null), note: h.note || null });
+  /* T80 L3 (phần hợp đồng): thông tin chuyển giao để ký hợp đồng — đọc MS19 bước 22 của gói (Thau.lcTrao; GIẢ LẬP P-THAU-04). Gói mẫu chưa chạy MS19 không có
+     thư trao → null (không bịa). Người đại diện / chức vụ nhà thầu: biên bản thương thảo MS19 (lcDaiDienNt) → danh mục Nhà cung cấp SCR-31. */
+  const nccRep = (code, u) => { u = u || {}; if (u.lcDaiDienNt) return { rep: u.lcDaiDienNt, position: u.lcChucVuNt || '' };
+    const r = (window.Catalog ? window.Catalog.rows('nha-cung-cap') : []).find((x) => x.code === code) || {}; return { rep: r.rep || '', position: r.rep ? r.position || '' : '' }; };
+  const traoOf = (pkg) => { const g = pkg && T().pkOf(pkg), C = g && Flow.caseOf(D.hdCaseCode(g.code, 'MS19')), u = C && C.ui;
+    if (!u || !u.lcNgayThu) return null;
+    const t = T().lcTrao(g, u, u.lcNgayThu), r = nccRep(t.win, u);
+    return { win: t.win, gia: t.gia, ngayThu: t.ngayThu, hoanThien: t.hoanThien, kyKet: t.kyKet, hanKy: t.hanKy, tv: t.tv, baoLanh: t.baoLanh, hetHl: t.hetHl, quaHl: t.quaHl,
+      ngayBanGiao: t.ngayBanGiao, tgGiaoHang: t.tgGiaoHang, dkTt: t.dkTt, dauMoi: t.dauMoi.map((x) => Object.assign({}, x)), rep: r.rep, position: r.position }; };
+  const traoCard = (t, foot) => K().card('Thông tin chuyển giao để ký hợp đồng (từ gói thầu)', `<div class="ginfo c3">${K().kv('Ngày thư chấp thuận HSDT và trao hợp đồng', esc(t.ngayThu))}
+      ${K().kv('Ký hợp đồng trước ngày', esc(t.hanKy))}${K().kv('Ngày hết hiệu lực HSDT', t.hetHl ? esc(t.hetHl) + (t.quaHl ? ' ' + badge('Trước hạn ký hợp đồng — đề nghị nhà thầu gia hạn', 'warning') : '') : null)}
+      ${K().kv('Bảo đảm thực hiện hợp đồng', t.tv ? 'Không yêu cầu — gói tư vấn' : `${ty(t.baoLanh, 1)}% giá hợp đồng`)}${K().kv('Thời gian giao hàng', esc(t.tgGiaoHang))}${K().kv('Điều kiện thanh toán', esc(t.dkTt))}
+      ${K().kv('Người đại diện nhà thầu', t.rep ? esc(t.rep) + (t.position ? ` — ${esc(t.position)}` : '') : null)}</div>`
+    + K().table([['Đầu mối', 240], ['Họ và tên', 260], ['Điện thoại / email', 320]], t.dauMoi, (r) => `<td>${esc(r.vaiTro)}</td><td>${r.ten ? esc(r.ten) : '<span class="dash">-</span>'}</td><td>${r.lienHe ? esc(r.lienHe) : '<span class="dash">-</span>'}</td>`), foot);
   /* Nhật ký tác động (Lịch sử tác động) — audit log của hợp đồng và hồ sơ con. */
   function logOf(h) {
     const L = [[h.created, h.owner, h.src === 'IMPORT' ? 'Nhập hợp đồng từ dữ liệu cũ' : 'Tạo hợp đồng từ KQLCNT ' + (h.pkg || '')]];
@@ -769,6 +783,8 @@
     F.v.title = 'Hợp đồng ' + g.name.replace(/^./, (c) => c.toLowerCase());
     F.v.unit = (T().srcInfo(...(T().khAll().find((k) => k.code === g.kh) || { src: ['DXMS', ''] }).src) || {}).unit || null;
     F.v.focal = UNIT_FOCAL[F.v.unit] || null;
+    const t = traoOf(pkg), dm = t && (t.dauMoi.find((x) => /đơn vị sử dụng/i.test(x.vaiTro)) || {}).ten;
+    if (dm && D.personas.some((p) => p.name === dm)) F.v.focal = dm;
   }
   function fillDx(code) {
     const s = ttrSrc(code);
@@ -782,7 +798,7 @@
   function hdForm() {
     // Theo: fe/repo-khcn-bpmn-fe/src/app/features/task-management/components/task-create/task-create.component.html (mode create)
     const k = K(), v = F.v, err = F.err, ttr = v.srcK === 'TTR';
-    const g = !ttr && v.pkg ? T().pkOf(v.pkg) : null, win = g && g.bidders.find((b) => b[0] === g.winner);
+    const g = !ttr && v.pkg ? T().pkOf(v.pkg) : null, win = g && g.bidders.find((b) => b[0] === g.winner), tr0 = g && traoOf(g.code);
     const units = [...new Set(T().khAll().map((x) => (T().srcInfo(...x.src) || {}).unit).concat(v.unit ? [v.unit] : []).filter(Boolean))];
     const sx = ttr && v.dx ? ttrSrc(v.dx) : null;
     const people = D.personas.filter((p) => !p.all && p.id !== 'td').map((p) => ({ value: p.name, label: `${p.name} — ${p.role}` }));
@@ -795,6 +811,7 @@
         'Giá trị hợp đồng không được vượt giá trúng thầu / giá gói thầu (kiểm tra ở bước đối chiếu MS22 và khi lập phụ lục).',
         '<b>T75</b> (D-128): <b>Phân bổ nguồn vốn / đề tài, dự án</b> sao chép từ nguồn gói thầu, chia theo tỷ lệ giá trị (hệ thống cũ cho một hợp đồng phân bổ nhiều dự án / nguồn vốn — HT-HD-IMG2 6541). Nhãn theo hệ thống cũ: <b>Đơn vị sử dụng</b>, <b>Người thực hiện</b>.',
         '<b>T79 — Nguồn hình thành Tờ trình / ĐXMS</b> (D-131, dựng <b>theo đề xuất DX-17, chờ BA</b>; hệ thống cũ tạo hợp đồng / TTr MS từ tờ trình + khoản mục chi phí — HT-HD-IMG2 6507, 6508, 6540): chọn ĐXMS đã phê duyệt chưa đưa vào KHLCNT hoặc <b>phần công việc không áp dụng LCNT</b> của KHLCNT (Điều 23 khoản 2 điểm e; BM01), khoản mục chi phí (một hoặc nhiều), nhà thầu từ danh mục, giá trị (không vượt giá trị ĐXMS / phần không áp dụng LCNT), loại hợp đồng. Thật: cổng <code>nguonHopDong</code> ở MS22 bước 1, nhánh tờ trình bỏ bước đối chiếu KQLCNT; các bước sau giữ nguyên. GIẢ LẬP: các trường hợp được không qua LCNT chưa có nguồn.',
+        '<b>T80 L3 — Thông tin chuyển giao</b> (GIẢ LẬP P-THAU-04, theo tab Trao HĐ / TT Ký HĐ hệ thống cũ — HT-THAU-CONV): gói đã qua MS19 bước 22 thì sao chép thư chấp thuận HSDT và trao hợp đồng (ngày thư, hạn ký, bảo đảm thực hiện hợp đồng), đầu mối, thời gian giao hàng, điều kiện thanh toán, người đại diện nhà thầu (biên bản thương thảo / danh mục Nhà cung cấp) — chỉ xem; Đầu mối dự án, đơn vị gợi ý theo đầu mối đơn vị sử dụng; thời gian thực hiện hợp đồng lấy thời gian giao hàng. Gói chưa có thư trao: không hiện.',
         '<b>T79 — Người chuyển tiền</b> (nhân sự chuyên thanh toán của Phòng Hợp đồng — DG-MS24), <b>Đầu mối dự án, đơn vị</b> (Đơn vị sử dụng — QT-10.2.5 bước 10), <b>Đầu mối KCS</b> (Phòng Đảm bảo hàng hóa với hàng hoá, Đơn vị sử dụng với dịch vụ — DG-MS23.03), <b>File CTKT</b> (yêu cầu kỹ thuật lấy từ HSMT của gói; nhánh tờ trình tải lên), <b>Ghi chú</b>: chọn khi tạo, sửa ở MS22 bước 1 (D-131 Q5).',
       ],
       q: ['P-HD-03', 'P-HD-04'], src: 'task-management/components/task-create · /task-management/create',
@@ -823,6 +840,7 @@
     const alloc = ttr ? (ttrAlloc(v) ? allocCard(allocOf({ code: '', value: Number(v.val) || 0, originText: v.dx, alloc: ttrAlloc(v) }), 'Phân bổ nguồn vốn / đề tài, dự án (theo ĐXMS và khoản mục đã chọn)', 'Chia đều giá trị hợp đồng cho các khoản mục đã chọn') : '')
       : g ? k.card('Hạng mục hợp đồng (sao chép từ phạm vi gói thầu)', k.table([['Hàng hoá / dịch vụ / công việc', 460], ['Đơn vị tính', 140], ['Khối lượng', 120, 'r']], g.items || [],
         (r) => `<td>${k.clamp(r[0])}</td><td>${esc(r[1])}</td><td class="r num">${ty(r[2], 0)}</td>`), 'Đơn giá cập nhật khi thương thảo')
+        + (tr0 ? traoCard(tr0, 'Sao chép từ thư trao hợp đồng của gói (MS19 bước 22), chỉ xem') : '')
         + allocCard(allocOf({ pkg: g.code, value: win ? win[1] : g.price }), 'Phân bổ nguồn vốn / đề tài, dự án (sao chép từ nguồn gói thầu)') : '';
     return `<form class="pg" data-hd-form>
       ${head({ title: 'Thêm mới hợp đồng', back: 'hop-dong', lg: true, info, right: `<button type="button" class="vbtn secondary grey" data-go="hop-dong">Huỷ</button><button type="submit" class="vbtn primary" id="hd-save">Lưu</button>` })}
@@ -871,7 +889,7 @@
     } else {
       const g = T().pkOf(v.pkg), win = g.bidders.find((b) => b[0] === g.winner), q = (g.items || []).reduce((s, r) => s + r[2], 0) || 1;
       U.hd.unshift(Object.assign({ code, src: 'KQ', pkg: g.code, mau: g.mau || T().mauGoiY(g), title: v.title.trim(), ncc: g.winner, type: g.contract, form: g.form, value: win[1], cap: g.price, cur: v.cur, vat: 10, unit: v.unit,
-        owner: persona(Flow.state.persona).name, st: 'TT', created: now, updated: now, exec: g.execTime,
+        owner: persona(Flow.state.persona).name, st: 'TT', created: now, updated: now, exec: (traoOf(g.code) || {}).tgGiaoHang || g.execTime, trao: traoOf(g.code) || undefined,
         items: (g.items || []).map((r) => [r[0], r[1], r[2], r2(win[1] / q)]), neg: { rounds: [], check: [], versions: [], diff: [], sign: [] } }, staff));
     }
     persist();
@@ -937,7 +955,9 @@
       const jv = h.jv || [[h.ncc, 'Nhà thầu ký hợp đồng', 100]];
       return k.card(h.jv ? 'Liên danh nhà thầu' : 'Nhà thầu ký hợp đồng', k.table([['Mã nhà thầu', 140], ['Tên nhà thầu', 320], ['Vai trò', 300], ['Tỷ lệ phần việc', 140, 'r'], ['Giá trị phần việc (tỷ đồng)', 190, 'r']], jv,
         (r) => `<td>${esc(r[0])}</td><td>${k.clamp(nccName(r[0]))}</td><td>${esc(r[1])}</td><td class="r num">${r[2]}%</td><td class="r num">${m3(r2(h.value * r[2] / 100))}</td>`), h.jv ? 'Thỏa thuận liên danh ghi trong HSDT trúng thầu' : 'Nhà thầu trúng thầu trở thành bên ký hợp đồng')
-        + k.card('Đại diện ký hợp đồng', `<div class="ginfo c3">${k.kv('Bên mua', 'Tổng công ty Công nghiệp Công nghệ cao Viettel')}${k.kv('Người đại diện bên mua', 'Thủ trưởng VHT (hoặc người được uỷ quyền)')}${k.kv('Bên bán', esc(nccName(h.ncc)))}</div>`);
+        + k.card('Đại diện ký hợp đồng', `<div class="ginfo c3">${k.kv('Bên mua', 'Tổng công ty Công nghiệp Công nghệ cao Viettel')}${k.kv('Người đại diện bên mua', 'Thủ trưởng VHT (hoặc người được uỷ quyền)')}${k.kv('Bên bán', esc(nccName(h.ncc)))}
+          ${k.kv('Người đại diện bên bán', (() => { const r = h.trao && h.trao.rep ? h.trao : nccRep(h.ncc); return r.rep ? esc(r.rep) + (r.position ? ` — ${esc(r.position)}` : '') : null; })())}</div>`)
+        + (h.trao ? traoCard(h.trao, 'Sao chép khi tạo hợp đồng từ gói thầu (MS19 bước 22)') : '');
     };
     const tHm = () => {
       const accQ = (i) => (h.acc || []).filter((a) => a[5] === 'Đạt').reduce((s0, a) => s0 + qtyOf(h, a[0], i), 0);
@@ -1339,5 +1359,7 @@
   const openTab = (code, tab) => { setTab(code, tab); location.hash = '#/hop-dong/' + encodeURIComponent(code); };
   window.HopDong = { mauHd, planOf, find: hdOf, kit: K, pkgOf: (h) => (h.pkg ? T().pkOf(h.pkg) : null), checkRows, setTab, openTab, route, enter, reset, byPkg, all, eff, prog, paidSum, remain, advOf, accSum, lateMs, guarWarn, doneRate, HD_ST, PAY_ST, FW, called, ordersOf, hdSoon, warnDays, TODAY, days, dk,
     /* T79: dùng ở eForm MS22 bước 1, MS23.02 bước 3. */
-    isImport, staffOf, ntLoai, PAYERS, KCS_HH };
+    isImport, staffOf, ntLoai, PAYERS, KCS_HH,
+    /* T80 L3: dùng ở eForm MS22 (người đại diện nhà thầu, thư trao hợp đồng). */
+    nccRep, traoOf };
 })();
