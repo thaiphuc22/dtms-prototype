@@ -1,10 +1,10 @@
-<!-- pk-source: ../docs/SRS/33-srs-dmdc/ĐTMS_SRS Danh mục dùng chung - V0.1.docx -->
-<!-- pk-sha256: 554eeb973fc412d2a66121faf8d4cd7a9a3db57439f11103ac93b6d3a43d7b7b -->
-<!-- pk-generated: 2026-11-11 bởi scripts/pk-md.py — KHÔNG sửa tay; sửa/thay tệp nguồn rồi chạy lại. -->
+<!-- pk-source: ../docs/SRS/33-srs-dmdc/ĐTMS_SRS Danh mục dùng chung - V0.2.docx -->
+<!-- pk-sha256: ade3e570836cd133753634959ecd66160704a8a63ebcd807d8791f9b2231b176 -->
+<!-- pk-generated: 2026-11-18 bởi scripts/pk-md.py — KHÔNG sửa tay; sửa/thay tệp nguồn rồi chạy lại. -->
 
 # SRS-DMDC — bản đọc máy sinh
 
-> Nguồn: `project-knowledge/../docs/SRS/33-srs-dmdc/ĐTMS_SRS Danh mục dùng chung - V0.1.docx`. Trích dẫn thì ghi mã **SRS-DMDC** và tệp nguồn, không trích bản đọc này. Bảng/định dạng có thể lệch so với bản gốc — khi số liệu quan trọng, mở tệp gốc để đối chiếu.
+> Nguồn: `project-knowledge/../docs/SRS/33-srs-dmdc/ĐTMS_SRS Danh mục dùng chung - V0.2.docx`. Trích dẫn thì ghi mã **SRS-DMDC** và tệp nguồn, không trích bản đọc này. Bảng/định dạng có thể lệch so với bản gốc — khi số liệu quan trọng, mở tệp gốc để đối chiếu.
 
 **TẬP ĐOÀN CÔNG NGHIỆP - VIỄN THÔNG QUÂN ĐỘI VIETTEL**
 
@@ -18,9 +18,9 @@ Mã hiệu dự án: CNM.VHT.DTMS
 
 Mã hiệu tài liệu: CNM.VHT.DTMS_SRS_DMC
 
-Phiên bản: 0.1 (dự thảo)
+Phiên bản: 0.2 (dự thảo)
 
-Hà Nội, 11/11/2026
+Hà Nội, 18/11/2026
 
 **BẢNG GHI NHẬN THAY ĐỔI TÀI LIỆU**
 
@@ -29,6 +29,7 @@ Hà Nội, 11/11/2026
 | **Ngày thay đổi** | **Vị trí thay đổi** | **A\*, M, D** | **Nguồn gốc** | **Phiên bản cũ** | **Mô tả thay đổi** | **Phiên bản mới** |
 |----|----|----|----|----|----|----|
 | 11/11/2026 | Toàn bộ | A | Yêu cầu viết lại đặc tả Danh mục dùng chung theo bản dựng thử và mã nguồn ngày 11/11/2026; thay gói đặc tả phần Danh mục bản 27/10/2026 |  | Tạo mới tài liệu | 0.1 |
+| 18/11/2026 | Mục 3.4.2 (BR-DMC-21-01, 21-02, 21-03 mới; DTMS_CN_0313 thành phần 5, dữ liệu khởi tạo, AC-0313-07 – 10), 4 (investment_authority_rule.internal_it_system), 6 (câu hỏi 10) | M, A | Chạy thử DMN thẩm quyền khoản đầu tư của Web Modeler 18/11/2026: ngoại lệ hệ thống công nghệ thông tin phục vụ nhu cầu nội bộ của văn bản ủy quyền §1.2.2 | 0.1 | Thêm chiều Hệ thống CNTT phục vụ nội bộ vào bảng Phân cấp thẩm quyền khoản đầu tư; Trang bị nội bộ là hệ thống CNTT phục vụ nội bộ thì cấp Tập đoàn | 0.2 |
 
 **TRANG KÝ**
 
@@ -1235,14 +1236,15 @@ Quy tắc của nghiệp vụ 3.4.2:
 
 | Mã | Quy tắc |
 |----|----|
-| BR-DMC-21-01 | **Không chồng khoảng.** Hai quy tắc Đang hoạt động cùng Loại khoản đầu tư mà Lĩnh vực giao nhau thì khoảng Tổng mức vốn không được giao nhau. Kiểm tra khi Lưu và khi Kích hoạt |
-| BR-DMC-21-02 | **Tra cứu.** GET investment-authority-rules/resolve?typeId&fieldId&capital (capital theo đồng) trả Cấp duyệt chủ trương, Cấp duyệt khoản đầu tư và Căn cứ của quy tắc Đang hoạt động khớp. Loại có Cấp xử lý "Luôn cấp Tập đoàn" thì trả Tập đoàn / Tập đoàn (BR-DMC-08-01). Không có quy tắc khớp thì trả VHT / VHT, Căn cứ "Chưa cấu hình phân cấp thẩm quyền, áp dụng mặc định." kèm cờ không khớp. Người ký theo cấp do phân hệ khoản đầu tư xác định |
+| BR-DMC-21-01 | **Không chồng khoảng.** Hai quy tắc Đang hoạt động cùng Loại khoản đầu tư mà Lĩnh vực giao nhau và Hệ thống CNTT phục vụ nội bộ giao nhau (Tất cả giao với Có và với Không) thì khoảng Tổng mức vốn không được giao nhau. Kiểm tra khi Lưu và khi Kích hoạt |
+| BR-DMC-21-02 | **Tra cứu.** GET investment-authority-rules/resolve?typeId&fieldId&capital&internalIt (capital theo đồng; internalIt là true / false, không gửi coi như false) trả Cấp duyệt chủ trương, Cấp duyệt khoản đầu tư và Căn cứ của quy tắc Đang hoạt động khớp. Quy tắc có Hệ thống CNTT phục vụ nội bộ "Tất cả" khớp mọi giá trị internalIt; "Có" chỉ khớp true; "Không" chỉ khớp false. Loại có Cấp xử lý "Luôn cấp Tập đoàn" thì trả Tập đoàn / Tập đoàn (BR-DMC-08-01). Không có quy tắc khớp thì trả VHT / VHT, Căn cứ "Chưa cấu hình phân cấp thẩm quyền, áp dụng mặc định." kèm cờ không khớp. Người ký theo cấp do phân hệ khoản đầu tư xác định |
+| BR-DMC-21-03 | **Hệ thống CNTT phục vụ nội bộ.** Khoản đầu tư trang bị nội bộ là hệ thống công nghệ thông tin phục vụ nhu cầu nội bộ không thuộc thẩm quyền của Tổng Giám đốc VHT, chuyển cấp Tập đoàn phê duyệt chủ trương và khoản đầu tư. Giá trị internalIt lấy từ câu trả lời "Hệ thống CNTT phục vụ nhu cầu nội bộ" ở bước xác nhận 04 yếu tố định danh của phân hệ khoản đầu tư |
 
 #### DTMS_CN_0313 Danh mục Phân cấp thẩm quyền khoản đầu tư
 
 ##### Thông tin chung chức năng
 
-- **Mục đích:** Bảng quy tắc mà bước "Xác định thẩm quyền phê duyệt" của MS13 đọc theo loại khoản đầu tư, lĩnh vực và tổng mức vốn, để ghi cấp duyệt chủ trương và cấp duyệt khoản đầu tư. Cổng cấp duyệt trước bước trình ký tính lại theo bảng.
+- **Mục đích:** Bảng quy tắc mà bước "Xác định thẩm quyền phê duyệt" của MS13 đọc theo loại khoản đầu tư, lĩnh vực, hệ thống CNTT phục vụ nội bộ và tổng mức vốn, để ghi cấp duyệt chủ trương và cấp duyệt khoản đầu tư. Cổng cấp duyệt trước bước trình ký tính lại theo bảng.
 
 - **Người dùng mục tiêu:** QTHT.
 
@@ -1250,21 +1252,22 @@ Quy tắc của nghiệp vụ 3.4.2:
 
 - **Chức năng:** 0313 xem danh sách và tìm kiếm, 0314 thêm mới, 0315 xem chi tiết, 0316 chỉnh sửa, 0317 đổi trạng thái, 0318 xóa. Tiêu đề "Danh sách quy tắc phân cấp thẩm quyền".
 
-- **Sắp xếp:** Loại khoản đầu tư, rồi Lĩnh vực, rồi Tổng mức vốn từ.
+- **Sắp xếp:** Loại khoản đầu tư, rồi Lĩnh vực, rồi Hệ thống CNTT phục vụ nội bộ, rồi Tổng mức vốn từ.
 
 ##### Thành phần
 
 | STT | Tên | Kiểu dữ liệu \[Độ dài\] | Input/Output | Giá trị khởi tạo | Mô tả |
 |----|----|----|----|----|----|
 | 1 | Từ khóa | Search box \[255\] | Input | Rỗng | Placeholder "Tìm kiếm theo loại khoản đầu tư, lĩnh vực, căn cứ". **Chứa**. |
-| 2 | Lưới | Table | Output | – | STT · Thao tác · Trạng thái · **Loại khoản đầu tư** (link Chi tiết) · Lĩnh vực · Tổng mức vốn (tỷ đồng) · Cấp duyệt chủ trương · Cấp duyệt khoản đầu tư · Căn cứ · Ngày cập nhật. |
+| 2 | Lưới | Table | Output | – | STT · Thao tác · Trạng thái · **Loại khoản đầu tư** (link Chi tiết) · Lĩnh vực · Hệ thống CNTT nội bộ · Tổng mức vốn (tỷ đồng) · Cấp duyệt chủ trương · Cấp duyệt khoản đầu tư · Căn cứ · Ngày cập nhật. |
 | 3 | Loại khoản đầu tư (hộp thoại) | Dropdown một lựa chọn | Input | Rỗng | **Bắt buộc.** Loại khoản đầu tư Đang hoạt động. Mapping: investment_authority_rule.investment_type_id. |
 | 4 | Lĩnh vực (hộp thoại) | Dropdown một lựa chọn, có tìm kiếm | Input | Tất cả | **Bắt buộc.** "Tất cả" và Lĩnh vực đầu tư Đang hoạt động. Mapping: investment_authority_rule.investment_field_id. |
-| 5 | Tổng mức vốn từ (tỷ đồng) | Number \[13\] | Input | Rỗng | **Bắt buộc**, từ 0. Placeholder "Gồm giá trị này". Mapping: investment_authority_rule.capital_from. |
-| 6 | Đến dưới (tỷ đồng) | Number \[13\] | Input | Rỗng | Placeholder "Để trống nếu không giới hạn". Sai: "Đến dưới phải lớn hơn Tổng mức vốn từ." Mapping: investment_authority_rule.capital_to. |
-| 7 | Cấp duyệt chủ trương | Dropdown một lựa chọn | Input | Rỗng | **Bắt buộc.** VHT, Tập đoàn. Mapping: investment_authority_rule.policy_approval_level (VHT, TAP_DOAN). |
-| 8 | Cấp duyệt khoản đầu tư | Dropdown một lựa chọn | Input | Rỗng | **Bắt buộc.** VHT, Tập đoàn. Mapping: investment_authority_rule.investment_approval_level. |
-| 9 | Căn cứ (2 cột) | Textbox \[255\] | Input | Rỗng | **Bắt buộc.** Placeholder "Văn bản phân cấp / ủy quyền áp dụng". Mapping: investment_authority_rule.legal_basis. |
+| 5 | Hệ thống CNTT phục vụ nội bộ (hộp thoại) | Dropdown một lựa chọn | Input | Tất cả | **Bắt buộc.** Tất cả, Có, Không (BR-DMC-21-02, 21-03). Mapping: investment_authority_rule.internal_it_system (rỗng là Tất cả, 1 Có, 0 Không). |
+| 6 | Tổng mức vốn từ (tỷ đồng) | Number \[13\] | Input | Rỗng | **Bắt buộc**, từ 0. Placeholder "Gồm giá trị này". Mapping: investment_authority_rule.capital_from. |
+| 7 | Đến dưới (tỷ đồng) | Number \[13\] | Input | Rỗng | Placeholder "Để trống nếu không giới hạn". Sai: "Đến dưới phải lớn hơn Tổng mức vốn từ." Mapping: investment_authority_rule.capital_to. |
+| 8 | Cấp duyệt chủ trương | Dropdown một lựa chọn | Input | Rỗng | **Bắt buộc.** VHT, Tập đoàn. Mapping: investment_authority_rule.policy_approval_level (VHT, TAP_DOAN). |
+| 9 | Cấp duyệt khoản đầu tư | Dropdown một lựa chọn | Input | Rỗng | **Bắt buộc.** VHT, Tập đoàn. Mapping: investment_authority_rule.investment_approval_level. |
+| 10 | Căn cứ (2 cột) | Textbox \[255\] | Input | Rỗng | **Bắt buộc.** Placeholder "Văn bản phân cấp / ủy quyền áp dụng". Mapping: investment_authority_rule.legal_basis. |
 
 Chồng khoảng khi Lưu: inline dưới Tổng mức vốn từ "Khoảng giá trị giao với quy tắc đang hoạt động: {chuỗi mô tả quy tắc}." Khi Kích hoạt: toast "Không thể kích hoạt: khoảng giá trị giao với quy tắc đang hoạt động {chuỗi mô tả quy tắc}."
 
@@ -1272,22 +1275,23 @@ Chồng khoảng khi Lưu: inline dưới Tổng mức vốn từ "Khoảng giá
 
 | Nơi dùng | Cách dùng |
 |----|----|
-| Quy trình MS13, bước Xác định thẩm quyền phê duyệt; cổng cấp duyệt trước trình ký | Tra cứu theo tổng mức vốn thực tế, ghi cấp duyệt vào hồ sơ |
+| Quy trình MS13, bước Xác định thẩm quyền phê duyệt; cổng cấp duyệt trước trình ký | Tra cứu theo tổng mức vốn thực tế và câu trả lời Hệ thống CNTT phục vụ nhu cầu nội bộ của bước xác nhận 04 yếu tố định danh, ghi cấp duyệt vào hồ sơ |
 | Lập khoản đầu tư | Gợi ý cấp duyệt khi nhập |
 
 Tham chiếu khi xóa: quy tắc đã được ghi vào ít nhất một hồ sơ.
 
 Dữ liệu khởi tạo:
 
-| Loại khoản đầu tư | Lĩnh vực | Tổng mức vốn (tỷ đồng) | Chủ trương | Khoản đầu tư | Căn cứ |
-|----|----|----|----|----|----|
-| Khoa học công nghệ | Tất cả | 0 – dưới 45 | Tập đoàn | VHT | Văn bản ủy quyền §1.2.1 |
-| Khoa học công nghệ | Tất cả | Từ 45 trở lên | VHT | VHT | Văn bản ủy quyền §1.2.2 |
-| Trang bị nội bộ | Tất cả | Từ 0 trở lên | VHT | VHT | Văn bản ủy quyền §1.2 |
-| Khác | Tất cả | Từ 0 trở lên | VHT | VHT | Văn bản ủy quyền §1.2 |
-| Kinh doanh | Tất cả | Từ 0 trở lên | Tập đoàn | Tập đoàn | Văn bản ủy quyền §1.2.2 (ngoại trừ hình thành tài sản cố định phục vụ kinh doanh) |
-| Bất động sản | Tất cả | Từ 0 trở lên | Tập đoàn | Tập đoàn | Văn bản ủy quyền §1.2 |
-| Phương tiện vận tải | Tất cả | Từ 0 trở lên | Tập đoàn | Tập đoàn | Văn bản ủy quyền §1.2 |
+| Loại khoản đầu tư | Lĩnh vực | Hệ thống CNTT nội bộ | Tổng mức vốn (tỷ đồng) | Chủ trương | Khoản đầu tư | Căn cứ |
+|----|----|----|----|----|----|----|
+| Khoa học công nghệ | Tất cả | Tất cả | 0 – dưới 45 | Tập đoàn | VHT | Văn bản ủy quyền §1.2.1 |
+| Khoa học công nghệ | Tất cả | Tất cả | Từ 45 trở lên | VHT | VHT | Văn bản ủy quyền §1.2.2 |
+| Trang bị nội bộ | Tất cả | Có | Từ 0 trở lên | Tập đoàn | Tập đoàn | Văn bản ủy quyền §1.2.2 (ngoại trừ hệ thống công nghệ thông tin phục vụ nhu cầu nội bộ) |
+| Trang bị nội bộ | Tất cả | Không | Từ 0 trở lên | VHT | VHT | Văn bản ủy quyền §1.2.2 |
+| Khác | Tất cả | Tất cả | Từ 0 trở lên | VHT | VHT | Văn bản ủy quyền §1.2 |
+| Kinh doanh | Tất cả | Tất cả | Từ 0 trở lên | Tập đoàn | Tập đoàn | Văn bản ủy quyền §1.2.2 (ngoại trừ hình thành tài sản cố định phục vụ kinh doanh) |
+| Bất động sản | Tất cả | Tất cả | Từ 0 trở lên | Tập đoàn | Tập đoàn | Văn bản ủy quyền §1.2 |
+| Phương tiện vận tải | Tất cả | Tất cả | Từ 0 trở lên | Tập đoàn | Tập đoàn | Văn bản ủy quyền §1.2 |
 
 ##### Tiêu chí chấp nhận
 
@@ -1299,6 +1303,10 @@ Dữ liệu khởi tạo:
 | AC-0313-06 | Loại "Kinh doanh" Luôn cấp Tập đoàn, không có quy tắc | Tra cứu loại đó | Tập đoàn / Tập đoàn |
 | AC-0313-04 | Dữ liệu khởi tạo | Thêm: Khoa học công nghệ, Viễn thông - CNTT, 40 – dưới 50 | Inline chồng khoảng với quy tắc 0 – dưới 45 |
 | AC-0313-05 | Hộp thoại | Bỏ trống Căn cứ, \[Lưu\] | Inline "Vui lòng nhập Căn cứ" |
+| AC-0313-07 | Dữ liệu khởi tạo | Tra cứu Trang bị nội bộ, Viễn thông - CNTT, 20 tỷ đồng, internalIt = true | Tập đoàn / Tập đoàn, căn cứ "Văn bản ủy quyền §1.2.2 (ngoại trừ hệ thống công nghệ thông tin phục vụ nhu cầu nội bộ)" |
+| AC-0313-08 | Dữ liệu khởi tạo | Tra cứu Trang bị nội bộ, Viễn thông - CNTT, 20 tỷ đồng, không gửi internalIt | VHT / VHT |
+| AC-0313-09 | Dữ liệu khởi tạo | Thêm: Trang bị nội bộ, Tất cả, Hệ thống CNTT nội bộ Tất cả, từ 0 | Inline chồng khoảng với quy tắc "Trang bị nội bộ · Tất cả · Có · Từ 0 trở lên" |
+| AC-0313-10 | Dữ liệu khởi tạo | Tra cứu Khoa học công nghệ, 30 tỷ đồng, internalIt = true | Chủ trương Tập đoàn, khoản đầu tư VHT (quy tắc Tất cả khớp mọi giá trị) |
 
 ## DANH MỤC CÓ SẴN
 
@@ -1539,11 +1547,12 @@ Phân cấp thẩm quyền khoản đầu tư. **Bảng mới**, bảng luật.
 |----|----|----|----|----|----|----|----|
 | 1 | investment_type_id | BIGINT |  |  | F |  | → wf_investment_type.id |
 | 2 | investment_field_id | BIGINT | x |  | F |  | → investment_field.id; rỗng là Tất cả |
-| 3 | capital_from | DECIMAL(18,2) |  |  |  |  | Tổng mức vốn từ, tỷ đồng (gồm) |
-| 4 | capital_to | DECIMAL(18,2) | x |  |  |  | Đến dưới, tỷ đồng (không gồm); rỗng là không giới hạn |
-| 5 | policy_approval_level | VARCHAR(10) |  |  |  |  | Cấp duyệt chủ trương: VHT, TAP_DOAN |
-| 6 | investment_approval_level | VARCHAR(10) |  |  |  |  | Cấp duyệt khoản đầu tư: VHT, TAP_DOAN |
-| 7 | legal_basis | VARCHAR(255) |  |  |  |  | Căn cứ |
+| 3 | internal_it_system | TINYINT(1) | x |  |  |  | Hệ thống CNTT phục vụ nội bộ: rỗng là Tất cả, 1 Có, 0 Không (BR-DMC-21-03) |
+| 4 | capital_from | DECIMAL(18,2) |  |  |  |  | Tổng mức vốn từ, tỷ đồng (gồm) |
+| 5 | capital_to | DECIMAL(18,2) | x |  |  |  | Đến dưới, tỷ đồng (không gồm); rỗng là không giới hạn |
+| 6 | policy_approval_level | VARCHAR(10) |  |  |  |  | Cấp duyệt chủ trương: VHT, TAP_DOAN |
+| 7 | investment_approval_level | VARCHAR(10) |  |  |  |  | Cấp duyệt khoản đầu tư: VHT, TAP_DOAN |
+| 8 | legal_basis | VARCHAR(255) |  |  |  |  | Căn cứ |
 
 **Khuôn bảng lịch sử** {bảng}\_history (mọi bảng trên):
 
@@ -1571,7 +1580,7 @@ Phân cấp thẩm quyền khoản đầu tư. **Bảng mới**, bảng luật.
 | 7 | Ngưỡng MS13 / MS14 / MS15 là Viễn thông - CNTT dưới 160 / 1.000 / 15.000 và lĩnh vực khác dưới 90 / 500 / 15.000 tỷ đồng, hay ngược lại? Khi đổi ngưỡng có hiệu lực từ ngày sau, quy tắc cũ và mới có cùng tồn tại tới ngày hiệu lực không? | Viễn thông - CNTT dưới 160, khác dưới 90; không cho chồng khoảng giữa các quy tắc Đang hoạt động; hồ sơ giữ ngưỡng lúc tạo |
 | 8 | Phương thức lựa chọn nhà thầu, loại hợp đồng theo quy chế nội bộ hay Luật Đấu thầu? | Theo quy chế nội bộ: hai phương thức một giai đoạn, tám loại hợp đồng |
 | 9 | Danh sách Loại tài liệu căn cứ, loại nào bắt buộc, gắn ĐXMS hay hồ sơ? Nhãn "Hồ sơ Phê duyệt", "Hồ sơ Điều chỉnh" có đổi thành ĐXMS Tạo mới / Điều chỉnh không? | Tám loại ở mục 3.3.13; giữ nhãn |
-| 10 | Bảng phân cấp thẩm quyền khoản đầu tư (loại, lĩnh vực, khoảng tổng mức vốn, cấp duyệt) có đúng không? | Bảy quy tắc ở mục 3.4.2 |
+| 10 | Bảng phân cấp thẩm quyền khoản đầu tư (loại, lĩnh vực, hệ thống CNTT phục vụ nội bộ, khoảng tổng mức vốn, cấp duyệt) có đúng không? "Hệ thống công nghệ thông tin phục vụ nhu cầu nội bộ" (ngoại lệ của văn bản ủy quyền §1.2.2) gồm những gì, mua thiết bị CNTT lẻ (máy tính, máy in) có tính là hệ thống không? | Tám quy tắc ở mục 3.4.2; trang bị nội bộ là hệ thống CNTT phục vụ nội bộ thì cấp Tập đoàn; người xác nhận 04 yếu tố định danh tự đánh giá Có / Không |
 | 11 | Sự kiện thay đổi danh mục: topic, phân hệ nhận, bật ngay hay chờ? | Topic category.changed.v1, bật khi có phân hệ nhận |
 | 12 | Hình thức bảo đảm có bốn phạm vi (thêm bảo lãnh tạm ứng, bảo đảm bảo hành) không? | Bốn phạm vi |
 | 13 | Năm danh mục Loại chi phí, Nhóm dự án, Loại sản phẩm, Tình trạng pháp lý, Tình trạng mua sắm có cần trong Pha 1 không? | Ngoài phạm vi tài liệu |

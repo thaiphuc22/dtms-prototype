@@ -3,13 +3,20 @@
  * Hồ sơ kho, kết quả KCS, xác nhận dịch vụ, HOC đã ký nằm ở Danh sách tài liệu (loại 4), không đặt trong form.
  */
 (function () {
-  const { txt, banner, ta, tf, sel, chk, req, opts, aiBox, dt } = window.EForms.b;
+  const { txt, banner, ta, tf, sel, chk, req, opts, aiBox, dt, num, grp, file } = window.EForms.b;
   const Flow = window.Flow, D = window.D;
   const pick = (vals, keys) => keys.reduce((o, k) => { if (vals[k] !== undefined) o[k] = vals[k]; return o; }, {});
   const hd = () => window.HopDong.find(Flow.state.parent) || {};
   const dk = (s) => String(s || '').split('/').reverse().join('');
 
   const head = () => txt('**{{hd.code}}** — {{hd.ten}} · nhà thầu {{hd.ncc}}');
+  /* T79 L3 (D-131, theo đề xuất DX-18): nhóm trường Xuất nhập khẩu ở bước giao nhận — hiện khi hợp đồng có hàng nhập khẩu (nhà thầu nước ngoài / mẫu 9, 10); không bắt buộc (GIẢ LẬP P-HD-01). */
+  const XNK_KEYS = ['xnkSoTk', 'xnkNgayTk', 'xnkMaHs', 'xnkThueNk', 'xnkThueVat', 'xnkTiGia', 'xnkSoQd', 'xnkGiayPhep', 'xnkAnqp', 'xnkEuc'];
+  const c4 = { layout: { columns: 4 } };
+  const xnk = () => Object.assign(grp('Thông tin xuất nhập khẩu (theo đề xuất)', [tf('xnkSoTk', 'Số tờ khai hải quan', c4), dt('xnkNgayTk', 'Ngày tờ khai hải quan', c4), tf('xnkMaHs', 'Mã hồ sơ hải quan', c4),
+    num('xnkThueNk', 'Thuế nhập khẩu (tỷ đồng)', c4), num('xnkThueVat', 'Thuế VAT hàng nhập khẩu (tỷ đồng)', c4), tf('xnkTiGia', 'Tỉ giá của tờ khai hải quan', c4), tf('xnkSoQd', 'Số / ngày QĐ phê duyệt hợp đồng', c4),
+    tf('xnkGiayPhep', 'Giấy phép nhập khẩu (số / ngày / ghi chú)', c4), tf('xnkAnqp', 'Giấy xác nhận hàng ANQP (số / ngày / ghi chú)', c4), tf('xnkEuc', 'Giấy chứng nhận người sử dụng cuối cùng (số / ngày / ghi chú)', c4)]),
+    { conditional: { hide: '=not(hd.nhapKhau)' } });
   const dot = () => txt('**{{dot.ten}}** · {{dot.hang}}\nNgày dự kiến giao {{dot.ngay}} · {{dot.diaDiem}}');
   const again = () => banner('Hàng bổ sung, thay thế: làm lại giao nhận và kiểm tra.', '=not(laThayThe)', 'moved');
   const note = (id, keyName, label, notes, q) => ({ id, q: q || [], schema: () => ({ components: [head(), dot(), ta(keyName, label, req())] }), notes: () => notes, write: (v) => pick(v, [keyName]) });
@@ -22,8 +29,8 @@
       schema: () => ({ components: [head(), dot(), ta('bgThongBao', 'Nội dung thông báo gửi Phòng Quản lý tài sản', req())] }),
       notes: () => ['Bản vẽ bước 2 không có mũi tên ra; theo diễn giải sang bước 3 (P-185).'], write: (v) => pick(v, ['bgThongBao']) },
     3: { id: 'dtms-ms2302-t03-giao-nhan', q: ['P-175'],
-      schema: () => ({ components: [head(), dot(), again(), dt('bgNgayNhan', 'Ngày nhận hàng', req({ layout: { columns: 8 } })), tf('bgPhieuKho', 'Số phiếu nhập kho', req({ layout: { columns: 8 } }))] }),
-      notes: () => ['Hồ sơ giao nhận, hồ sơ kho tải lên ở Danh sách tài liệu (bắt buộc). Hàng bổ sung, thay thế quay lại bước này. <b>Giả lập P-175</b>: thao tác SAP chưa dựng.'], write: (v) => pick(v, ['bgNgayNhan', 'bgPhieuKho']) },
+      schema: () => ({ components: [head(), dot(), again(), dt('bgNgayNhan', 'Ngày nhận hàng', req({ layout: { columns: 8 } })), tf('bgPhieuKho', 'Số phiếu nhập kho', req({ layout: { columns: 8 } })), xnk()] }),
+      notes: () => ['Hồ sơ giao nhận, hồ sơ kho tải lên ở Danh sách tài liệu (bắt buộc). Hàng bổ sung, thay thế quay lại bước này. <b>Giả lập P-175</b>: thao tác SAP chưa dựng.'], write: (v) => pick(v, ['bgNgayNhan', 'bgPhieuKho'].concat(XNK_KEYS)) },
     4: note('dtms-ms2302-t04-xac-nhan-dich-vu', 'bgDichVu', 'Kết quả, khối lượng dịch vụ', ['Biên bản xác nhận thực hiện dịch vụ tải lên ở Danh sách tài liệu (bắt buộc). Xong → ghi dòng cần khởi tạo MS23.03, nhánh kết thúc; chưa phải nghiệm thu hoàn thành. <b>Giả lập P-180</b>.'], ['P-180']),
     5: note('dtms-ms2302-t05-yeu-cau-kiem-tra', 'bgYeuCau', 'Nội dung yêu cầu kiểm tra chất lượng', ['<b>Giả lập P-174</b>: Phòng Quản lý tài sản lập yêu cầu, Đơn vị sử dụng ghi nhận kết quả ở bước 6.'], ['P-174']),
     6: { id: 'dtms-ms2302-t06-ket-qua-kiem-tra', q: ['P-174', 'P-176'],
@@ -69,7 +76,7 @@
   function vars() {
     const h = hd(), u = Flow.ui, k = window.HopDong.kit(), v = Flow.state.vars, m = ms(), today = Flow.dateOf(Flow.state.clock);
     return Object.assign({}, u, { laThayThe: !!v.bgThayThe, aiLoi: !!(v.aiBgIn && !v.aiBgIn.ok), aiLoi2: !!(v.aiBgOut && !v.aiBgOut.ok), bgHan: v.bgHan, bgLoai: u.bgLoai || 'Hàng hoá', bgYeuCau: u.bgYeuCau || 'Kiểm tra theo yêu cầu kỹ thuật của hợp đồng', bgHoc: u.bgHoc || `Bàn giao ${m.goods || ''}`, bgHinhThucKy: u.bgHinhThucKy || 'VContract',
-      bgNgayNhan: u.bgNgayNhan || today, bgNgayBs: u.bgNgayBs || today, bgNgay: u.bgNgay || today, hd: { code: h.code, ten: h.title, ncc: k.nccName(h.ncc) }, dot: { ten: m.name, hang: m.goods, ngay: m.plan, diaDiem: m.site } });
+      bgNgayNhan: u.bgNgayNhan || today, bgNgayBs: u.bgNgayBs || today, bgNgay: u.bgNgay || today, hd: { code: h.code, ten: h.title, ncc: k.nccName(h.ncc), nhapKhau: window.HopDong.isImport(h) }, dot: { ten: m.name, hang: m.goods, ngay: m.plan, diaDiem: m.site } });
   }
   function reqDocs(tok) { return UP.filter((x) => String(x[2]) === String(tok.task)).map(([key, , , name]) => ({ key, name, have: !!Flow.ui[key] })); }
   const files = () => {

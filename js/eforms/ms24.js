@@ -3,7 +3,7 @@
  * Hồ sơ, hoá đơn, minh chứng nằm ở Danh sách tài liệu (loại 4), không đặt trong form. Bước 4, 6, 20 là service task; bước 20 có màn khi đồng bộ SAP lỗi.
  */
 (function () {
-  const { txt, banner, tbl, ta, tf, sel, req, opts, aiBox, dt } = window.EForms.b;
+  const { txt, banner, tbl, ta, tf, sel, req, opts, aiBox, dt, num } = window.EForms.b;
   const Flow = window.Flow, D = window.D;
   const pick = (vals, keys) => keys.reduce((o, k) => { if (vals[k] !== undefined) o[k] = vals[k]; return o; }, {});
   const hd = () => window.HopDong.find(Flow.state.parent) || {};
@@ -32,8 +32,10 @@
       schema: () => ({ components: [head(), amount(), ta('ttBoSung', 'Nội dung đã bổ sung', req())] }),
       notes: () => ['Bổ sung xong gửi lại bước 2 kiểm tra. Yêu cầu bổ sung xem ở Lịch sử hồ sơ.'], write: (v) => pick(v, ['ttBoSung']) },
     5: { id: 'dtms-ms24-t05-hoa-don',
-      schema: () => ({ components: [head(), amount(), tf('ttSoHoaDon', 'Số hoá đơn', req())] }),
-      notes: () => ['Hoá đơn tải lên ở Danh sách tài liệu (bắt buộc). Hoàn thành → service task 6: AI lập bảng tổng hợp.'], write: (v) => pick(v, ['ttSoHoaDon']) },
+      schema: () => ({ components: [head(), amount(), tf('ttSoHoaDon', 'Số hoá đơn', req({ layout: { columns: 8 } })), dt('ttNgayHoaDon', 'Ngày hoá đơn', { layout: { columns: 8 } }),
+        window.EForms.b.dlAdd('ttHoaDonThem', 'Hoá đơn khác của đợt', [tf('so', 'Số hoá đơn', { layout: { columns: 6 } }), dt('ngay', 'Ngày hoá đơn', { layout: { columns: 5 } }), num('giaTri', 'Giá trị (tỷ đồng)', { layout: { columns: 5 } })])] }),
+      notes: () => ['Hoá đơn tải lên ở Danh sách tài liệu (bắt buộc). Hoàn thành → service task 6: AI lập bảng tổng hợp.', 'T79 (D-131): một đợt có thể nhiều hoá đơn — card Hóa đơn ở tab Thanh toán của hợp đồng.'],
+      write: (v) => pick(v, ['ttSoHoaDon', 'ttNgayHoaDon', 'ttHoaDonThem']) },
     7: kyForm('dtms-ms24-t07-ky-bth', 7, 'BTH', 'Phòng tài chính kiểm tra, ký. <b>Giả lập P-124</b>: Trưởng phòng Tài chính kế toán.'),
     8: kyForm('dtms-ms24-t08-ky-bth', 8, 'BTH', 'Thủ trưởng VHT ký sau Phòng tài chính.'),
     9: kyForm('dtms-ms24-t09-ky-bth', 9, 'BTH', 'Văn thư kiểm tra font chữ, biểu mẫu, loại văn bản, định dạng, văn phong và ký xác nhận.'),
