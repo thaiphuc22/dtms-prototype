@@ -963,7 +963,7 @@
     return { win, gia, hieuLuc: hl, ngayDong: u.lcNgayDong || '', hetHl, ngayThu, hoanThien, kyKet, hanKy, tv, baoLanh, baoLanhTien: baoLanh == null ? null : r3(gia * baoLanh / 100),
       quaHl: !!(hetHl && hanKy && dNum(hanKy) > dNum(hetHl)), ngayBanGiao: u.lcNgayBanGiao || ngayThu, tgGiaoHang: u.lcTgGiaoHang || u.lcTgThHd || g.execTime || '', dkTt: u.lcDkTt || mau.tt || '',
       phanBo: srcs.map((s) => ({ loai: SRC[s[0]] || s[0], ma: s[1], phanBo: Number(s[2] || 0), trung: r3(Number(s[2] || 0) * gia / tot) })),
-      dauMoi: u.lcDauMoi || [['Đầu mối đơn vị sử dụng', pn('dvsd')], ['Đầu mối nhà thầu', ''], ['Trợ lý dự án', ''], ['Đầu mối đơn vị giám sát', pn('thau')]].map(([vaiTro, ten]) => ({ vaiTro, ten, lienHe: '' })) }; };
+      dauMoi: u.lcDauMoi || [['Đầu mối đơn vị sử dụng', pn('dvsd')], ['Đầu mối nhà thầu', u.lcDaiDienNt || ''], ['Trợ lý dự án', ''], ['Đầu mối đơn vị giám sát', pn('thau')]].map(([vaiTro, ten]) => ({ vaiTro, ten, lienHe: '' })) }; };
   /* Điều 32 khoản 7: HSĐX, HSCG chỉ đánh giá theo giá thấp nhất — phương pháp khác chỉ có ở HSMT (đấu thầu rộng rãi / hạn chế). */
   const lcPpOf = (g, u) => (['DTRR', 'DTHC'].includes((g || {}).form) && PP_DG.includes((u || {}).lcPpDanhGia) ? u.lcPpDanhGia : 'Giá thấp nhất');
   function lcXepHang(rows, pp, giaGoi, tKt) {

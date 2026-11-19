@@ -3,6 +3,13 @@
 > Mỗi PR một mục, mới nhất trên cùng: `## YYYY-MM-DD — <việc> (#PR)` + 2–5 gạch đầu dòng (màn, thay đổi, nguồn, điểm treo mới).
 > Lịch sử trước T77: [lich-su-chung.md](lich-su-chung.md).
 
+## 2026-11-19 — T80: người đại diện nhà thầu vào biên bản thương thảo
+
+- eForm thương thảo (3.6 / 7.4): bảng chỉ xem **Đại diện nhà thầu** (Người đại diện, Chức vụ) đọc danh mục Nhà cung cấp SCR-31 (trường thêm ở T80 L7, HT-THAU-VID §5) theo nhà thầu đang chọn — lọc FEEL trên biến `nccRep`, đổi nhà thầu thì đổi theo; danh mục chưa khai báo thì cảnh báo, không chặn.
+- Xác nhận ghi `lcDaiDienNt`, `lcChucVuNt` vào hồ sơ; văn bản LC-BBTT in dòng "Đại diện nhà thầu: Ông/bà … — Chức vụ: …".
+- Bước 22: Đầu mối nhà thầu ở Thông tin chuyển giao gợi ý sẵn người đại diện (sửa được). Hai biến này để phần Hợp đồng điền sẵn Người đại diện / Chức vụ nhà thầu ở MS22.
+- e2e `t80-trao-hd` thêm kiểm bảng đại diện, biến ghi hồ sơ, gợi ý đầu mối.
+
 ## 2026-11-19 — T80 L3 (phần thầu): biên bản thương thảo dạng bảng, thư trao hợp đồng, thông tin chuyển giao
 
 - eForm thương thảo (3.6 / 7.4): bảng **Biên bản thương thảo** (Nội dung thương thảo · Ý kiến nhà thầu · Nội dung hai bên thống nhất đưa vào hợp đồng — theo tab BB Thương thảo của hệ thống cũ, HT-THAU-CONV), dòng gợi ý từ mẫu hợp đồng, phạm vi, tiến độ, thanh toán; thêm dòng được. Thêm **Thời gian thực hiện hợp đồng sau thương thảo**; ô nội dung tự do thành "Nội dung khác" (không bắt buộc). Văn bản LC-BBTT in bảng.
