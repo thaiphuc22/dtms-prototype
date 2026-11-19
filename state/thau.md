@@ -28,7 +28,7 @@
 
 | Nhánh | Việc | Pha | PR |
 |---|---|---|---|
-| `thau/t80-ht-cu` | T80 — bổ sung theo HT-THAU-VID + QC-12869 (L1, L2, L5, L4, L6, L2b, L9, L4b, L5b, L3 phần thầu xong) | BUILD | — |
+| `thau/t80-ht-cu` | T80 — bổ sung theo HT-THAU-VID + QC-12869 (L1, L2, L5, L4, L6, L2b, L9, L4b, L5b, L3 phần thầu xong) | PR #1 chờ review | — |
 
 ## Quyết định chờ người tích hợp chốt
 
