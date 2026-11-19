@@ -2,13 +2,6 @@
  "note": "T77 S4 (2026-11-18, D-129): e2e đỏ từ trước — test chưa theo các lần đổi màn (T34, T39, T56, T59, D-92…). CI bỏ qua các ca này (playwright.config.mjs grepInvert). Sửa xong ca nào thì xoá dòng đó. Chạy riêng: npm run test:quarantine.",
  "tests": [
   {
-   "file": "t33-tour.spec.mjs",
-   "line": 10,
-   "title": "Tour 1: chạy hết các bước, bước nào cũng thấy phần tử cần chỉ",
-   "area": "chung",
-   "reason": "Error: tour 1 bước 6 ¦ expect(locator).toHaveCount(expected) failed ¦ Locator: locator('.tour-pop').locator('.tp-miss')"
-  },
-  {
    "file": "ui-rules.spec.mjs",
    "line": 173,
    "title": "B5: Việc của tôi theo my-tasks — không tab, cột, lọc Trạng thái, mọi dòng mở được",
