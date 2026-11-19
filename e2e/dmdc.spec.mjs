@@ -255,7 +255,7 @@ test('B3: danh sách nhà cung cấp — cột, Tình trạng, nút Nhập từ 
   await expect(page.locator('.pg-title')).toHaveText('Danh sách nhà cung cấp');
   await expect(page.locator('.pg-head .r .vbtn')).toHaveText(['Nhập từ Excel', 'Thêm mới']);
   await expect(page.locator('.vtable th')).toHaveText(['STT', 'Thao tác', 'Trạng thái', 'Mã nhà cung cấp', 'Tên nhà cung cấp', 'Mã số thuế',
-    'Phân loại', 'Quốc gia', 'Ngành hàng', 'Email nhận yêu cầu báo giá', 'Người liên hệ', 'Tình trạng']);
+    'Phân loại', 'Quốc gia', 'Ngành hàng', 'Email nhận yêu cầu báo giá', 'Người liên hệ', 'Người đại diện', 'Liên danh', 'Tình trạng']);
   await expect(page.locator('.vtable tbody tr')).toHaveCount(10);
   await expect(page.locator('.vpager .tot')).toHaveText('Tổng số bản ghi: 12');
   await expect(row(page, 'NCC-000001')).toContainText('Viễn thông - CNTT, Nghiên cứu sản xuất');

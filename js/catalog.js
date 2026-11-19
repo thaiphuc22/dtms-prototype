@@ -26,6 +26,28 @@
   const CURRENCY = ['VNĐ', 'USD', 'EUR', 'JPY', 'KRW', 'CNY'].map((v) => ({ value: v, label: v }));
   /* Ngành hàng lấy từ SCR-36; ô chọn chỉ có bản ghi đang hoạt động, trừ giá trị hồ sơ đang giữ (P-33). */
   const goodsOptions = (cur, all) => rows(byKey('loai-hang-hoa')).filter((r) => all || r.active || (cur || []).includes(r.code)).map((r) => ({ value: r.code, label: r.name }));
+  /* T80 L7: liên danh (QC-12869 Điều 24 khoản 4 — thỏa thuận liên danh, thành viên đứng đầu) và trường của Danh mục Đối tác hệ thống cũ (HT-THAU-VID §5).
+     Thành viên chọn từ chính danh mục (không chọn nhà thầu liên danh khác); thành viên đứng đầu chọn trong số thành viên đã chọn. */
+  const JV = [{ value: 'KHONG', label: 'Không' }, { value: 'CO', label: 'Có' }];
+  const memberOptions = (cur, all) => rows(byKey('nha-cung-cap')).filter((r) => r.jv !== 'CO' && (all || r.active || (cur || []).includes(r.code)))
+    .map((r) => ({ value: r.code, label: `${r.code} — ${r.short || r.name}` }));
+  /* Không có vals (hiển thị nhãn ở danh sách / xem) thì lấy mọi nhà cung cấp; trong hộp thoại chỉ các thành viên đã chọn. */
+  const leadOptions = (cur, all, vals) => memberOptions(null, true).filter((o) => !vals || (vals.members || []).includes(o.value));
+  /* Người đại diện, chức vụ, số đăng ký kinh doanh, ngày thành lập, tài khoản ngân hàng, fax của 12 nhà cung cấp mẫu (dữ liệu giả, như các trường sẵn có). */
+  const NCC_REP = [
+    ['Nguyễn Văn Hùng', 'Giám đốc', '0101234567', '15/03/2008', '0011000123456 — Ngân hàng TMCP Ngoại thương, CN Hà Nội', '024 3765 1235'],
+    ['Trần Quốc Việt', 'Tổng Giám đốc', '0301234568', '02/07/2005', '0071000654321 — Ngân hàng TMCP Ngoại thương, CN TP Hồ Chí Minh', ''],
+    ['Tan Wei Ming', 'Managing Director', '201912345K', '11/09/2019', '', '+65 6123 4568'],
+    ['Lê Minh Tuấn', 'Giám đốc chi nhánh', '0107654321-001', '20/01/2012', '1200123456789 — Ngân hàng TMCP Đầu tư và Phát triển, CN Hoà Lạc', ''],
+    ['Phạm Quốc Bảo', 'Tổng Giám đốc', '0100100100', '01/04/1996', '', '024 3833 5567'],
+    ['Đỗ Thu Hà', 'Giám đốc', '0105550123', '08/08/2011', '', ''],
+    ['Vũ Văn Nam', 'Giám đốc', '0106667788', '19/05/2014', '', ''],
+    ['Klaus Weber', 'Geschäftsführer', 'HRB 123456', '01/02/1998', '', '+49 89 4129 100'],
+    ['Kim Min-jun', 'CEO', '', '', '', ''],
+    ['Ngô Thanh Tâm', 'Giám đốc', '0314445566', '12/12/2016', '', ''],
+    ['Hoàng Anh Đức', 'Chủ tịch Hội đồng quản trị', '0108889900', '30/06/2019', '', ''],
+    ['Trịnh Văn Lợi', 'Giám đốc', '0102223344', '25/10/2009', '', ''],
+  ];
   const banBadge = (r) => (!r.ban ? badge('Bình thường', 'default') : r.ban.until ? badge('Cấm đến ' + r.ban.until, 'error') : badge('Hạn chế', 'warning'));
   const NCC = {
     formSize: 'lg', importable: true, advanced: true, unique: ['tax'],
@@ -36,6 +58,13 @@
       const hit = list.find((r) => r !== row && !r.tax && norm(r.name) === norm(v.name) && r.country === v.country);
       return hit ? `Nhà cung cấp ${v.name} (${labelOf({ options: COUNTRY }, v.country)}) đã tồn tại.` : '';
     },
+    /* T80 L7: liên danh có ít nhất 02 thành viên, thành viên đứng đầu thuộc danh sách thành viên (Điều 24 khoản 4). */
+    validate: (v) => {
+      if (v.jv !== 'CO') return {};
+      if ((v.members || []).length < 2) return { members: 'Nhà thầu liên danh cần ít nhất 02 thành viên.' };
+      if (v.lead && !v.members.includes(v.lead)) return { lead: 'Thành viên đứng đầu phải là một thành viên liên danh.' };
+      return {};
+    },
     autoCode: (list) => 'NCC-' + String(Math.max(0, ...list.map((r) => Number(r.code.slice(4)) || 0)) + 1).padStart(6, '0'),
     fields: [
       { key: 'code', label: 'Mã nhà cung cấp', type: 'auto', placeholder: 'Hệ thống tự sinh' },
@@ -44,9 +73,21 @@
       { key: 'name', label: 'Tên nhà cung cấp', type: 'orgname', required: true, max: 255, span: 2 },
       { key: 'short', label: 'Tên viết tắt / tên giao dịch', type: 'text', max: 100 },
       { key: 'nameEn', label: 'Tên tiếng Anh', type: 'text', max: 255 },
-      { key: 'tax', label: 'Mã số thuế', type: 'tax', max: 50, required: (v) => v.kind !== 'NN' },
+      { key: 'tax', label: 'Mã số thuế', type: 'tax', max: 50, required: (v) => v.kind !== 'NN' && v.jv !== 'CO' },
       { key: 'country', label: 'Quốc gia', type: 'select', required: true, searchable: true, default: 'VN', options: COUNTRY, locked: (v) => v.kind === 'VN' },
       { key: 'address', label: 'Địa chỉ', type: 'text', required: true, max: 500, span: 2 },
+      { key: 'jv', label: 'Nhà thầu liên danh', type: 'select', options: JV, default: 'KHONG',
+        onChange: (v, sel) => { if (v !== 'CO') { sel.members = []; sel.lead = null; } } },
+      { key: 'blank2', type: 'blank' },
+      { key: 'members', label: 'Thành viên liên danh', type: 'select', multi: true, searchable: true, options: memberOptions, span: 2,
+        required: (v) => v.jv === 'CO', locked: (v) => v.jv !== 'CO', onChange: (v, sel) => { if (sel.lead && !(v || []).includes(sel.lead)) sel.lead = null; } },
+      { key: 'lead', label: 'Thành viên đứng đầu liên danh', type: 'select', options: leadOptions, required: (v) => v.jv === 'CO', locked: (v) => v.jv !== 'CO' },
+      { key: 'rep', label: 'Người đại diện', type: 'text', max: 100 },
+      { key: 'position', label: 'Chức vụ người đại diện', type: 'text', max: 100, default: 'Giám đốc' },
+      { key: 'reg', label: 'Số đăng ký kinh doanh', type: 'text', max: 50 },
+      { key: 'founded', label: 'Ngày thành lập', type: 'date' },
+      { key: 'fax', label: 'Fax', type: 'phone', max: 20 },
+      { key: 'bank', label: 'Tài khoản ngân hàng', type: 'text', max: 255, placeholder: 'Số tài khoản — ngân hàng, chi nhánh', span: 2 },
       { key: 'goods', label: 'Ngành hàng cung cấp', type: 'select', multi: true, searchable: true, required: true, options: goodsOptions, span: 2 },
       { key: 'email', label: 'Email nhận yêu cầu báo giá', type: 'email', required: true, max: 255 },
       { key: 'cc', label: 'Email CC', type: 'emails', max: 500, placeholder: 'Nhiều email cách nhau bằng dấu ;' },
@@ -65,6 +106,8 @@
       { key: 'goods', label: 'Ngành hàng', type: 'select', multi: true, options: goodsOptions, minWidth: 220 },
       { key: 'email', label: 'Email nhận yêu cầu báo giá', minWidth: 220 },
       { key: 'contact', label: 'Người liên hệ', width: 170 },
+      { key: 'rep', label: 'Người đại diện', width: 190, render: (r) => (r.rep ? `${esc(r.rep)}${r.position ? `<div class="faint">${esc(r.position)}</div>` : ''}` : '<span class="dash">-</span>') },
+      { key: 'jv', label: 'Liên danh', width: 110, render: (r) => (r.jv === 'CO' ? badge('Liên danh', 'info') : '<span class="dash">-</span>') },
       { key: 'ban', label: 'Tình trạng', width: 190, render: banBadge },
     ],
     /* 12 bản ghi mẫu: 3 nước ngoài (Gamma, Theta, Iota); Alpha/Beta/Gamma là 3 NCC trong luồng MS01 (task 09–12);
@@ -82,9 +125,9 @@
       ['Công ty TNHH Thương mại Kappa', 'Kappa', '', 'VN', '0314445566', 'VN', '210 Cộng Hoà, Tân Bình, TP Hồ Chí Minh', ['HHKD', 'PTVT_TBQL'], 'sales@kappa.com.vn', '', 'Ngô Thanh Tâm', '028 3811 2233', 'VNĐ', 0, {}],
       ['Công ty Cổ phần Lambda & Cộng sự', 'Lambda', '', 'VN', '0108889900', 'VN', '3 Tôn Thất Thuyết, Cầu Giấy, Hà Nội', ['DVTV', 'DVPTV'], 'lienhe@lambda.vn', '', 'Hoàng Anh Đức', '0904 555 666', 'VNĐ', 0],
       ['Công ty TNHH Giải pháp Mạng Mu', 'Mu Network', '', 'VN', '0102223344', 'VN', '88 Hoàng Quốc Việt, Cầu Giấy, Hà Nội', ['VTCNTT'], 'baogia@munet.vn', '', 'Trịnh Văn Lợi', '0936 777 888', 'VNĐ', 0, null, false],
-    ].map(([name, short, nameEn, kind, tax, country, address, goods, email, cc, contact, phone, currency, used, ban, active], i) => ({
+    ].map(([name, short, nameEn, kind, tax, country, address, goods, email, cc, contact, phone, currency, used, ban, active, extra], i) => Object.assign({
       id: i + 1, code: 'NCC-' + String(i + 1).padStart(6, '0'), name, short, nameEn, kind, tax, country, address, goods, email, cc, contact, phone, currency,
-      description: '', used, ban: ban || null, active: active !== false })),
+      description: '', used, ban: ban || null, active: active !== false, jv: 'KHONG' }, NCC_REP[i] ? { rep: NCC_REP[i][0], position: NCC_REP[i][1], reg: NCC_REP[i][2], founded: NCC_REP[i][3], bank: NCC_REP[i][4], fax: NCC_REP[i][5] } : {}, extra || {})),
   };
 
   /* ---------- SCR-40 Ngưỡng phân luồng (tài liệu chuẩn bị §5) ----------
@@ -630,7 +673,9 @@
         'Nới khuôn của ecat: Tên nhận thêm & . , ( ) cho tên doanh nghiệp; Số điện thoại nhận +, số, khoảng trắng, 8–20 ký tự (số bàn, số nước ngoài).',
         'Ngành hàng lấy từ danh mục Loại hàng hoá / dịch vụ, dùng để lọc nhà cung cấp khi gửi yêu cầu báo giá (task 09).',
         'Cột Tình trạng chỉ hiển thị; đưa vào/gỡ khỏi danh sách cấm là việc của phân hệ Lựa chọn nhà thầu (UC-09-08, chưa dựng).',
-        'Không có ở vòng này: tài khoản ngân hàng, hồ sơ năng lực, đánh giá nhà cung cấp (P-31).',
+        '<b>T80 L7</b> (Danh mục Đối tác hệ thống cũ — HT-THAU-VID §5): Người đại diện, Chức vụ (mặc định "Giám đốc" như hệ thống cũ), Số đăng ký kinh doanh, Ngày thành lập, Tài khoản ngân hàng, Fax. Người đại diện / chức vụ là thông tin nhà thầu ở biên bản thương thảo, hợp đồng.',
+        '<b>Nhà thầu liên danh</b> (QC-12869 Điều 24 khoản 4): chọn Có thì chọn Thành viên liên danh (ít nhất 02, từ chính danh mục, không chọn nhà thầu liên danh khác) và Thành viên đứng đầu (trong số thành viên); liên danh không bắt buộc mã số thuế riêng. Thỏa thuận liên danh (trách nhiệm từng thành viên) gắn theo hồ sơ dự thầu, không lưu ở danh mục.',
+        'Không có ở vòng này: hồ sơ năng lực, đánh giá nhà cung cấp (P-31).',
         'NCC Alpha, Beta, Gamma là 3 nhà cung cấp của luồng MS01 (đang dùng, không xoá được — P-33). Dữ liệu mẫu; thay đổi được lưu trên trình duyệt.',
       ],
       q: ['P-30', 'P-32', 'P-31', 'P-33', 'P-27'], src: 'ecat common-catalog/base/catalog-list (partner) · @khcn-core/ui vht-import-dialog',
@@ -766,7 +811,7 @@
     const vals = () => { const o = {}; fields.forEach((f) => { o[f.key] = valueOf(f); }); return o; };
     const selHtml = (f, invalid) => vSelect({ id: 'cf-' + f.key, options: optsOf(f, sel[f.key], false, sel), value: sel[f.key], multi: f.multi, searchable: f.searchable,
       placeholder: view ? '' : 'Chọn ' + f.label.toLowerCase(), invalid, disabled: view || (f.locked && f.locked(sel)),
-      onChange: (v) => { sel[f.key] = v; if (f.onChange) { f.onChange(v, sel); sync(); } check(f); } });
+      onChange: (v) => { sel[f.key] = v; if (f.onChange) { f.onChange(v, sel); sync(f.key); } check(f); } });
     const ctl = (f) => {
       if (f.type === 'select') { sel[f.key] = row ? row[f.key] : f.default || (f.multi ? [] : null); return `<div data-cf="${f.key}">${selHtml(f)}</div>`; }
       const raw = row ? row[f.key] : typeof f.default === 'function' ? f.default() : f.default;
@@ -776,7 +821,7 @@
       if (f.type === 'textarea') return `<textarea class="vctl ta" data-cf="${f.key}" maxlength="${f.max}" rows="3" ${dis}>${v}</textarea>`;
       // vht-calendar: ô nhập DD/MM/YYYY + icon lịch bên phải (mở bộ chọn ngày của trình duyệt).
       if (f.type === 'date') return `<div class="vdate"><input class="vctl" data-cf="${f.key}" maxlength="10" inputmode="numeric" placeholder="DD/MM/YYYY" value="${v}" ${dis}>
-          <button type="button" class="vdate-ic" data-date-pick tabindex="-1" aria-label="Chọn ngày">${CAL}</button><input type="date" class="vdate-native" tabindex="-1" aria-hidden="true"></div>`;
+          <button type="button" class="vdate-ic" data-date-pick tabindex="-1" aria-label="Chọn ngày">${CAL}</button><input type="date" class="vdate-native" tabindex="-1" aria-hidden="true" style="position:absolute;right:10px;bottom:0;width:1px;height:1px;opacity:0;border:0;padding:0;pointer-events:none"></div>`;
       return `<input class="vctl" data-cf="${f.key}" ${f.max ? `maxlength="${f.max}"` : ''} ${f.type === 'num' ? 'inputmode="decimal"' : ''} value="${v}" ${ph} ${dis}>`;
     };
     const lg = c.formSize === 'lg';
@@ -803,12 +848,13 @@
     const valueOf = (f) => (f.type === 'select' ? sel[f.key] || (f.multi ? [] : '') : f.type === 'auto' ? '' : el(f.key).value.trim());
     const check = (f) => { if (f.type === 'auto') return true; const err = fieldError(f, valueOf(f), vals()); show(f, err); return !err; };
     /* Đổi Phân loại: cập nhật dấu *, khoá Quốc gia; trường đang báo lỗi được kiểm tra lại theo quy tắc mới. */
-    const sync = () => {
+    /* T80 L7: vẽ lại mọi ô chọn trừ ô vừa đổi (ô có onChange khác cũng có thể phụ thuộc — vd Thành viên liên danh theo Nhà thầu liên danh). */
+    const sync = (except) => {
       const v = vals();
       fields.forEach((f) => {
         const w = wrap(f);
         w.querySelector('.req').hidden = !isReq(f, v);
-        if (f.type === 'select' && !f.onChange) el(f.key).innerHTML = selHtml(f, w.classList.contains('invalid'));
+        if (f.type === 'select' && f.key !== except) el(f.key).innerHTML = selHtml(f, w.classList.contains('invalid'));
         if (w.classList.contains('invalid')) check(f);
       });
     };
