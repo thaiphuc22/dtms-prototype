@@ -138,7 +138,7 @@
 | Mã | Tài liệu | Bản đọc |
 |---|---|---|
 | SRS-QTQT | SRS (tài liệu thiết kế chi tiết) Quản trị quy trình V1.0: Quản lý quy trình (3.1.1), Ma trận hành động (3.1.2), thiết kế dùng chung (§4). Nhận 07/10/2026 (Drive 16wNiNupFvBP2onqLDW | [`_md/SRS-QTQT.md`](_md/SRS-QTQT.md) |
-| SRS-DMDC | SRS Danh mục dùng chung (tài liệu thiết kế chi tiết) V0.1 dự thảo, 11/11/2026, do ta viết (T53, D-106): phân hệ Danh mục dùng chung tập trung (một dịch vụ /category/api/v1, một gia | [`_md/SRS-DMDC.md`](_md/SRS-DMDC.md) |
+| SRS-DMDC | SRS Danh mục dùng chung (tài liệu thiết kế chi tiết) V0.2 dự thảo, 18/11/2026 (V0.2: bảng Phân cấp thẩm quyền KĐT thêm chiều Hệ thống CNTT phục vụ nội bộ — ngoại lệ UQ-GUQ §1.2.2,  | [`_md/SRS-DMDC.md`](_md/SRS-DMDC.md) |
 | SRS-TB | SRS Quản lý mẫu thông báo (đợt 16/10), chép từ KHCN; VHT yêu cầu đổi sang ĐTMS qua DT-TDNV | [`_md/SRS-TB.md`](_md/SRS-TB.md) |
 | COMMON-TB | Common thông báo: Chuông thông báo (đợt 16/10) | [`_md/COMMON-TB.md`](_md/COMMON-TB.md) |
 

@@ -23,9 +23,14 @@
       schema: () => ({ components: [head(),
         txt('Gói thầu **{{hd.goi}}** · Quyết định phê duyệt KQLCNT **{{hd.kq}}** · loại hợp đồng {{hd.loai}} · thời gian thực hiện {{hd.thoiGian}}'),
         tbl('Hạng mục theo kết quả thầu', 'items', [['ten', 'Hàng hoá / dịch vụ'], ['dvt', 'Đơn vị tính'], ['sl', 'Số lượng'], ['gia', 'Đơn giá (tỷ đồng)']]),
+        sel('hdNguoiChuyenTien', 'Người chuyển tiền', { values: opts(window.HopDong.PAYERS), layout: { columns: 8 } }),
+        sel('hdDauMoi', 'Đầu mối dự án, đơn vị', { values: opts(D.personas.filter((p) => !p.all && p.id !== 'td').map((p) => p.name)), layout: { columns: 8 } }),
+        sel('hdDauMoiKcs', 'Đầu mối KCS', { values: opts([window.HopDong.KCS_HH, 'Đơn vị sử dụng']), layout: { columns: 8 } }),
+        ta('hdGhiChu', 'Ghi chú'),
         chk('hdDuHoSo', 'Xác nhận', req({ text: 'Đã nhận đủ đề xuất mua sắm, kết quả thầu và hồ sơ thầu do phòng thầu bàn giao' }))] }),
-      notes: () => ['Thông tin lấy từ KQLCNT của gói thầu, chỉ xem (Backlog 426). Hoàn thành → cổng song song: bước 2 giao Đơn vị sử dụng, bước 3 giao Phòng Hợp đồng.'],
-      write: (v) => pick(v, ['hdDuHoSo']) },
+      notes: () => ['Thông tin lấy từ KQLCNT của gói thầu, chỉ xem (Backlog 426). Hoàn thành → cổng song song: bước 2 giao Đơn vị sử dụng, bước 3 giao Phòng Hợp đồng.',
+        'T79 (D-131 Q5): Người chuyển tiền, Đầu mối dự án / đơn vị, Đầu mối KCS, Ghi chú chọn khi tạo hợp đồng (SCR-85), sửa được ở bước này; ghi lại vào hợp đồng.'],
+      write: (v) => pick(v, ['hdDuHoSo', 'hdNguoiChuyenTien', 'hdDauMoi', 'hdDauMoiKcs', 'hdGhiChu']) },
     2: { id: 'dtms-ms22-t02-phu-luc-ky-thuat', q: ['P-133'], outputs: () => ['HD-PLKT'],
       schema: () => ({ components: [head(),
         dl('hdRows', 'Danh mục hàng hoá', [txt('**{{this.ten}}**\n{{this.sl}} {{this.dvt}}', 8), tf('maHang', 'Mã hàng', { layout: { columns: 8 } })]),
@@ -112,8 +117,11 @@
     const w = warranty(), m = mauOf(h) || {}, n = D.nccOf(h.ncc) || {}, none = 'Chưa có dữ liệu', vat = h.vat || 10;
     const pre = Math.round((h.value / (1 + vat / 100)) * 1000) / 1000, tax = Math.round((h.value - pre) * 1000) / 1000, inW = window.UI.inWords;
     /* Trường trộn của mẫu (T66 §3) → nguồn dữ liệu. Người đại diện / chức vụ nhà thầu nhập ở bước 4 (H-Q5 = B). */
+    /* T79: giá trị mặc định của các trường người phụ trách (bước 1) lấy từ hợp đồng. */
+    const st = window.HopDong.staffOf(h), stDef = { hdNguoiChuyenTien: u.hdNguoiChuyenTien || st.payer, hdDauMoi: u.hdDauMoi || st.focal,
+      hdDauMoiKcs: u.hdDauMoiKcs || (st.kcs === window.HopDong.KCS_HH ? st.kcs : 'Đơn vị sử dụng'), hdGhiChu: u.hdGhiChu != null ? u.hdGhiChu : st.note || '' };
     const tron = [['so_hop_dong', at(13) ? (u.hdSo || '') : 'Chưa cấp số (cấp ở bước 13)', 'Hợp đồng — bước 13'], ['so_goi_thau, ten_goi_thau', `${h.pkg || ''} — ${(g && g.name) || ''}`, 'Gói thầu'],
-      ['so_qd_phe_duyet_kqlcnt', g && g.kq ? `${g.kq[0]} ngày ${g.kq[1]}` : none, 'Gói thầu — KQLCNT'], ['so_thu_trao_hd', none, 'Thư trao hợp đồng (MS19 chưa có bước)'],
+      ['so_qd_phe_duyet_kqlcnt', g && g.kq ? `${g.kq[0]} ngày ${g.kq[1]}` : none, 'Gói thầu — KQLCNT'], ['so_thu_trao_hd', h.trao ? `Thư chấp thuận HSDT và trao hợp đồng ngày ${h.trao.ngayThu}` : none, 'Gói thầu — MS19 bước 22 (thư trao hợp đồng)'],
       ['ngay_bb_thuong_thao_hd_short', at(4) || none, 'Bước 4 — biên bản thương thảo'], ['ten_doi_tac_viet_hoa', (n.name || k.nccName(h.ncc) || '').toUpperCase(), 'Danh mục Nhà cung cấp'],
       ['dia_chi_doi_tac', n.address || none, 'Danh mục Nhà cung cấp'], ['ma_so_thue_doi_tac', n.tax || n.taxCode || none, 'Danh mục Nhà cung cấp'],
       ['nguoi_dai_dien_doi_tac, chuc_vu', u.hdDaiDien ? `${u.hdDaiDien} — ${u.hdChucVu || ''}` : none, 'Bước 4 — thương thảo'], ['loai_hop_dong', k.cat('loai-hop-dong', h.type), 'Gói thầu'],
@@ -121,8 +129,10 @@
       ['gia_tri_hd_bao_gom_thue_bang_chu', inW ? inW(h.value) : '', 'Hợp đồng (:words_vn)'], ['thoi_gian_bao_hanh', w + ' tháng', 'Bước 4 — thương thảo']]
       .map(([truong, giaTri, nguon]) => ({ truong, giaTri, nguon }));
     return Object.assign({}, u, { hdRows: rows, baoHanhMin: D.hdWarrantyMin, hdBaoHanh: w, tron, mau: { ten: m.code ? `${m.code} — ${m.name}` : '-', tt: m.tt || '-' },
-      hdDaiDien: u.hdDaiDien || 'Giám đốc theo đăng ký kinh doanh', hdChucVu: u.hdChucVu || 'Giám đốc',
+      /* T80 L3: người đại diện / chức vụ gợi ý từ thư trao (biên bản thương thảo MS19) → danh mục Nhà cung cấp; vẫn nhập lại được ở bước 4 (H-Q5 = B). */
+      ...(() => { const r = h.trao && h.trao.rep ? h.trao : window.HopDong.nccRep(h.ncc); return { hdDaiDien: u.hdDaiDien || r.rep || 'Giám đốc theo đăng ký kinh doanh', hdChucVu: u.hdChucVu || r.position || 'Giám đốc' }; })(),
       hdSo: u.hdSo || `${h.code.slice(-3)}/2026/HĐMB-VHT`, hdNgayKy: u.hdNgayKy || Flow.dateOf(Flow.state.clock),
+      ...stDef,
       hd: { code: h.code, ten: h.title, ncc: k.nccName(h.ncc), gia: h.value, goi: h.pkg, kq: g && g.kq ? `${g.kq[0]} ngày ${g.kq[1]}` : '', loai: k.cat('loai-hop-dong', h.type), thoiGian: h.exec,
         tamDung: h.held || '', dangTamDung: !!h.held, hinhThuc: Flow.state.vars.hdSign === 'GIAY' ? 'Ký cứng, gửi lại bản giấy đã đóng dấu' : 'VContract' },
       items: (h.items || []).map((r) => ({ ten: r[0], dvt: r[1], sl: r[2], gia: r[3], tien: Math.round(r[2] * r[3] * 1000) / 1000 })),
