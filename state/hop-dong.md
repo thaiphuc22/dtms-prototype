@@ -8,7 +8,7 @@
 
 ## Now
 
-T79 BUILD xong (2026-11-19, D-131, người tích hợp) — nhánh `hop-dong/t79-ht-cu`, chưa commit: PAC / FAC, Hóa đơn, XNK (DX-18), Mã tài sản, lọc Phân loại / Nguồn hình thành, HĐ từ tờ trình (DX-17), nhóm 3; P-HD-01…06; e2e `hop-dong-t79` xanh. Plan ở cds-vht `docs/dtms/prototype-T79-hop-dong-convert-1911.md` §6.
+T80 L3 phần hợp đồng BUILD xong (2026-11-19, người tích hợp) — nhánh `hop-dong/t80-chuyen-giao` tách từ `hop-dong/t79-ht-cu` (PR #4, chưa merge — PR này chồng lên #4): SCR-85 sao chép thông tin chuyển giao MS19 bước 22, SCR-86 người đại diện bên bán, MS22 bước 4 gợi ý đại diện. T79 (PR #4) chờ merge.
 
 ## Việc đang làm
 

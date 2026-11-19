@@ -121,7 +121,7 @@
     const st = window.HopDong.staffOf(h), stDef = { hdNguoiChuyenTien: u.hdNguoiChuyenTien || st.payer, hdDauMoi: u.hdDauMoi || st.focal,
       hdDauMoiKcs: u.hdDauMoiKcs || (st.kcs === window.HopDong.KCS_HH ? st.kcs : 'Đơn vị sử dụng'), hdGhiChu: u.hdGhiChu != null ? u.hdGhiChu : st.note || '' };
     const tron = [['so_hop_dong', at(13) ? (u.hdSo || '') : 'Chưa cấp số (cấp ở bước 13)', 'Hợp đồng — bước 13'], ['so_goi_thau, ten_goi_thau', `${h.pkg || ''} — ${(g && g.name) || ''}`, 'Gói thầu'],
-      ['so_qd_phe_duyet_kqlcnt', g && g.kq ? `${g.kq[0]} ngày ${g.kq[1]}` : none, 'Gói thầu — KQLCNT'], ['so_thu_trao_hd', none, 'Thư trao hợp đồng (MS19 chưa có bước)'],
+      ['so_qd_phe_duyet_kqlcnt', g && g.kq ? `${g.kq[0]} ngày ${g.kq[1]}` : none, 'Gói thầu — KQLCNT'], ['so_thu_trao_hd', h.trao ? `Thư chấp thuận HSDT và trao hợp đồng ngày ${h.trao.ngayThu}` : none, 'Gói thầu — MS19 bước 22 (thư trao hợp đồng)'],
       ['ngay_bb_thuong_thao_hd_short', at(4) || none, 'Bước 4 — biên bản thương thảo'], ['ten_doi_tac_viet_hoa', (n.name || k.nccName(h.ncc) || '').toUpperCase(), 'Danh mục Nhà cung cấp'],
       ['dia_chi_doi_tac', n.address || none, 'Danh mục Nhà cung cấp'], ['ma_so_thue_doi_tac', n.tax || n.taxCode || none, 'Danh mục Nhà cung cấp'],
       ['nguoi_dai_dien_doi_tac, chuc_vu', u.hdDaiDien ? `${u.hdDaiDien} — ${u.hdChucVu || ''}` : none, 'Bước 4 — thương thảo'], ['loai_hop_dong', k.cat('loai-hop-dong', h.type), 'Gói thầu'],
@@ -129,7 +129,8 @@
       ['gia_tri_hd_bao_gom_thue_bang_chu', inW ? inW(h.value) : '', 'Hợp đồng (:words_vn)'], ['thoi_gian_bao_hanh', w + ' tháng', 'Bước 4 — thương thảo']]
       .map(([truong, giaTri, nguon]) => ({ truong, giaTri, nguon }));
     return Object.assign({}, u, { hdRows: rows, baoHanhMin: D.hdWarrantyMin, hdBaoHanh: w, tron, mau: { ten: m.code ? `${m.code} — ${m.name}` : '-', tt: m.tt || '-' },
-      hdDaiDien: u.hdDaiDien || 'Giám đốc theo đăng ký kinh doanh', hdChucVu: u.hdChucVu || 'Giám đốc',
+      /* T80 L3: người đại diện / chức vụ gợi ý từ thư trao (biên bản thương thảo MS19) → danh mục Nhà cung cấp; vẫn nhập lại được ở bước 4 (H-Q5 = B). */
+      ...(() => { const r = h.trao && h.trao.rep ? h.trao : window.HopDong.nccRep(h.ncc); return { hdDaiDien: u.hdDaiDien || r.rep || 'Giám đốc theo đăng ký kinh doanh', hdChucVu: u.hdChucVu || r.position || 'Giám đốc' }; })(),
       hdSo: u.hdSo || `${h.code.slice(-3)}/2026/HĐMB-VHT`, hdNgayKy: u.hdNgayKy || Flow.dateOf(Flow.state.clock),
       ...stDef,
       hd: { code: h.code, ten: h.title, ncc: k.nccName(h.ncc), gia: h.value, goi: h.pkg, kq: g && g.kq ? `${g.kq[0]} ngày ${g.kq[1]}` : '', loai: k.cat('loai-hop-dong', h.type), thoiGian: h.exec,
