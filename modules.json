@@ -15,7 +15,7 @@
     "kdt": { "label": "Khoản đầu tư (MS13, MS14)", "prefix": "KDT", "owners": [],
       "files": ["changelog/kdt.md", "state/kdt.md", "js/data-kdt.js", "js/kdt*.js", "js/eforms/ms13.js", "js/bpmn-*-ms13.js", "js/bpmn-*-ms14.js", "e2e/kdt*.spec.mjs", "e2e/t45-*.spec.mjs", "e2e/t63-*.spec.mjs"] },
     "thau": { "label": "Thầu (MS18, MS19)", "prefix": "THAU", "owners": [],
-      "files": ["changelog/thau.md", "state/thau.md", "js/data-thau.js", "js/thau.js", "js/cong-khai.js", "js/eforms/ms18.js", "js/eforms/ms19.js", "js/bpmn-*-ms18.js", "js/bpmn-*-ms19.js", "e2e/t67-*.spec.mjs", "e2e/cong-khai*.spec.mjs"] },
+      "files": ["changelog/thau.md", "state/thau.md", "js/data-thau.js", "js/thau.js", "js/cong-khai.js", "js/eforms/ms18.js", "js/eforms/ms19.js", "js/bpmn-*-ms18.js", "js/bpmn-*-ms19.js", "e2e/t67-*.spec.mjs", "e2e/t80-*.spec.mjs", "e2e/cong-khai*.spec.mjs"] },
     "hop-dong": { "label": "Hợp đồng (MS22–MS24)", "prefix": "HD", "owners": [],
       "files": ["changelog/hop-dong.md", "state/hop-dong.md", "js/data-hop-dong.js", "js/hop-dong.js", "js/eforms/ms22.js", "js/eforms/ms23*.js", "js/eforms/ms24.js", "js/bpmn-*-ms22.js", "js/bpmn-*-ms23*.js", "js/bpmn-*-ms24.js",
         "e2e/hop-dong-*.spec.mjs", "test/hop-dong.test.mjs"] },

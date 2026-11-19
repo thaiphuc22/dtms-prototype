@@ -66,7 +66,8 @@
       (k.versions || [{ v: 'v1', at: k.docs.bm03[1], no: k.docs.bm03[0] }]).forEach((v, i) => out.push({ id: `KHLCNT:${k.code}:${v.v}`, ty: 'KHLCNT', code: k.code,
         title: k.title + (i ? ` — điều chỉnh ${v.v}` : ''), href: 'khlcnt/' + encodeURIComponent(k.code), at: v.at, doc: `QĐ ${v.no}`, sys: sysOfKh(k) }));
     });
-    th.PK.forEach((g) => {
+    /* T80 L4b (QC-12869 Điều 7 khoản 1): tài liệu mật theo quy định của Tập đoàn, bí mật nhà nước, an ninh – quốc phòng không đăng tải → gói Mật không sinh tin. */
+    th.PK.filter((g) => !g.secret).forEach((g) => {
       const kh = th.khAll().find((k) => k.code === g.kh), sys = sysOfKh(kh), lv = LV[g.st], base = { code: g.code, href: 'goi-thau/' + encodeURIComponent(g.code), sys };
       const add = (ty, at, title, doc) => at && out.push(Object.assign({ id: `${ty}:${g.code}`, ty, at, title, doc }, base));
       if (g.form === 'DTHC' && g.short && lv >= 1) add('DSN', EV['DSN:' + g.code], g.name, `${g.short.length} nhà thầu`);

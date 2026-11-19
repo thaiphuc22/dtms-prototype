@@ -173,11 +173,11 @@
   const LC_WHO = { 'LC-01': 'Tổ chuyên gia', 'LC-02': 'Tổ thẩm định', 'LC-03': 'Bên mời thầu — Bộ phận Thầu', 'LC-04': 'Bên mời thầu — Bộ phận Thầu', 'LC-05': 'Bên mời thầu — Bộ phận Thầu',
     'LC-06': 'Tổ chuyên gia', 'LC-07': 'Tổ chuyên gia', 'LC-08': 'Tổ thẩm định', 'LC-09': 'Bên mời thầu — Bộ phận Thầu', 'LC-10': 'Phòng Pháp chế — Hợp đồng' };
   const PK = [
-    { code: 'GT-2026-0021', kh: 'KHLCNT-2026-0009', name: 'Cung cấp dây chuyền lắp ráp bo mạch trạm thu phát', type: 'HH_LD', price: 195.0, priceBasis: 'Dự toán được duyệt sau KHLCNT', est: ['0905/QĐ-VHT', '25/09/2026', 195.0],
+    { code: 'GT-2026-0021', sap: '3000004812', kh: 'KHLCNT-2026-0009', name: 'Cung cấp dây chuyền lắp ráp bo mạch trạm thu phát', type: 'HH_LD', price: 195.0, priceBasis: 'Dự toán được duyệt sau KHLCNT', est: ['0905/QĐ-VHT', '25/09/2026', 195.0],
       form: 'DTRR', method: '1GD2T', intl: true, online: true, start: 'Quý IV/2026', selTime: '60 ngày', execTime: '240 ngày', contract: 'TRON_GOI', st: 'KQ',
       lots: [['Phần 1: Thiết bị gắn linh kiện SMT', 128.0], ['Phần 2: Thiết bị kiểm tra quang học, X-ray', 67.0]],
       items: [['Máy gắn linh kiện tốc độ cao', 'Máy', 4], ['Lò hàn đối lưu 10 vùng nhiệt', 'Máy', 2], ['Máy kiểm tra quang học tự động (AOI)', 'Máy', 2], ['Máy kiểm tra X-ray 3D', 'Máy', 1]],
-      bidders: [['NCC-000003', 186.4, 'Đạt', 'Đạt', 88, 'Thương thảo không thành công: không chấp nhận tiến độ giao hàng 240 ngày'], ['NCC-000009', 191.2, 'Đạt', 'Đạt', 85], ['NCC-000002', 152.0, 'Đạt', 'Không đạt', 61], ['NCC-000008', 199.8, 'Đạt', 'Đạt', 82]],
+      bidders: [['NCC-000003', 186.4, 'Đạt', 'Đạt', 88, 'Thương thảo không thành công: không chấp nhận tiến độ giao hàng 240 ngày', [0, 1.2, 0]], ['NCC-000009', 191.2, 'Đạt', 'Đạt', 85, null, [0.35, 0, 2.0]], ['NCC-000002', 152.0, 'Đạt', 'Không đạt', 61], ['NCC-000008', 199.8, 'Đạt', 'Đạt', 82]],
       winner: 'NCC-000009', kq: ['0961/QĐ-VHT', '05/10/2026'],
       events: [['Thương thảo', '22/09/2026', 'Thương thảo không thành công với nhà thầu xếp hạng thứ nhất (Gamma Technologies) — mời nhà thầu xếp hạng thứ hai (Iota Electronics) vào thương thảo (Điều 36).', 'Đã xử lý'],
         ['Kiến nghị về KQLCNT', '07/10/2026', 'Công ty Cổ phần Thiết bị Beta kiến nghị về việc đánh giá kỹ thuật không đạt.', 'Đang giải quyết'],
@@ -185,7 +185,7 @@
     { code: 'GT-2026-0022', kh: 'KHLCNT-2026-0009', name: 'Dịch vụ lắp đặt, đào tạo vận hành dây chuyền lắp ráp', type: 'PTV', price: 18.6, priceBasis: 'Báo giá', form: 'CDT_TT', method: '1GD1T',
       intl: false, online: false, start: 'Quý IV/2026', selTime: '30 ngày', execTime: '90 ngày', contract: 'TRON_GOI', st: 'DG',
       items: [['Lắp đặt, căn chỉnh dây chuyền', 'Gói', 1], ['Đào tạo vận hành, bảo trì', 'Khoá', 3]], bidders: [['NCC-000011', 18.1, 'Đạt', 'Đạt', null]] },
-    { code: 'GT-2026-0024', kh: 'KHLCNT-2026-0011', secret: true, hdTime: '150 ngày', name: 'Cung cấp anten mảng pha băng Ka phục vụ đo kiểm', type: 'MS_HH', price: 148.5, priceBasis: 'Báo giá và giá niêm yết của hãng', form: 'DTHC', method: '1GD1T',
+    { code: 'GT-2026-0024', kh: 'KHLCNT-2026-0011', hdTime: '150 ngày', name: 'Cung cấp anten mảng pha băng Ka phục vụ đo kiểm', type: 'MS_HH', price: 148.5, priceBasis: 'Báo giá và giá niêm yết của hãng', form: 'DTHC', method: '1GD1T',
       intl: true, online: true, start: 'Quý III/2026', selTime: '50 ngày', execTime: '180 ngày', contract: 'TRON_GOI', st: 'MOI', short: ['NCC-000003', 'NCC-000008', 'NCC-000009'],
       items: [['Anten mảng pha băng Ka 256 phần tử', 'Bộ', 4], ['Bộ điều khiển chùm tia', 'Bộ', 4]],
       events: [['Kiến nghị trước KQLCNT', '28/09/2026', 'Theta Messtechnik kiến nghị yêu cầu kinh nghiệm 03 hợp đồng tương tự là hạn chế cạnh tranh.', 'Đã giải quyết — giữ nguyên HSMT', '06/10/2026']] },
@@ -194,7 +194,7 @@
       items: [['Buồng đo không phản xạ 18–110 GHz', 'Hệ thống', 1], ['Bàn xoay định vị đa trục', 'Bộ', 1]], bidders: [['NCC-000008', 116.4, 'Đạt', 'Đạt', null], ['NCC-000003', 119.0, 'Đạt', 'Đạt', null]], winner: 'NCC-000008',
       /* T49 (GIẢ LẬP, dữ liệu báo cáo kiến nghị): kiến nghị đã giải quyết, phần tử thứ 5 = ngày giải quyết. */
       events: [['Kiến nghị trước KQLCNT', '12/09/2026', 'Gamma Technologies kiến nghị tiêu chí dải tần 18–110 GHz chỉ phù hợp một hãng.', 'Đã giải quyết — sửa đổi HSMT, gia hạn đóng thầu', '01/10/2026']] },
-    { code: 'GT-2026-0027', kh: 'KHLCNT-2026-0013', name: 'Mở rộng bản quyền phần mềm điều khiển đo', type: 'PM', price: 12.5, priceBasis: 'KQLCNT gói tương tự GT-2025-0118', form: 'MSTT', method: '1GD1T',
+    { code: 'GT-2026-0027', sap: '3000004655', kh: 'KHLCNT-2026-0013', name: 'Mở rộng bản quyền phần mềm điều khiển đo', type: 'PM', price: 12.5, priceBasis: 'KQLCNT gói tương tự GT-2025-0118', form: 'MSTT', method: '1GD1T', ref: 'GT-2025-0118',
       intl: false, online: false, start: 'Quý III/2026', selTime: '20 ngày', execTime: '30 ngày', contract: 'DG_CD', st: 'KQ', prior: ['GT-2025-0118', '14/11/2025', 'Đơn giá không cao hơn, khối lượng 120% (≤ 150%)'],
       items: [['Bản quyền mô-đun đo trường xa', 'Bản quyền', 6]], bidders: [['NCC-000001', 12.3, 'Đạt', 'Đạt', null]], winner: 'NCC-000001', kq: ['0655/QĐ-VHT', '21/08/2026'],
       events: [['Kiến nghị về KQLCNT', '24/08/2026', 'Nhà thầu không được mời kiến nghị việc áp dụng mua sắm trực tiếp theo gói tương tự GT-2025-0118.', 'Đã giải quyết — giữ nguyên KQLCNT', '30/09/2026']] },
@@ -209,7 +209,7 @@
       bidders: [['NCC-000004', 4.92, 'Đạt', 'Đạt', null], ['NCC-000001', 5.10, 'Đạt', 'Đạt', null]],
       events: [['Tất cả giá chào vượt giá gói thầu', '30/09/2026', 'Hai HSCG đều có giá vượt giá gói thầu 4,50 tỷ đồng. Chủ đầu tư quyết định huỷ thầu, cập nhật giá gói theo báo giá mới và tổ chức chào giá lại.', 'Đã xử lý'],
         ['Huỷ thầu', '01/10/2026', 'Quyết định huỷ thầu 0931/QĐ-VHT — lý do: tất cả HSCG vượt giá gói thầu (Điều 34).', 'Đã ban hành']] },
-    { code: 'GT-2026-0031', kh: 'KHLCNT-2026-0011', name: 'Cung cấp bộ gá lắp, cáp RF cho anten mảng pha', type: 'MS_HH', price: 3.5, priceBasis: 'Báo giá', form: 'CDT_RG', method: '1GD1T', intl: false, online: false,
+    { code: 'GT-2026-0031', kh: 'KHLCNT-2026-0011', secret: true, name: 'Cung cấp bộ gá lắp, cáp RF cho anten mảng pha', type: 'MS_HH', price: 3.5, priceBasis: 'Báo giá', form: 'CDT_RG', method: '1GD1T', intl: false, online: false,
       start: 'Quý IV/2026', selTime: '15 ngày', execTime: '45 ngày', contract: 'TRON_GOI', st: 'HS', items: [['Bộ gá lắp anten trên tháp đo', 'Bộ', 4], ['Cáp RF tổn hao thấp 40 GHz', 'Sợi', 16]] },
     { code: 'GT-2026-0032', kh: 'KHLCNT-2026-0016', srcs: [['DXMS', 'ĐXMS-2026-0103', 150.0], ['DXMS', 'ĐXMS-2026-0089', 40.0]], name: 'Cung cấp hệ thống mô phỏng mạng lõi 5G', type: 'HH_LD', price: 190.0, priceBasis: 'Báo giá', form: 'DTRR', method: '1GD2T', intl: true, online: true,
       start: 'Quý I/2027', selTime: '60 ngày', execTime: '210 ngày', contract: 'TRON_GOI', st: 'KH', items: [['Hệ thống mô phỏng lưu lượng mạng lõi', 'Hệ thống', 1], ['Máy chủ mô phỏng', 'Máy', 12]] },
@@ -241,7 +241,7 @@
     { code: 'GT-2026-0042', kh: 'KHLCNT-2026-0002', name: 'Tư vấn thẩm tra thiết kế vi mạch ASIC 28 nm', type: 'TV', price: 9.5, priceBasis: 'Dự toán chi phí tư vấn', form: 'DTHC', method: '1GD2T', intl: true, online: true,
       start: 'Quý II/2026', selTime: '50 ngày', execTime: '180 ngày', contract: 'THOI_GIAN', st: 'KQ', mau: '5', short: ['NCC-000006', 'NCC-000011', 'NCC-000008'],
       items: [['Thẩm tra thiết kế RTL, kiểm chứng chức năng', 'Tháng chuyên gia', 20], ['Thẩm tra thiết kế vật lý, timing sign-off', 'Tháng chuyên gia', 12]],
-      bidders: [['NCC-000006', 9.2, 'Đạt', 'Đạt', 86], ['NCC-000008', 9.45, 'Đạt', 'Đạt', 82], ['NCC-000011', 8.6, 'Đạt', 'Không đạt', 64]], winner: 'NCC-000006', kq: ['0402/QĐ-VHT', '22/06/2026'] },
+      bidders: [['NCC-000006', 9.2, 'Đạt', 'Đạt', 86], ['NCC-000008', 9.45, 'Đạt', 'Đạt', 82, null, [0.05, 0, 0.2]], ['NCC-000011', 8.6, 'Đạt', 'Không đạt', 64]], winner: 'NCC-000006', kq: ['0402/QĐ-VHT', '22/06/2026'] },
     { code: 'GT-2026-0043', kh: 'KHLCNT-2026-0002', name: 'Đào tạo quy trình thiết kế vật lý (physical design)', type: 'PTV', price: 1.6, priceBasis: 'Báo giá', form: 'CDT_RG', method: '1GD1T', intl: false, online: false,
       start: 'Quý II/2026', selTime: '10 ngày', execTime: '60 ngày', contract: 'TRON_GOI', st: 'KQ', mau: '8.2',
       items: [['Khoá đào tạo thiết kế vật lý nâng cao', 'Khoá', 2], ['Tài liệu, bài thực hành', 'Bộ', 30]], bidders: [['NCC-000011', 1.55, 'Đạt', 'Đạt', null]], winner: 'NCC-000011', kq: ['0352/QĐ-VHT', '25/05/2026'] },
@@ -252,7 +252,7 @@
     { code: 'GT-2026-0045', kh: 'KHLCNT-2026-0005', cur: 'USD', rate: 25400, name: 'Cung cấp linh kiện bán dẫn (FPGA, ADC / DAC) cho lô RRU 5G', type: 'MS_HH', price: 38.0, priceBasis: 'Báo giá và giá niêm yết của nhà phân phối', form: 'DTRR', method: '1GD1T', intl: true, online: true,
       start: 'Quý III/2026', selTime: '50 ngày', execTime: '120 ngày', contract: 'DG_CD', st: 'DG',
       items: [['FPGA SoC RF 16 nm', 'Con', 220], ['ADC 14 bit 3 GSPS', 'Con', 440], ['DAC 16 bit 6 GSPS', 'Con', 440]],
-      bidders: [['NCC-000009', 36.4, 'Đạt', 'Đạt', null], ['NCC-000003', 37.1, 'Đạt', null, null], ['NCC-000001', 35.2, 'Không đạt', null, null, 'Không có giấy uỷ quyền bán hàng của hãng sản xuất'], ['NCC-000010', 34.8, 'Đạt', null, null]] },
+      bidders: [['NCC-000009', 36.4, 'Đạt', 'Đạt', null, null, [0, 0, 0.9]], ['NCC-000003', 37.1, 'Đạt', null, null], ['NCC-000001', 35.2, 'Không đạt', null, null, 'Không có giấy uỷ quyền bán hàng của hãng sản xuất'], ['NCC-000010', 34.8, 'Đạt', null, null, null, [0, 0.6, 0]]] },
     { code: 'GT-2026-0046', kh: 'KHLCNT-2026-0005', name: 'Cung cấp bo mạch PCB nhiều lớp cho lô RRU 5G', type: 'MS_HH', price: 14.5, priceBasis: 'Báo giá', form: 'DTRR', method: '1GD1T', intl: false, online: true,
       start: 'Quý III/2026', selTime: '45 ngày', execTime: '90 ngày', contract: 'TRON_GOI', st: 'MOI', items: [['Bo mạch PCB 16 lớp vật liệu cao tần', 'Tấm', 220], ['Bo mạch nguồn 8 lớp', 'Tấm', 220]],
       events: [['Làm rõ HSMT', '29/09/2026', 'Hai nhà thầu đề nghị làm rõ yêu cầu hằng số điện môi vật liệu nền; Bên mời thầu đã trả lời trên hệ thống, không thay đổi HSMT.', 'Đã xử lý']] },
@@ -260,7 +260,8 @@
       start: 'Quý III/2026', selTime: '15 ngày', execTime: '75 ngày', contract: 'TRON_GOI', st: 'TH', items: [['Vỏ nhôm đúc IP65', 'Bộ', 220], ['Tản nhiệt nhôm định hình', 'Bộ', 220]],
       bidders: [['NCC-000010', 7.6, 'Đạt', 'Đạt', null], ['NCC-000004', 8.1, 'Đạt', 'Đạt', null]],
       events: [['Nhà thầu xếp hạng thứ nhất có tên trong danh sách hạn chế', '25/09/2026', 'Kappa đang bị hạn chế tham dự do vi phạm tiến độ (0311/QĐ-VHT). Tổ chuyên gia đề xuất xem xét nhà thầu xếp hạng thứ hai (Delta HN).', 'Chờ Chủ đầu tư quyết định']] },
-    { code: 'GT-2026-0048', kh: 'KHLCNT-2026-0005', name: 'Dịch vụ vận chuyển, lưu kho linh kiện nhập khẩu', type: 'PTV', price: 1.2, priceBasis: 'Đơn giá hợp đồng khung vận chuyển', form: 'CDT_RG', method: '1GD1T', intl: false, online: false,
+    /* T80 L1: mua sắm trực tiếp theo gói tương tự GT-2025-0207 (đấu thầu rộng rãi, KQLCNT 15/12/2025 — D.lcPriorPkgs). */
+    { code: 'GT-2026-0048', kh: 'KHLCNT-2026-0005', name: 'Dịch vụ vận chuyển, lưu kho linh kiện nhập khẩu', type: 'PTV', price: 1.2, priceBasis: 'Đơn giá gói tương tự GT-2025-0207 (đấu thầu rộng rãi)', form: 'MSTT', method: '1GD1T', intl: false, online: false, ref: 'GT-2025-0207',
       start: 'Quý IV/2026', selTime: '10 ngày', execTime: '120 ngày', contract: 'DG_CD', st: 'HS', items: [['Vận chuyển cảng Hải Phòng – Hoà Lạc', 'Chuyến', 6], ['Lưu kho ngoại quan', 'Tháng', 4]] },
     { code: 'GT-2026-0049', kh: 'KHLCNT-2026-0007', name: 'Dịch vụ kiểm định, hiệu chuẩn thiết bị đo năm 2026', type: 'PTV', price: 5.4, priceBasis: 'Báo giá của 3 tổ chức kiểm định', form: 'CGTT', method: '1GD1T', intl: false, online: true,
       start: 'Quý III/2026', selTime: '15 ngày', execTime: '150 ngày', contract: 'DG_CD', st: 'KQ', mau: '3.0',
@@ -632,8 +633,9 @@
         ['e) Thời gian bắt đầu tổ chức lựa chọn nhà thầu', perG((g) => g.start)], ['g) Thời gian lựa chọn nhà thầu', perG((g) => g.selTime)], ['h) Loại hợp đồng', perG((g) => cat('loai-hop-dong', g.contract))], ['i) Thời gian thực hiện gói thầu', perG((g) => g.execTime)]];
       const attach = [[s.doc || 'Văn bản phê duyệt đối tượng nguồn', 'Bản chụp'], ['Báo giá, cơ sở xác định giá gói thầu', 'Bản chụp'], ['Tờ trình đề xuất / khoản đầu tư đã phê duyệt', 'Bản chụp']];
       const lines = gs.flatMap((g) => (g.items || []).map((i) => [pkExtra(g, k).no, i[0], i[1], i[2]]));
-      return (team.length ? card('Thành viên Tổ thẩm định', table([['Họ và tên', 220], ['Chức vụ', 300], ['Vai trò trong Tổ thẩm định', 200], ['Phân công công việc', 240]], team,
-          (r) => `<td>${esc(r[0])}</td><td>${clamp(r[1])}</td><td>${esc(r[2])}</td><td>${esc(r[3])}</td>`)) : waitCard('Thành viên Tổ thẩm định', [6]))
+      return (team.length ? card('Thành viên Tổ thẩm định', table([['Họ và tên', 200], ['Chức vụ', 280], ['Vai trò trong Tổ thẩm định', 180], ['Phân công công việc', 220], ['Chứng chỉ đào tạo về đấu thầu', 230]], team,
+          (r) => { const c = certOf(r[0]); return `<td>${esc(r[0])}</td><td>${clamp(r[1])}</td><td>${esc(r[2])}</td><td>${esc(r[3])}</td><td>${c.so ? `${esc(c.so)} <span class="faint">· ${esc(c.ngay)}</span>` : badge('Chưa có', 'error')}</td>`; }))
+          : waitCard('Thành viên Tổ thẩm định', [6]))
         + card('Mô tả tóm tắt', `<div class="ginfo c3">${kv('Đối tượng nguồn', esc(`${k.src[1]} - ${s.title || ''}`), 'span2')}${kv('Giá trị được duyệt', t.approved != null ? ty(t.approved, 2) + ' tỷ đồng' : null)}
           ${kv('Nhiệm vụ / Đề tài, dự án', s.nvText ? esc(s.nvText) : null, 'span2')}${kv('Đơn vị đề xuất', esc(s.unit))}${live ? kv('Số / ngày Tờ trình', esc(`${no.ttr} ngày ${doneAt(5)}`)) : ''}</div>`)
         + phanBo()
@@ -737,7 +739,8 @@
   /* KHLCNT mẫu chạy được trên MS18 (T67 T2): tua theo nhánh chính tới bước của mẫu. 0016 cấp Tập đoàn đang thẩm định (bước 12). */
   const KH_SAMPLE = { 'KHLCNT-2026-0016': { target: 12 }, 'KHLCNT-2026-0019': { target: 13 }, 'KHLCNT-2026-0020': { target: 21 } };
   /* Gói mẫu chạy được trên MS19 (T67 T5): rộng rãi 1 túi GT-2026-0029 đang ở đánh giá HSDT; chỉ định thầu GT-2026-0022 đang đánh giá HSĐX. */
-  const PK_SAMPLE = { 'GT-2026-0029': { target: '3.5' }, 'GT-2026-0022': { target: '7.3' }, 'GT-2026-0031': { target: '7.2' }, 'GT-2026-0024': { target: 5 }, 'GT-2026-0026': { target: 14 } };
+  /* T80 L1: GT-2026-0031 chỉ định thầu rút gọn chạy tới 7.5 (thư mời thương thảo, không HSYC); GT-2026-0048 mua sắm trực tiếp tới 7.6 (kiểm tra điều kiện). */
+  const PK_SAMPLE = { 'GT-2026-0029': { target: '3.5' }, 'GT-2026-0022': { target: '7.3' }, 'GT-2026-0031': { target: '7.5' }, 'GT-2026-0048': { target: '7.6' }, 'GT-2026-0024': { target: 5 }, 'GT-2026-0026': { target: 14 } };
   function lcStart(code, target) {
     const g = pkOf(code), c = Flow.startLc(code, { name: g.name, target });
     const tok = Flow.caseTokens(Flow.state.persona).find((t) => t.caseCode === c);
@@ -809,7 +812,9 @@
     const at = (n) => { const h = S0.history.filter((x) => String(x.task) === String(n)).pop(); return h ? Flow.dateOf(h.t) : ''; };
     const dg = u.lcDanhGia || [], win = u.lcNhaThau || (dg[0] || {}).ma || (g.bidders && g.bidders[0] ? g.bidders[0][0] : 'NCC-000001');
     const price = u.lcGiaTT != null && u.lcGiaTT !== '' ? Number(u.lcGiaTT) : ((dg.find((r) => r.ma === win) || {}).giaSo || g.price);
-    const bid = dg.length ? dg.map((r) => [r.ma, r.ma === win ? price : r.giaSo, r.hopLe, r.hopLe, null]) : [[win, price, 'Đạt', 'Đạt', null]];
+    /* T80 L2: giữ năng lực, điểm kỹ thuật, lý do và sửa lỗi / hiệu chỉnh / giảm giá của bảng đánh giá; nhà thầu trúng thầu ghi giá đề nghị trúng thầu (đã gồm hiệu chỉnh). */
+    const bid = dg.length ? dg.map((r) => [r.ma, r.ma === win ? price : r.giaSo, r.hopLe, r.nangLuc || r.hopLe, r.kyThuat === 'Không đạt' ? 'Không đạt' : r.diemKt != null ? r.diemKt : null, r.ghiChu || null,
+      r.ma === win ? null : [Number(r.suaLoi) || 0, Number(r.hieuChinh) || 0, Number(r.giamGia) || 0]]) : [[win, price, 'Đạt', 'Đạt', null]];
     const kqForm = ['GIAO_NV', 'TU_TH', 'DAT_HANG'].includes(g.form);
     U.pk[code] = Object.assign({}, U.pk[code], { st: 'KQ', winner: win, bidders: bid, mau: u.lcMauHd || mauGoiY(g),
       kq: [u.lcQdSo || `0${950 + Number(code.slice(-2))}/QĐ-VHT`, u.lcQdNgay || at(S0.vars.lcKy === 'CUNG' ? 18 : 17) || at(24)],
@@ -826,7 +831,7 @@
     const since = Math.min(...ts.map((t) => t.since)), now = nowNlv(c), dl = since + Math.max(1, Math.ceil((D.flows.MS19[t0.task].nlv || 0.5) * 2));
     const back = [...c.history].reverse().find((h) => h.reason && ['3.2', '14'].includes(String(h.task)));
     const n = String(t0.task), issue = n === '3.1' && back && String(back.task) === '3.2' ? 'Trả sửa HSMT: ' + back.reason : n === '15' && back ? 'Trả sửa: ' + back.reason
-      : n === '21' ? 'Người ký từ chối Quyết định phê duyệt KQLCNT' : '';
+      : n === '21' ? 'Người ký từ chối Quyết định phê duyệt KQLCNT' : n === '3.4' && (c.ui.lcGiaHan || []).length ? 'Gia hạn đóng thầu đến ' + c.ui.lcGiaHan.slice(-1)[0].dongMoi : '';
     return P({ step: [...new Set(ts.map((t) => `${t.task}. ${tn(t.task)}`))].join(', '), who: `${persona(t0.who).unit} / ${[...new Set(ts.map((t) => persona(t.who).name))].join(', ')}`,
       since: Flow.dateOf(since), due: Flow.dateOf(dl), late: dl < now, days: Math.max(0, Math.floor(now - since)), issue });
   }
@@ -883,9 +888,11 @@
       ['Mở thầu, đánh giá HSĐXTC', 3], ['Thương thảo hợp đồng', 4], ['Thẩm định, phê duyệt, công khai KQLCNT', 5]],
     DTHC: [['Phê duyệt danh sách ngắn (tối thiểu 03 nhà thầu)', 1], ['Lập, thẩm định, phê duyệt HSMT', 1], ['Phát hành HSMT cho danh sách ngắn; tiếp nhận HSDT', 2], ['Mở thầu, đánh giá HSDT', 3], ['Thương thảo hợp đồng', 4], ['Thẩm định, phê duyệt, công khai KQLCNT', 5]],
     CGTT: [['Lập HSMCG (giá thấp nhất, không bảo đảm dự thầu)', 1], ['Đăng tải, chào giá trên Cổng đấu thầu Viettel', 2], ['Đánh giá HSCG, xếp hạng theo giá', 3], ['Phê duyệt, công khai KQLCNT', 5]],
-    MSTT: [['Kiểm tra điều kiện: KQLCNT cũ trong 12 tháng, khối lượng ≤ 150%, đơn giá không cao hơn', 1], ['Lập HSYC gửi nhà thầu đã trúng thầu', 1], ['Đánh giá HSĐX, thương thảo', 3], ['Phê duyệt, công khai KQLCNT', 5]],
+    /* T80 L1 (D-132): mua sắm trực tiếp theo Điều 15 khoản 2–4, chỉ định thầu rút gọn theo Điều 16 khoản 5 — không HSYC / HSĐX. */
+    MSTT: [['Kiểm tra điều kiện với gói tham chiếu: trúng qua đấu thầu rộng rãi / hạn chế, khối lượng ≤ 150%, đơn giá không vượt, KQLCNT trong 12 tháng', 1],
+      ['Gửi thư mời thương thảo kèm dự thảo hợp đồng cho nhà thầu đã trúng gói tham chiếu', 2], ['Thương thảo, hoàn thiện hợp đồng (không thành: mời nhà thầu xếp hạng tiếp theo)', 4], ['Phê duyệt, công khai KQLCNT', 5]],
     CDT_TT: [['Lập, phê duyệt HSYC', 1], ['Phát hành HSYC cho nhà thầu được đề nghị', 2], ['Đánh giá HSĐX', 3], ['Thương thảo hợp đồng', 4], ['Phê duyệt, công khai KQLCNT', 5]],
-    CDT_RG: [['Chuẩn bị, gửi dự thảo hợp đồng', 1], ['Thương thảo, hoàn thiện hợp đồng', 3], ['Phê duyệt, công khai KQLCNT', 5]],
+    CDT_RG: [['Gửi thư mời thương thảo kèm dự thảo hợp đồng cho nhà thầu dự kiến', 2], ['Thương thảo, hoàn thiện hợp đồng', 4], ['Phê duyệt, công khai KQLCNT', 5]],
     DPTT: [['Lập danh sách nhà thầu / hãng, đoàn đàm phán, phương án đàm phán', 1], ['Phê duyệt phương án đàm phán', 2], ['Tổ chức đàm phán', 3], ['Phê duyệt KQLCNT', 5]],
     DAT_HANG: [['Lập phương án đặt hàng', 1], ['Phê duyệt phương án, gửi đơn vị nhận đặt hàng', 2], ['Ký hợp đồng đặt hàng', 5]],
     GIAO_NV: [['Lập phương án giao nhiệm vụ', 1], ['Phê duyệt, ban hành văn bản giao nhiệm vụ', 5]],
@@ -895,15 +902,98 @@
   const COND = {
     DTRR: 'Không hạn chế số lượng nhà thầu (Điều 12).', DTHC: 'Gói có yêu cầu cao hoặc đặc thù về kỹ thuật, hoặc chọn trong danh sách Nhà thầu chiến lược; danh sách ngắn tối thiểu 03 nhà thầu (Điều 13).',
     CGTT: 'Giá gói không quá 05 tỷ đồng; hàng hoá thông dụng, sẵn có, dịch vụ phi tư vấn, xây lắp / hỗn hợp đơn giản (Điều 14).',
-    MSTT: 'Có KQLCNT gói tương tự trong 12 tháng; khối lượng không quá 150% hạng mục tương ứng; đơn giá không cao hơn (Điều 15).',
+    MSTT: 'Gói tương tự đã có KQLCNT, nhà thầu trúng qua đấu thầu rộng rãi / hạn chế; khối lượng từng hạng mục không quá 150%; đơn giá không vượt; phê duyệt KQLCNT gói trước không quá 12 tháng (Điều 15 khoản 2).',
     CDT_TT: 'Thuộc trường hợp chỉ định thầu (Điều 16); có HSYC, HSĐX, đánh giá và thương thảo.', CDT_RG: 'Thuộc trường hợp chỉ định thầu theo trình tự rút gọn (Điều 16 khoản 3).',
     DPTT: 'Có danh sách nhà thầu / hãng sản xuất chiến lược, đoàn đàm phán và phương án đàm phán được duyệt (Điều 17).',
     DAT_HANG: 'Giữa Đơn vị phụ thuộc và Đơn vị thành viên theo điều kiện của Quy chế (Điều 18).', GIAO_NV: 'Nguyên tắc, trình tự tương tự Đặt hàng (Điều 19).',
     TU_TH: 'Đơn vị có năng lực; không chuyển giao công việc vượt giới hạn của Quy chế (Điều 20).',
     DAC_BIET: 'Không áp dụng được các hình thức khác; lưu lý do, căn cứ và phương án được chấp thuận (Điều 21).',
   };
-  const DOCK = { DTRR: 'HSMT', DTHC: 'HSMT', CGTT: 'HSMCG', MSTT: 'HSYC', CDT_TT: 'HSYC', CDT_RG: 'Dự thảo hợp đồng', DPTT: 'Phương án đàm phán' };
+  const DOCK = { DTRR: 'HSMT', DTHC: 'HSMT', CGTT: 'HSMCG', MSTT: 'Dự thảo hợp đồng', CDT_TT: 'HSYC', CDT_RG: 'Dự thảo hợp đồng', DPTT: 'Phương án đàm phán' };
+  /* T80 L1 — gói tham chiếu cho mua sắm trực tiếp (Điều 15 khoản 1–2): gói có KQLCNT trong ĐTMS (đấu thầu rộng rãi / hạn chế) + gói năm 2025 chuyển đổi
+     từ hệ thống cũ (D.lcPriorPkgs). Gói ĐTMS chưa lưu đơn giá hạng mục → Tổ chuyên gia nhập ở bảng so sánh của bước 7.6. */
+  function lcRefPkgs() {
+    const own = PK.filter((g) => ['DTRR', 'DTHC'].includes(g.form) && g.kq && g.winner).map((g) => ({ code: g.code, name: g.name, form: g.form, kq: g.kq,
+      rank: [[g.winner, ((g.bidders || []).find((b) => b[0] === g.winner) || [])[1]]].concat((g.bidders || []).filter((b) => b[0] !== g.winner && b[2] === 'Đạt' && b[3] === 'Đạt').sort((a, b) => a[1] - b[1]).map((b) => [b[0], b[1]])),
+      items: (g.items || []).map((i) => [i[0], i[1], i[2], null]) }));
+    return (D.lcPriorPkgs || []).concat(own);
+  }
+  const lcRefOf = (code) => lcRefPkgs().find((r) => r.code === code) || null;
+  /* Bốn điều kiện Điều 15 khoản 2 (bộ xử lý hành động của bước 7.6 dùng lại khi xác nhận). cmp = bảng so sánh hạng mục của eForm
+     [{ hangMuc, klTruoc, klNay, dgTruoc, dgNay }]; ngay = ngày kiểm tra (dd/mm/yyyy). Trả về [{ dk, yeuCau, thucTe, kq: 'Đạt' | 'Không đạt' }]. */
+  function lcCheck15(refCode, cmp, ngay) {
+    const r = lcRefOf(refCode), rows = cmp || [], P = (s) => { const [d, m, y] = String(s || '').split('/').map(Number); return new Date(y, (m || 1) - 1, d || 1); };
+    const kl = rows.filter((x) => Number(x.klTruoc) > 0).map((x) => [x.hangMuc, Math.round((Number(x.klNay) || 0) / Number(x.klTruoc) * 100)]);
+    const dg = rows.filter((x) => Number(x.dgTruoc) > 0 && x.dgNay != null && x.dgNay !== '').map((x) => [x.hangMuc, Number(x.dgNay) <= Number(x.dgTruoc)]);
+    const thang = r ? (P(ngay) - P(r.kq[1])) / (1000 * 3600 * 24 * 30.44) : null;
+    const ok = (b) => (b ? 'Đạt' : 'Không đạt');
+    return [
+      { dk: 'a) Nhà thầu trúng gói tham chiếu qua đấu thầu rộng rãi / hạn chế', yeuCau: 'Đấu thầu rộng rãi hoặc đấu thầu hạn chế', thucTe: r ? cat('hinh-thuc-lcnt', r.form) : 'Chưa chọn gói tham chiếu', kq: ok(r && ['DTRR', 'DTHC'].includes(r.form)) },
+      { dk: 'b) Khối lượng từng hạng mục', yeuCau: 'Không quá 150% hạng mục tương ứng', thucTe: kl.length ? kl.map(([h, p]) => `${h}: ${p}%`).join('; ') : 'Chưa nhập bảng so sánh', kq: ok(kl.length && kl.every(([, p]) => p <= 150)) },
+      { dk: 'c) Đơn giá (chưa thuế)', yeuCau: 'Không vượt đơn giá gói tham chiếu', thucTe: dg.length ? dg.map(([h, b]) => `${h}: ${b ? 'không vượt' : 'vượt'}`).join('; ') : 'Chưa nhập đơn giá', kq: ok(dg.length && dg.every(([, b]) => b)) },
+      { dk: 'd) Thời gian từ phê duyệt KQLCNT gói tham chiếu', yeuCau: 'Không quá 12 tháng', thucTe: r ? `${r.kq[0]} ngày ${r.kq[1]} — ${ty(Math.max(thang, 0), 1)} tháng` : '-', kq: ok(r && thang != null && thang <= 12) },
+    ];
+  }
+  /* T80 L2 (QC-12869 Điều 32): giá dự thầu sau sửa lỗi, hiệu chỉnh sai lệch, trừ giảm giá; xếp hạng nhà thầu đạt theo phương pháp đánh giá của HSMT.
+     Giá đánh giá = giá sau hiệu chỉnh + chi phí quy đổi; kết hợp kỹ thuật và giá = tỷ trọng kỹ thuật × điểm kỹ thuật + tỷ trọng giá × 100 × giá thấp nhất / giá nhà thầu
+     (cách quy điểm giá GIẢ LẬP — quy chế không ghi công thức); giá cố định chỉ xếp hạng nhà thầu không vượt giá gói. Thật: bộ xử lý hành động của bước đánh giá. */
+  const PP_DG = ['Giá thấp nhất', 'Giá đánh giá', 'Dựa trên kỹ thuật', 'Kết hợp giữa kỹ thuật và giá', 'Giá cố định'];
+  /* T80 L9: giá trị gợi ý của các trường HSMT khi người lập chưa nhập (GIẢ LẬP — mẫu HSMT khách chưa cung cấp): hiệu lực HSDT 120 ngày, HĐ tương tự 50% giá gói,
+     doanh thu bình quân 150% giá gói trong 03 năm (theo số liệu gói mẫu của hệ thống cũ, HT-THAU-CONV). Hiệu lực bảo đảm dự thầu = hiệu lực HSDT + 30 ngày (Điều 27 khoản 4). */
+  const lcHs = (g, u) => { u = u || {}; const r1 = (x) => Math.round(x * 100) / 100, hl = u.lcHieuLucHsdt != null ? Number(u.lcHieuLucHsdt) : 120, bd = u.lcBaoDam != null ? Number(u.lcBaoDam) : 1.5;
+    return { hieuLuc: hl, hieuLucBd: hl + 30, baoDam: bd, baoDamTien: Math.round(g.price * bd * 10) / 1000, hdTuongTu: u.lcHdTuongTu != null ? Number(u.lcHdTuongTu) : r1(g.price * 0.5),
+      soNamDt: u.lcSoNamDt != null ? Number(u.lcSoNamDt) : 3, dtBinhQuan: u.lcDtBinhQuan != null ? Number(u.lcDtBinhQuan) : r1(g.price * 1.5),
+      tangKl: u.lcTangKl != null ? Number(u.lcTangKl) : 0, giamKl: u.lcGiamKl != null ? Number(u.lcGiamKl) : 0, tgSuDung: u.lcTgSuDung || '05 năm' }; };
+  /* T80 L3 (phần thầu) — Thư chấp thuận HSDT và trao hợp đồng, Thông tin chuyển giao để ký hợp đồng (trường theo tab Trao HĐ, TT Ký HĐ của hệ thống cũ —
+     HT-THAU-CONV; QC-12869 không có biểu mẫu → GIẢ LẬP, P-THAU-04). Giá trị đã nhập ở MS19 bước 22 hoặc gợi ý:
+     thời hạn hoàn thiện hợp đồng 10 ngày (quốc tế 20 ngày — mốc mất bảo đảm dự thầu, Điều 27 khoản 8 điểm e), ký kết 05 ngày (GIẢ LẬP);
+     bảo đảm thực hiện hợp đồng 3% giá hợp đồng (khoảng 2%–10% — Điều 44 khoản 3; gói tư vấn không yêu cầu — khoản 1);
+     ngày hết hiệu lực HSDT = thời điểm đóng thầu + hiệu lực HSDT của nhà thầu trúng thầu (Điều 30 khoản 4); giá trúng thầu phân bổ theo nguồn của gói, tỷ lệ theo giá trị phân bổ. */
+  const dAdd = (s, n) => { const [d, m, y] = String(s || '').split('/').map(Number); if (!y) return '';
+    const x = new Date(y, m - 1, d + Number(n || 0)); return `${String(x.getDate()).padStart(2, '0')}/${String(x.getMonth() + 1).padStart(2, '0')}/${x.getFullYear()}`; };
+  const dNum = (s) => { const [d, m, y] = String(s || '').split('/').map(Number); return y ? y * 10000 + m * 100 + d : 0; };
+  const lcTrao = (g, u, today) => { u = u || {}; const nz = (x, d) => (x != null && x !== '' ? Number(x) : d), r3 = (x) => Math.round(x * 1000) / 1000;
+    const dg = u.lcDanhGia || [], win = u.lcNhaThau || ((dg.filter((r) => r.xepHang).sort((a, b) => a.xepHang - b.xepHang)[0]) || {}).ma || (g.winner || '');
+    const w = dg.find((r) => r.ma === win), hl = w && w.hieuLuc != null && w.hieuLuc !== '' ? Number(w.hieuLuc) : lcHs(g, u).hieuLuc;
+    const gia = nz(u.lcGiaTT, g.price), ngayThu = u.lcNgayThu || today || '', hoanThien = nz(u.lcTgHoanThien, g.intl ? 20 : 10), kyKet = nz(u.lcTgKyKet, 5);
+    const tv = g.type === 'TV', baoLanh = tv ? null : nz(u.lcBaoLanh, 3), k = khOf(g.kh) || {};
+    const srcs = g.srcs || [[k.src ? k.src[0] : 'DXMS', k.src ? k.src[1] : '', g.price]], tot = srcs.reduce((a, s) => a + Number(s[2] || 0), 0) || 1;
+    const hetHl = u.lcNgayDong ? dAdd(u.lcNgayDong, hl) : '', hanKy = dAdd(ngayThu, hoanThien + kyKet), mau = D.mauOf(u.lcMauHd || mauGoiY(g)) || {};
+    const pn = (id) => (D.personas.find((p) => p.id === id) || {}).name || '';
+    return { win, gia, hieuLuc: hl, ngayDong: u.lcNgayDong || '', hetHl, ngayThu, hoanThien, kyKet, hanKy, tv, baoLanh, baoLanhTien: baoLanh == null ? null : r3(gia * baoLanh / 100),
+      quaHl: !!(hetHl && hanKy && dNum(hanKy) > dNum(hetHl)), ngayBanGiao: u.lcNgayBanGiao || ngayThu, tgGiaoHang: u.lcTgGiaoHang || u.lcTgThHd || g.execTime || '', dkTt: u.lcDkTt || mau.tt || '',
+      phanBo: srcs.map((s) => ({ loai: SRC[s[0]] || s[0], ma: s[1], phanBo: Number(s[2] || 0), trung: r3(Number(s[2] || 0) * gia / tot) })),
+      dauMoi: u.lcDauMoi || [['Đầu mối đơn vị sử dụng', pn('dvsd')], ['Đầu mối nhà thầu', ''], ['Trợ lý dự án', ''], ['Đầu mối đơn vị giám sát', pn('thau')]].map(([vaiTro, ten]) => ({ vaiTro, ten, lienHe: '' })) }; };
+  /* Điều 32 khoản 7: HSĐX, HSCG chỉ đánh giá theo giá thấp nhất — phương pháp khác chỉ có ở HSMT (đấu thầu rộng rãi / hạn chế). */
+  const lcPpOf = (g, u) => (['DTRR', 'DTHC'].includes((g || {}).form) && PP_DG.includes((u || {}).lcPpDanhGia) ? u.lcPpDanhGia : 'Giá thấp nhất');
+  function lcXepHang(rows, pp, giaGoi, tKt) {
+    const n = (x) => Number(x) || 0, r3 = (x) => Math.round(x * 1000) / 1000;
+    const out = (rows || []).map((r) => { const giaSau = r3(n(r.giaSo) + n(r.suaLoi) + n(r.hieuChinh) - n(r.giamGia));
+      return Object.assign({}, r, { giaSau, giaDg: pp === 'Giá đánh giá' ? r3(giaSau + n(r.quyDoi)) : null, diemTh: null, xepHang: null,
+        dat: r.hopLe === 'Đạt' && (r.nangLuc || 'Đạt') === 'Đạt' && r.kyThuat === 'Đạt' }); });
+    const ok = out.filter((r) => r.dat && (pp !== 'Giá cố định' || r.giaSau <= giaGoi)), minG = Math.min(...ok.map((r) => r.giaSau));
+    if (pp === 'Kết hợp giữa kỹ thuật và giá') { const t = (Number(tKt) || 20) / 100; ok.forEach((r) => { r.diemTh = Math.round((t * n(r.diemKt) + (1 - t) * 100 * minG / r.giaSau) * 100) / 100; }); }
+    const key = { 'Giá đánh giá': (r) => r.giaDg, 'Dựa trên kỹ thuật': (r) => -n(r.diemKt), 'Giá cố định': (r) => -n(r.diemKt), 'Kết hợp giữa kỹ thuật và giá': (r) => -r.diemTh }[pp] || ((r) => r.giaSau);
+    /* T80 L2b (Điều 31 khoản 5 điểm b): đánh giá ngang nhau thì nhà thầu thuộc đối tượng ưu đãi xếp hạng cao hơn — không cộng / trừ giá. */
+    ok.slice().sort((a, b) => key(a) - key(b) || (b.uuDai ? 1 : 0) - (a.uuDai ? 1 : 0)).forEach((r, i) => { r.xepHang = i + 1; });
+    return out;
+  }
   const PEOPLE = ['Nguyễn Hữu Nam', 'Trần Thị Ngọc', 'Lê Quang Vinh', 'Phạm Thu Hương', 'Đỗ Văn Khánh', 'Vũ Minh Châu', 'Hồ Thanh Tâm'];
+  /* T80 L6: Tổ chuyên gia (vị trí, phân công theo màn TTr thành lập Tổ chuyên gia của hệ thống cũ — HT-THAU-CONV) và Tổ thẩm định của gói; chứng chỉ đào tạo về
+     đấu thầu đọc D.lcCert (QC-12869 Điều 2 khoản 27: thành viên Tổ chuyên gia phải có, trừ chuyên gia chuyên ngành đánh giá kỹ thuật; khoản 28: Tổ thẩm định
+     phải có). Thật: danh sách thành viên là dữ liệu Quyết định thành lập Tổ (P-THAU-03). */
+  const EXPERT = ['Trương Minh Đức', 'Nghiêm Văn Hậu'];
+  const TCG_VT = [['Tổ trưởng', 'Phụ trách chung'], ['Tổ phó phụ trách kỹ thuật', 'Phụ trách kỹ thuật, tổng hợp đánh giá kỹ thuật'],
+    ['Thành viên – Phụ trách kỹ thuật', 'Đánh giá kỹ thuật, công nghệ của hàng hoá, dịch vụ', true], ['Thành viên – Phụ trách pháp lý', 'Đánh giá tính hợp lệ, năng lực kinh nghiệm, tài chính, thương mại']];
+  const certOf = (ten, cn) => { const c = (D.lcCert || {})[ten]; return c ? { ok: true, so: c[0], ngay: c[1], loai: c[2] } : { ok: !!cn, mien: !!cn }; };
+  const certTxt = (c) => (c.so ? `${c.so} (${c.ngay})` : c.mien ? 'Không yêu cầu — chuyên gia chuyên ngành' : 'Chưa có');
+  function lcTeam(g) {
+    const off = Number(g.code.slice(-2)), P = (i) => PEOPLE[(off + i) % PEOPLE.length];
+    const tcg = TCG_VT.map(([viTri, phanCong, cn], i) => ({ ten: cn ? EXPERT[off % 2] : P(i), to: 'Tổ chuyên gia', viTri, phanCong, cn: !!cn }));
+    const ttd = [[P(4), 'Tổ trưởng', 'Chủ trì thẩm định HSMT / HSYC, KQLCNT'], [P(5), 'Thành viên – Phụ trách pháp lý', 'Thẩm định sự phù hợp với Quy chế']]
+      .map(([ten, viTri, phanCong]) => ({ ten, to: 'Tổ thẩm định', viTri, phanCong, cn: false }));
+    return tcg.concat(ttd).map((r) => Object.assign(r, { cc: certOf(r.ten, r.cn), qd: `${(r.to === 'Tổ chuyên gia' ? 600 : 601) + off * 2}/QĐ-VHT` }));
+  }
   function pkDetail(code) {
     // Theo: fe/repo-khcn-bpmn-fe/src/app/features/profile-management/profile-detail/profile-detail.component.html + app-tabs
     const g0 = pkOf(code);
@@ -918,15 +1008,16 @@
       notes: [
         'Màn tổng hợp xuyên suốt từ KHLCNT đến KQLCNT (Backlog dòng 336). Khuôn profile-detail + app-tabs; các tab chỉ xem.',
         '<b>T67 T5 — MS19 theo từng gói</b> (BPMN-MS19, D-118): KHLCNT Hoàn thành → nút <b>Khởi tạo tổ chức LCNT</b> (bước 1; thật: MS18 bước 23 khởi tạo một process instance cho mỗi gói, task 1 chờ người phụ trách). Bước 2 đọc hình thức / phương thức → cổng G1 chọn quy trình con: rộng rãi 1 túi 3.1–3.6, chỉ định thầu 7.1–7.4; hình thức khác một bước gộp (GIẢ LẬP P-235). Bước 24 ghi KQLCNT → gói Đang chuyển ký hợp đồng, nút Tạo hợp đồng. Gói mẫu GT-2026-0029 / GT-2026-0022: <b>Chạy luồng mẫu</b> tới bước của mẫu. Thẻ <b>Theo dõi lựa chọn nhà thầu</b> = trạng thái hai lớp (THAU-TT-1311 §1, §7); tab Hồ sơ mời thầu, Đánh giá & KQLCNT đọc eForm của hồ sơ, bước chưa tới thì ghi bước sẽ cập nhật.',
+        '<b>T80 L1 (D-132)</b>: chỉ định thầu rút gọn và mua sắm trực tiếp không lập HSYC / HSĐX — gửi thư mời thương thảo kèm dự thảo hợp đồng rồi thương thảo (QC-12869 Điều 16 khoản 5, Điều 15 khoản 4). Mua sắm trực tiếp có <b>Gói thầu tham chiếu</b> (gói đã có KQLCNT trong ĐTMS hoặc gói chuyển đổi từ hệ thống cũ) và bước kiểm tra 4 điều kiện Điều 15 khoản 2 (bộ xử lý hành động chặn khi có điều kiện không đạt); thương thảo không thành thì mời nhà thầu xếp hạng tiếp theo của gói tham chiếu (khoản 3). BPMN-MS19 chưa có nhánh này — đề xuất DX-19, số bước GIẢ LẬP (P-235).',
         '<b>T67 H2</b>: Mẫu hợp đồng và Phương thức thanh toán là trường của HSMT / HSYC (QT-10.2.4 §5.2) — gói chạy MS19 lấy từ eForm 3.1 / 7.1; gói mẫu theo gợi ý Loại gói thầu (GIẢ LẬP P-236).',
         'Trường theo form Cập nhật gói thầu của hệ thống cũ (HT-THAU-IMG 7213–7221, T24): Số gói thầu, Tóm tắt công việc, Ký hợp đồng, Mật, Người phụ trách, Tiền tệ + tỷ giá, Phạm vi chia phần, Đơn vị sử dụng / giám sát, Sơ tuyển, qua mạng, Danh sách ngắn, Lĩnh vực, Thời gian thực hiện HĐ, Chủ đầu tư / Bên mời thầu / Người có thẩm quyền — trường eForm MS18.1. Trạng thái do quy trình cập nhật, không chọn tay như hệ thống cũ. <b>Nguồn gói thầu</b> n-n có Giá trị phân bổ; TTr kinh phí của hệ thống cũ tương ứng ĐXMS / KĐT.',
         '<b>Thông tin chung</b>: nội dung bắt buộc của KHLCNT (Điều 22 khoản 2) — loại gói (DMDC Loại gói thầu), nguồn 1..n ĐXMS / KĐT, phạm vi + chia phần, giá gói + cơ sở xác định giá + giá từng phần, dự toán được duyệt sau KHLCNT thay giá gói, nguồn vốn, tiến độ, loại hợp đồng.',
         '<b>Phương án LCNT</b>: hình thức (DMDC Hình thức LCNT, 11 dòng) là khoá chọn <b>quy trình Camunda</b> tổ chức LCNT — mỗi hình thức một trình tự (Điều 12–21); điều kiện áp dụng do service task MS18 bước 11 kiểm tra.',
         '<b>Thành phần tham gia</b>: Tổ chuyên gia, Tổ thẩm định và vai trò; kiểm tra xung đột vai trò (đề xuất – thẩm định – phê duyệt độc lập) = validate khi lưu thành phần; danh sách ngắn ≥ 03 nhà thầu với đấu thầu hạn chế.',
-        '<b>Hồ sơ mời</b>: loại hồ sơ theo hình thức (HSMT / HSYC / HSMCG); bảo đảm dự thầu ≤ 3% giá gói (Điều 27) = validate; phiên bản khi sửa đổi sau phát hành. <b>Đánh giá & KQLCNT</b>: kết quả theo nhà thầu là bảng lặp eForm của Tổ chuyên gia; cảnh báo giá thấp bất thường theo ngưỡng cấu hình (P-79).',
+        '<b>Hồ sơ mời</b>: loại hồ sơ theo hình thức (HSMT / HSYC / HSMCG); bảo đảm dự thầu ≤ 3% giá gói (Điều 27) = validate; phiên bản khi sửa đổi sau phát hành. <b>Đánh giá & KQLCNT</b>: kết quả theo nhà thầu là bảng lặp eForm của Tổ chuyên gia; cảnh báo giá thấp bất thường theo ngưỡng cấu hình (P-79). <b>T80 L2</b> (QC-12869 Điều 32, 33): bảng đánh giá thêm năng lực kinh nghiệm, điểm kỹ thuật (phương pháp có điểm), sửa lỗi, hiệu chỉnh sai lệch, giảm giá, chi phí quy đổi (giá đánh giá), hiệu lực HSDT; giá sau hiệu chỉnh tính lại trên form; xếp hạng do bộ xử lý hành động tính theo phương pháp của HSMT (HSYC / HSMCG chỉ giá thấp nhất — khoản 7); nhà thầu không đạt bắt buộc lý do; HSMT kết hợp kỹ thuật và giá kiểm tỷ trọng điểm kỹ thuật (khoản 4 điểm b). Cách quy điểm giá của phương pháp kết hợp GIẢ LẬP. <b>T80 L4</b>: tab Thông tin chung thêm thẻ <b>Mốc văn bản</b> (khung Checklist của hệ thống cũ, chỉ mốc quy trình TO-BE có) — chỉ xem, đọc lại số / ngày từ KHLCNT, biến hồ sơ MS19, tin công khai SCR-94, KQLCNT, huỷ thầu; mã gói thầu trên SAP GIẢ LẬP đồng bộ (P-THAU-02). <b>T80 L5</b>: bước 3.4 chỉ 01 HSDT → gia hạn đóng thầu ≥ 03 ngày làm việc / mở thầu ngay (Điều 36 khoản 5), cổng sau 3.4 GIẢ LẬP (P-THAU-01, DX-20).',
         '<b>Tình huống & kiến nghị</b>: huỷ thầu (Điều 34), tình huống (Điều 36), kiến nghị (Điều 37–38), tạm dừng ký hợp đồng. KQLCNT chuyển sang Quản lý hợp đồng bằng nút Tạo hợp đồng (phân hệ dựng ở B3).',
       ],
-      q: ['P-77', 'P-235', 'P-236', 'P-78', 'P-79', 'P-114'], src: 'profile-management/profile-detail · /khcn-profile-management/:id/view',
+      q: ['P-77', 'P-235', 'P-236', 'P-78', 'P-79', 'P-114', 'P-THAU-01', 'P-THAU-02', 'P-THAU-04'], src: 'profile-management/profile-detail · /khcn-profile-management/:id/view',
     };
     /* KQLCNT → Quản lý hợp đồng (T16 B3): gói đã có hợp đồng thì mở hợp đồng; tạm dừng ký thì không tạo. */
     const hd = window.HopDong && window.HopDong.byPkg(g.code);
@@ -938,7 +1029,10 @@
     const doneAt = (n) => !!C && C.history.some((h) => String(h.task) === String(n) && h.who);
     const T19 = (window.BPMN_FLOWS.MS19 || { tasks: {} }).tasks;
     const waitCard = (title, ns) => emptyCard(title, `Chưa có dữ liệu — được cập nhật ở bước ${ns.map((n) => `${n}. ${(T19[n] || {}).name || ''}`).join(' / ')}.`);
-    const route = C ? C.vars.route : D.lcRoute(g.form, g.method), hsStep = route === '7' ? '7.1' : '3.1', dgStep = route === '7' ? '7.3' : route === '3' ? '3.5' : route;
+    /* T80 L1: chỉ định thầu rút gọn / mua sắm trực tiếp (rg) không có HSYC, HSĐX — hồ sơ mời = thư mời thương thảo 7.5, kết quả = thương thảo 7.4. */
+    const route = C ? C.vars.route : D.lcRoute(g.form, g.method), rg = route === '7' && D.lcFirst7(g.form) !== '7.1';
+    const hsStep = route === '7' ? (rg ? '7.5' : '7.1') : '3.1', dgStep = route === '7' ? (rg ? '7.4' : '7.3') : route === '3' ? '3.5' : route;
+    const ref = g.form === 'MSTT' ? lcRefOf(cu.lcGoiTc || g.ref) : null;
     const mau = D.mauOf(cu.lcMauHd || g.mau || mauGoiY(g));
     const progCard = () => { const p = g.prog; return card('Theo dõi lựa chọn nhà thầu', `<div class="ginfo c3">${kv('Trạng thái', stBadge(LC, g.lc))}${kv('Giai đoạn', esc(p.gd))}${kv('Bước hiện tại', esc(p.step || '-'))}
       ${kv('Đơn vị / người xử lý', esc(p.who || '-'))}${kv('Hạn xử lý', p.due ? `<span class="${p.late ? 'due-over' : ''}">${esc(p.due)}</span>` : '-')}${kv('Vướng mắc', esc(p.issue || '-'))}</div>`); };
@@ -965,7 +1059,55 @@
         ${kv('Dự toán được duyệt sau KHLCNT', g.est ? `${esc(g.est[0])} ngày ${esc(g.est[1])} · ${ty(g.est[2], 2)} tỷ đồng (thay giá gói thầu)` : null, 'span3')}</div>`
         + (g.lots ? table([['Phần', 460], ['Giá từng phần (tỷ đồng)', 200, 'r']], g.lots, (r) => `<td>${esc(r[0])}</td><td class="r num">${money(r[1])}</td>`) : ''))
       + card('Tiến độ', `<div class="ginfo c3">${kv('Thời gian bắt đầu tổ chức LCNT', esc(g.start))}${kv('Thời gian lựa chọn nhà thầu', esc(g.selTime))}${kv('Thời gian thực hiện gói thầu', esc(g.execTime))}
-        ${kv('Thời gian thực hiện hợp đồng theo KHLCNT', esc(x.hdTime))}</div>`);
+        ${kv('Thời gian thực hiện hợp đồng theo KHLCNT', esc(x.hdTime))}</div>`)
+      + mocCard();
+    /* T80 L4 (HT-THAU-VID §3.2 Checklist 25 mốc — chỉ mốc quy trình TO-BE có): bảng chỉ xem, số / ngày văn bản đọc lại dữ liệu đã có — KHLCNT (MS18), biến hồ sơ
+       MS19 (gói đang chạy), tin công khai (SCR-94), KQLCNT, huỷ thầu. Mốc chưa tới để trống. Mã gói thầu trên SAP: đồng bộ SAP (GIẢ LẬP như mã KHLCNT, P-THAU-02). */
+    const mocCard = () => {
+      const T18 = (window.BPMN_FLOWS.MS18 || { tasks: {} }).tasks, s18 = (n) => `MS18 — ${n}. ${(T18[n] || {}).name || ''}`, s19 = (n) => `MS19 — ${n}. ${(T19[n] || {}).name || ''}`;
+      const atD = (n) => { const h = C && C.history.filter((y) => String(y.task) === String(n) && y.who).pop(); return h ? Flow.dateOf(h.t) : null; };
+      const ck = window.CongKhai ? window.CongKhai.items().filter((i) => i.code === g.code || i.id === `KHLCNT:${k.code}:v1`) : [], pub = (ty) => ck.find((i) => i.ty === ty) || null;
+      const dk = k.docs || {}, kp = pub('KHLCNT'), td = levelOf(k) === 'TD';
+      const huy = (g.events || []).find((e) => e[0] === 'Huỷ thầu');
+      /* T80 L4b: gói Mật — không đăng tải (QC-12869 Điều 7 khoản 1); không tạo mã trên SAP theo cách làm của hệ thống cũ (HT-THAU-CONV, GIẢ LẬP — Q-THAU-02). */
+      const mat = !!g.secret, NA_DT = 'Không đăng tải — gói mật', NA_SAP = 'Không tạo — gói mật';
+      const rows = [['QĐ phê duyệt KHLCNT', dk.bm03 ? dk.bm03[0] : null, dk.bm03 ? dk.bm03[1] : null, s18(td ? 15 : 11)],
+        ['Đăng tải KHLCNT', k.post ? k.post[0] : kp && kp.ref, k.post ? k.post[1] : kp && kp.pubAt, s18(22), mat && NA_DT],
+        ['Mã KHLCNT trên SAP', k.sap || null, null, 'Đồng bộ SAP', mat && NA_SAP],
+        ['Mã gói thầu trên SAP', g.sap || null, null, 'Đồng bộ SAP', mat && NA_SAP]];
+      /* Nguồn theo quy trình con của hình thức: rộng rãi 1 túi 3.x, chỉ định thầu 7.x; hình thức khác một bước gộp (P-235) — mốc con chỉ có từ tin công khai. */
+      const sub = route === '3' || route === '7', st = (a, b) => (route === '3' ? a : route === '7' ? b : String(route)), dOf = (n, v) => (live && sub && atD(n) ? v || atD(n) : null);
+      if (hasBid && rg) {
+        rows.push(['Thư mời thương thảo kèm dự thảo hợp đồng', null, dOf('7.5', cu.lcNgayGuiTm), s19('7.5')]);
+      } else if (hasBid) {
+        const t = pub('TBMT'), b = pub('BBMT'), r7 = route === '7';
+        rows.push([`Phê duyệt ${docKind}`, null, dOf(st('3.2', '7.1')), s19(st('3.2', '7.1'))],
+          [r7 ? 'Gửi HSYC cho nhà thầu' : 'Đăng tải TBMT kèm ' + docKind, live ? (dOf('3.3') ? cu.lcTbmt || `IB26${g.code.slice(-4)}-00` : null) : t && t.ref,
+            live ? dOf(st('3.3', '7.2'), r7 ? cu.lcNgayGui : cu.lcNgayPh) : t && t.at, s19(st('3.3', '7.2')), !r7 && mat && NA_DT]);
+        if (!r7) {
+          const gh = (cu.lcGiaHan || []).length;
+          rows.push(['Thời điểm đóng thầu' + (gh ? ` (gia hạn lần ${gh})` : ''), gh ? cu.lcGiaHan[gh - 1].soVb : null, live && sub ? cu.lcNgayDong || null : null, s19(st('3.1', '7.1'))],
+            ['Biên bản mở thầu', null, live ? dOf('3.4', cu.lcNgayMo) : b && b.at, s19(st('3.4', '7.3'))]);
+          /* T80 L5b: xử lý tình huống 01 HSDT (Điều 36 khoản 5) — tờ trình và công văn gia hạn. */
+          const xl = cu.lcGiaHan && cu.lcGiaHan.length ? cu.lcGiaHan[cu.lcGiaHan.length - 1] : null;
+          if (xl || cu.lcMoNgay && cu.lcSoTtrXlth) rows.push(['Tờ trình xử lý tình huống', xl ? xl.soTtr : cu.lcSoTtrXlth, xl ? xl.ngay : cu.lcMoNgay, s19('3.4')]);
+          if (xl) rows.push(['Công văn gia hạn đóng thầu', xl.soCv, xl.ngay, s19('3.4')]);
+        }
+        rows.push([`Báo cáo đánh giá ${r7 ? 'HSĐX' : 'HSDT'}`, null, dOf(dgStep), s19(dgStep)]);
+      }
+      const tt = rg ? '7.4' : st('3.6', '7.4');
+      if (hasBid) rows.push(['Biên bản thương thảo hợp đồng', null, dOf(tt, cu.lcNgayTT), s19(tt)]);
+      const kq = pub('KQ');
+      rows.push(['QĐ phê duyệt KQLCNT', g.kq ? g.kq[0] : null, g.kq ? g.kq[1] : null, s19(17)], ['Đăng tải KQLCNT', kq && kq.ref, kq && kq.pubAt, s19(22), mat && NA_DT]);
+      /* T80 L3: thư chấp thuận HSDT và trao hợp đồng, bàn giao thông tin để ký hợp đồng (MS19 bước 22). */
+      if (live) rows.push(['Thư chấp thuận HSDT và trao hợp đồng', null, doneAt(22) ? cu.lcNgayThu || atD(22) : null, s19(22)],
+        ['Bàn giao thông tin để ký hợp đồng', null, doneAt(22) ? cu.lcNgayBanGiao || atD(22) : null, s19(22)]);
+      if (huy) rows.push(['Quyết định huỷ thầu', (huy[2].match(/\d+\/QĐ-[A-Z]+/) || [null])[0], huy[1], 'Tình huống & kiến nghị']);
+      return card('Mốc văn bản', table([['Mốc', 300], ['Số văn bản / mã', 220], ['Ngày', 150], ['Nguồn', 380]], rows,
+        (r) => (r[4] ? `<td>${esc(r[0])}</td><td colspan="2"><span class="faint">${esc(r[4])}</span></td><td>${esc(r[3])}</td>`
+          : `<td>${esc(r[0])}</td><td>${r[1] ? esc(r[1]) : r[2] ? '<span class="faint">Không đánh số</span>' : dash}</td><td class="num">${r[2] ? esc(r[2]) : dash}</td><td>${esc(r[3])}</td>`)),
+        'Đọc từ các bước đã thực hiện; mốc chưa tới để trống');
+    };
     const tPa = () => card('Phương án lựa chọn nhà thầu', `<div class="ginfo c3">
         ${kv('Hình thức lựa chọn nhà thầu', esc(cat('hinh-thuc-lcnt', g.form)))}${kv('Phương thức lựa chọn nhà thầu', esc(cat('phuong-thuc-lcnt', g.method)))}${kv('Phạm vi', g.intl ? 'Quốc tế' : 'Trong nước')}
         ${kv('Sơ tuyển', 'Không sơ tuyển')}${kv('Lựa chọn nhà thầu qua mạng', esc(x.net))}${kv('Áp dụng danh sách ngắn', g.short ? 'Có' : 'Không')}
@@ -974,37 +1116,61 @@
       + card('Trình tự thực hiện', table([['Bước', 520], ['Trạng thái', 170, 'c']], steps,
         (r, i) => { const done = g.stx === 'KQ' || lv > r[1];
           const cur = !done && !['KH', 'HUY'].includes(g.stx) && steps.slice(0, i).every((p) => lv > p[1]);
-          return `<td>${esc(r[0])}</td><td class="c">${done ? badge('Hoàn thành', 'success') : cur ? badge('Đang thực hiện', 'info') : g.stx === 'HUY' ? badge('Đã huỷ', 'default') : badge('Chưa thực hiện', 'default')}</td>`; }), 'Theo hình thức LCNT');
+          return `<td>${esc(r[0])}</td><td class="c">${done ? badge('Hoàn thành', 'success') : cur ? badge('Đang thực hiện', 'info') : g.stx === 'HUY' ? badge('Đã huỷ', 'default') : badge('Chưa thực hiện', 'default')}</td>`; }), 'Theo hình thức LCNT')
+      + (ref ? refCard() : '');
+    /* T80 L1: gói tham chiếu của mua sắm trực tiếp (Điều 15) — kết quả kiểm tra đọc biến bước 7.6 khi gói chạy MS19. */
+    const refCard = () => {
+      const rows = live && doneAt('7.6') ? (cu.lcDieuKien || []) : [];
+      return card('Gói thầu tham chiếu (mua sắm trực tiếp)', `<div class="ginfo c3">${kv('Mã gói thầu', esc(ref.code))}${kv('Tên gói thầu', esc(ref.name), 'span2')}
+          ${kv('Hình thức lựa chọn nhà thầu', esc(cat('hinh-thuc-lcnt', ref.form)))}${kv('Quyết định phê duyệt KQLCNT', `${esc(ref.kq[0])} ngày ${esc(ref.kq[1])}`)}${kv('Nhà thầu trúng thầu', esc(nccName(ref.rank[0][0])))}</div>`
+        + (rows.length ? table([['Điều kiện (Điều 15 khoản 2)', 300], ['Yêu cầu', 240], ['Thực tế', 360], ['Kết quả', 120, 'c']], rows,
+          (r) => `<td>${esc(r.dk)}</td><td>${esc(r.yeuCau)}</td><td>${clamp(r.thucTe)}</td><td class="c">${badge(r.kq, r.kq === 'Đạt' ? 'success' : 'error')}</td>`) : ''),
+        live && !doneAt('7.6') ? 'Chờ bước Kiểm tra điều kiện mua sắm trực tiếp' : '');
+    };
     const tTp = () => {
       if (lv < 1) return emptyCard('Thành phần tham gia', 'Thành phần tham gia được thành lập sau khi KHLCNT được phê duyệt.');
       const off = Number(g.code.slice(-2));
-      const P = (i) => PEOPLE[(off + i) % PEOPLE.length];
-      const team = [[P(0), 'Tổ chuyên gia', 'Tổ trưởng'], [P(1), 'Tổ chuyên gia', 'Thành viên — kỹ thuật'], [P(2), 'Tổ chuyên gia', 'Thành viên — tài chính, thương mại'],
-        [P(3), 'Tổ thẩm định', 'Tổ trưởng'], [P(4), 'Tổ thẩm định', 'Thành viên — pháp lý']];
+      const team = lcTeam(g), thieu = team.filter((r) => !r.cc.ok), tdNames = team.filter((r) => r.to === 'Tổ thẩm định').map((r) => r.ten);
+      const trung = team.filter((r) => r.to === 'Tổ chuyên gia' && tdNames.includes(r.ten)).map((r) => r.ten);
       const shortL = g.short ? card('Danh sách ngắn', table([['Mã nhà thầu', 140], ['Tên nhà thầu', 340], ['Nguồn', 220], ['Tình trạng', 180, 'c']], g.short,
         (c) => `<td>${esc(c)}</td><td>${clamp(nccName(c))}</td><td>${STRAT.some((x) => x[0] === c) ? 'Nhà thầu chiến lược Tập đoàn' : 'Đề xuất của Tổ chuyên gia'}</td><td class="c">${D.nccOf(c).ban ? badge('Bị cấm', 'error') : badge('Hợp lệ', 'success')}</td>`),
         g.short.length >= 3 ? `${g.short.length} nhà thầu · đạt tối thiểu 03` : `${g.short.length} nhà thầu · ít hơn 03 — xử lý tình huống (Điều 36 khoản 3)`) : '';
-      return card('Tổ chuyên gia và Tổ thẩm định', table([['Họ và tên', 220], ['Tổ', 160], ['Vai trò', 260], ['Quyết định thành lập', 200]], team,
-        (r) => `<td>${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td><td>${esc(`${(r[1] === 'Tổ chuyên gia' ? 600 : 601) + off * 2}/QĐ-VHT`)}</td>`))
-        + card('Kiểm tra xung đột vai trò', `<div class="ginfo c3">${kv('Kết quả', badge('Không có xung đột', 'success'))}${kv('Nội dung kiểm tra', 'Thành viên Tổ chuyên gia không đồng thời thuộc Tổ thẩm định, không là người phê duyệt KQLCNT', 'span2')}</div>`)
+      return card('Tổ chuyên gia và Tổ thẩm định', table([['Họ và tên', 170], ['Tổ', 120], ['Vị trí trong Tổ', 200], ['Phân công công việc', 250], ['Chứng chỉ đào tạo về đấu thầu', 210], ['Quyết định thành lập', 120]], team,
+        (r) => `<td>${esc(r.ten)}</td><td>${esc(r.to)}</td><td>${esc(r.viTri)}</td><td>${clamp(r.phanCong)}</td>
+          <td>${r.cc.so ? `${esc(r.cc.so)} <span class="faint">· ${esc(r.cc.ngay)}</span>` : r.cc.mien ? '<span class="faint">Không yêu cầu — chuyên gia chuyên ngành</span>' : badge('Chưa có', 'error')}</td><td>${esc(r.qd)}</td>`))
+        + card('Kiểm tra thành phần', `<div class="ginfo c3">${kv('Xung đột vai trò', trung.length ? badge('Trùng: ' + trung.join(', '), 'error') : badge('Không có xung đột', 'success'))}${kv('Nội dung kiểm tra', 'Thành viên Tổ chuyên gia không đồng thời thuộc Tổ thẩm định, không là người phê duyệt KQLCNT', 'span2')}
+          ${kv('Chứng chỉ đào tạo về đấu thầu', thieu.length ? badge(`Thiếu ${thieu.length} thành viên`, 'error') : badge('Đủ', 'success'))}${kv('Căn cứ', 'Tổ chuyên gia phải có chứng chỉ, trừ chuyên gia chuyên ngành đánh giá kỹ thuật, công nghệ; Tổ thẩm định phải có (QC-12869 Điều 2 khoản 27, 28)', 'span2')}</div>`)
         + shortL;
     };
-    const bidders = (g.bidders || []).map((b, i) => ({ ncc: b[0], price: b[1], valid: b[2], cap: b[3], tech: b[4], note: b[5], i }));
-    const ranked = bidders.filter((b) => b.valid === 'Đạt' && b.cap === 'Đạt' && (b.tech == null || b.tech >= 70)).sort((a, b) => a.price - b.price);
-    const low = (b) => b.price < g.price * 0.8;
+    /* T80 L2: phần tử 7 của dòng nhà thầu = [sửa lỗi, hiệu chỉnh sai lệch, giảm giá] (tỷ đồng); xếp hạng và cảnh báo theo giá sau hiệu chỉnh (Điều 32 khoản 1 điểm b). */
+    const bidders = (g.bidders || []).map((b, i) => { const a = b[6] || [0, 0, 0];
+      return { ncc: b[0], price: b[1], valid: b[2], cap: b[3], tech: b[4], note: b[5], adj: b[6], i, adjP: Math.round((b[1] + a[0] + a[1] - a[2]) * 1000) / 1000 }; });
+    const ranked = bidders.filter((b) => b.valid === 'Đạt' && b.cap === 'Đạt' && (b.tech == null || b.tech >= 70)).sort((a, b) => a.adjP - b.adjP);
+    const low = (b) => b.adjP < g.price * 0.8;
     /* Gói chạy MS19: Hồ sơ mời đọc eForm bước lập HSMT / HSYC (3.1 / 7.1) và phát hành (3.3 / 7.2); chưa tới bước thì chờ. */
+    /* T80 L1: chỉ định thầu rút gọn / mua sắm trực tiếp — thư mời thương thảo kèm dự thảo hợp đồng (Điều 15 khoản 4 điểm a, Điều 16 khoản 5 điểm a). */
+    const moiNt = () => (ref ? ref.rank[Math.min(Number(cu.lcMoiTiep || 0), ref.rank.length - 1)][0] : g.bidders && g.bidders[0] ? g.bidders[0][0] : '');
+    const tThuMoi = (sent) => card('Thư mời thương thảo và dự thảo hợp đồng', `<div class="ginfo c3">${kv('Loại hồ sơ', 'Thư mời thương thảo kèm dự thảo hợp đồng')}
+        ${kv('Trạng thái', sent ? badge('Đã gửi', 'success') : badge('Đang chuẩn bị', 'info'))}${kv('Ngày gửi', esc(cu.lcNgayGuiTm || '-'))}
+        ${kv('Nhà thầu được mời', esc(nccName(cu.lcNhaThauMoi || moiNt())))}${kv(g.form === 'MSTT' ? 'Lượt mời' : 'Tỷ lệ giảm giá yêu cầu', g.form === 'MSTT' ? (Number(cu.lcMoiTiep || 0) ? `Lần ${Number(cu.lcMoiTiep) + 1} — nhà thầu xếp hạng tiếp theo của gói tham chiếu` : 'Lần 1 — nhà thầu trúng gói tham chiếu') : cu.lcGiamGia != null ? `${ty(Number(cu.lcGiamGia), 1)}% giá gói thầu` : '-')}
+        ${kv('Mẫu hợp đồng', mau ? `${esc(mau.code)} — ${esc(mau.name)}` : '-', 'span2')}${kv('Phương thức thanh toán', mau ? esc(mau.tt) : '-')}</div>`);
     const tHsLive = () => {
       if (!doneAt(hsStep)) return waitCard('Hồ sơ mời', [hsStep]);
-      const pub = route === '7' ? '7.2' : '3.3', bd = cu.lcBaoDam != null ? Number(cu.lcBaoDam) : 1.5;
+      if (rg) return tThuMoi(true);
+      const pub = route === '7' ? '7.2' : '3.3', bd = cu.lcBaoDam != null ? Number(cu.lcBaoDam) : 1.5, h = lcHs(g, cu);
       return card('Thông tin ' + (docKind || 'hồ sơ mời'), `<div class="ginfo c3">${kv('Loại hồ sơ', esc(docKind || 'HSYC'))}${kv('Trạng thái phát hành', doneAt(pub) ? badge('Đã phát hành', 'success') : badge('Đang lập', 'info'))}
           ${kv('Phương pháp đánh giá', esc(cu.lcPpDanhGia || 'Giá thấp nhất'))}${kv('Bảo đảm dự thầu', `${ty(bd, 1)}% giá gói · ${ty(Math.round(g.price * bd * 10) / 1000, 3)} tỷ đồng`)}
           ${kv(route === '7' ? 'Hạn nộp HSĐX' : 'Thời điểm đóng thầu', esc(cu.lcNgayDong || '-'))}${kv(route === '7' ? 'Nhà thầu dự kiến' : 'Số thông báo mời thầu', esc(route === '7' ? nccName(cu.lcNhaThauDk || (g.bidders && g.bidders[0] ? g.bidders[0][0] : '')) : cu.lcTbmt || (doneAt(pub) ? `IB26${g.code.slice(-4)}-00` : '-')))}
-          ${kv('Mẫu hợp đồng', mau ? `${esc(mau.code)} — ${esc(mau.name)}` : '-', 'span2')}${kv('Phương thức thanh toán', mau ? esc(mau.tt) : '-')}</div>`);
+          ${kv('Mẫu hợp đồng', mau ? `${esc(mau.code)} — ${esc(mau.name)}` : '-', 'span2')}${kv('Phương thức thanh toán', mau ? esc(mau.tt) : '-')}
+          ${kv('Thời gian có hiệu lực của HSDT', `${h.hieuLuc} ngày`)}${kv('Hiệu lực bảo đảm dự thầu', `${h.hieuLucBd} ngày`)}${kv('Thời gian sử dụng dự kiến của hàng hoá', esc(h.tgSuDung))}</div>`)
+        + card('Yêu cầu năng lực, kinh nghiệm và khối lượng', `<div class="ginfo c3">${kv('Giá trị hợp đồng tương tự tối thiểu', ty(h.hdTuongTu, 2) + ' tỷ đồng')}
+          ${kv('Doanh thu bình quân tối thiểu', `${ty(h.dtBinhQuan, 2)} tỷ đồng · ${h.soNamDt} năm gần nhất`)}${kv('Tỷ lệ tăng / giảm khối lượng tối đa', `Tăng ${h.tangKl}% · giảm ${h.giamKl}%`)}</div>`);
     };
     const tHs = () => {
       if (live && hasBid) return tHsLive();
       if (!hasBid) return emptyCard('Hồ sơ mời', `Hình thức ${esc(cat('hinh-thuc-lcnt', g.form))} không phát hành hồ sơ mời thầu.`);
       if (lv < 1) return emptyCard('Hồ sơ mời', 'Hồ sơ mời được lập sau khi KHLCNT được phê duyệt.');
+      if (rg) return tThuMoi(lv >= 2);
       const pp = g.form === 'CGTT' || ['MSTT', 'CDT_TT', 'CDT_RG'].includes(g.form) ? 'GIA_THAP_NHAT' : g.method === '1GD2T' ? 'GIA_DANH_GIA' : 'GIA_THAP_NHAT';
       const guar = ['DTRR', 'DTHC'].includes(g.form);
       const issued = lv >= 2;
@@ -1026,13 +1192,42 @@
     /* Gói chạy MS19: kết quả đánh giá đọc bảng lặp eForm bước đánh giá; KQLCNT sau bước 13. */
     const tDgLive = () => {
       if (!doneAt(dgStep)) return waitCard('Đánh giá hồ sơ', [dgStep]);
-      const rows = cu.lcDanhGia || [];
-      const res = (v) => (v === 'Đạt' ? badge('Đạt', 'success') : v ? badge(v, 'error') : dash);
-      return (rows.length ? card('Kết quả đánh giá nhà thầu', table([['Nhà thầu', 300], ['Hợp lệ', 110, 'c'], ['Kỹ thuật', 110, 'c'], ['Giá dự thầu (tỷ đồng)', 160, 'r'], ['Nhận xét', 300]], rows,
-          (r) => `<td>${clamp(r.ten)}</td><td class="c">${res(r.hopLe)}</td><td class="c">${res(r.kyThuat)}</td><td class="r num">${money(r.giaSo)}</td><td>${clamp(r.ghiChu)}</td>`), `Giá gói thầu ${ty(g.price, 2)} tỷ đồng`) : '')
+      /* T80 L2: bảng lặp eForm bước đánh giá — giá sau sửa lỗi, hiệu chỉnh sai lệch, trừ giảm giá và xếp hạng theo phương pháp của HSMT (Điều 32). */
+      const pp = lcPpOf(g, cu), rows = lcXepHang(cu.lcDanhGia || [], pp, g.price, cu.lcTyTrongKt);
+      const res = (v) => (v === 'Đạt' ? badge('Đạt', 'success') : v ? badge(v, 'error') : dash), sg = (x) => (Number(x) ? money(x) : dash);
+      const diem = ['Dựa trên kỹ thuật', 'Kết hợp giữa kỹ thuật và giá', 'Giá cố định'].includes(pp), lose = rows.filter((r) => !r.dat || r.xepHang == null);
+      const ud = ['DTRR', 'DTHC'].includes(g.form), hlYc = lcHs(g, cu).hieuLuc;
+      return (rows.length ? card('Kết quả đánh giá nhà thầu', `<div class="ginfo c3">${kv('Phương pháp đánh giá', esc(pp))}${kv('Giá gói thầu', ty(g.price, 2) + ' tỷ đồng')}${kv('Số nhà thầu đạt', `${rows.filter((r) => r.xepHang).length} / ${rows.length}`)}</div>`
+          + table([['Nhà thầu', 220], ['Xếp hạng', 80, 'c'], ['Hợp lệ', 90, 'c'], ['Năng lực, kinh nghiệm', 110, 'c'], ['Kỹ thuật', 90, 'c'], ...(diem ? [['Điểm kỹ thuật', 90, 'r']] : []), ...(ud ? [['Ưu đãi', 80, 'c']] : []),
+            ['Giá dự thầu (tỷ đồng)', 120, 'r'], ['Giá sau sửa lỗi, hiệu chỉnh, giảm giá', 150, 'r'], ...(pp === 'Giá đánh giá' ? [['Giá đánh giá', 110, 'r']] : []),
+            ...(pp === 'Kết hợp giữa kỹ thuật và giá' ? [['Điểm tổng hợp', 100, 'r']] : []), ['Cảnh báo', 160], ['Sửa lỗi', 90, 'r'], ['Hiệu chỉnh sai lệch', 100, 'r'], ['Giảm giá', 90, 'r'], ['Hiệu lực HSDT (ngày)', 100, 'r']], rows,
+          (r) => `<td>${clamp(r.ten)}</td><td class="c">${r.xepHang || dash}</td><td class="c">${res(r.hopLe)}</td><td class="c">${res(r.nangLuc || 'Đạt')}</td><td class="c">${res(r.kyThuat)}</td>${diem ? `<td class="r num">${r.diemKt != null ? esc(r.diemKt) : dash}</td>` : ''}${ud ? `<td class="c">${r.uuDai ? badge('Có', 'info') : dash}</td>` : ''}
+            <td class="r num">${money(r.giaSo)}</td><td class="r num"><b>${money(r.giaSau)}</b></td>
+            ${pp === 'Giá đánh giá' ? `<td class="r num">${money(r.giaDg)}</td>` : ''}${pp === 'Kết hợp giữa kỹ thuật và giá' ? `<td class="r num">${r.diemTh != null ? esc(ty(r.diemTh, 2)) : dash}</td>` : ''}
+            <td>${r.hieuLuc != null && Number(r.hieuLuc) < hlYc ? badge('Hiệu lực HSDT ngắn hơn yêu cầu', 'error') : r.giaSau > g.price ? badge('Vượt giá gói thầu', 'error') : r.giaSau < g.price * 0.8 ? badge('Giá thấp bất thường', 'warning') : dash}</td>
+            <td class="r num">${sg(r.suaLoi)}</td><td class="r num">${sg(r.hieuChinh)}</td><td class="r num">${sg(r.giamGia)}</td><td class="r num">${r.hieuLuc != null ? esc(r.hieuLuc) : dash}</td>`))
+        + card('Nhà thầu không đạt và lý do', table([['Nhà thầu', 340], ['Lý do', 560]], lose, (r) => `<td>${clamp(r.ten)}</td><td>${clamp(r.ghiChu || (r.dat ? 'Giá sau hiệu chỉnh vượt giá gói thầu (phương pháp giá cố định)' : ''))}</td>`), lose.length ? `${lose.length} nhà thầu` : 'Không có') : '')
         + (doneAt(13) ? card('Kết quả lựa chọn nhà thầu', `<div class="ginfo c3">${kv('Nhà thầu đề nghị trúng thầu', esc(nccName(cu.lcNhaThau || (rows[0] || {}).ma || '')))}${kv('Giá đề nghị trúng thầu', cu.lcGiaTT != null ? ty(Number(cu.lcGiaTT), 2) + ' tỷ đồng' : '-')}
             ${kv('Ngày biên bản thương thảo', esc(cu.lcNgayTT || '-'))}${kv('Quyết định phê duyệt KQLCNT', g.kq ? `${esc(g.kq[0])} ngày ${esc(g.kq[1])}` : badge('Chờ phê duyệt', 'warning'))}</div>`)
-          : waitCard('Kết quả lựa chọn nhà thầu', [13]));
+          : waitCard('Kết quả lựa chọn nhà thầu', [13])) + traoCard();
+    };
+    /* T80 L3 (phần thầu): thư chấp thuận HSDT và trao hợp đồng, thông tin chuyển giao để ký hợp đồng — đọc eForm MS19 bước 22 (Thau.lcTrao).
+       Gói mẫu chưa chạy luồng không có dữ liệu bước 22 → không hiện (không bịa số liệu). */
+    const traoCard = () => {
+      if (!live) return '';
+      if (!doneAt(22)) return C.status === 'running' && doneAt(13) ? waitCard('Thư chấp thuận HSDT và trao hợp đồng', [22]) : '';
+      const t = lcTrao(g, cu, cu.lcNgayThu);
+      return card('Thư chấp thuận HSDT và trao hợp đồng', `<div class="ginfo c3">${kv('Nhà thầu trúng thầu', esc(nccName(t.win)))}${kv('Ngày thư', esc(t.ngayThu))}${kv('Giá trúng thầu', ty(t.gia, 2) + ' tỷ đồng')}
+          ${kv('Thời hạn hoàn thiện hợp đồng', t.hoanThien + ' ngày')}${kv('Thời hạn ký kết hợp đồng', t.kyKet + ' ngày')}${kv('Ngày hết hạn hoàn thiện, ký kết hợp đồng', esc(t.hanKy))}
+          ${kv('Bảo đảm thực hiện hợp đồng', t.tv ? 'Không yêu cầu — gói tư vấn' : `${ty(t.baoLanh, 1)}% giá hợp đồng · ${ty(t.baoLanhTien, 3)} tỷ đồng`, 'span3')}</div>`)
+        + card('Thông tin chuyển giao để ký hợp đồng', `<div class="ginfo c3">${kv('Ngày bàn giao', esc(t.ngayBanGiao))}${kv('Ký hợp đồng trước ngày', esc(t.hanKy))}
+            ${kv('Ngày hết hiệu lực HSDT', t.hetHl ? esc(t.hetHl) + (t.quaHl ? ' ' + badge('Trước hạn ký hợp đồng — đề nghị nhà thầu gia hạn', 'warning') : '') : dash)}
+            ${kv('Thời gian giao hàng', esc(t.tgGiaoHang))}${kv('Điều kiện thanh toán', esc(t.dkTt), 'span2')}</div>`
+          + table([['Đầu mối', 240], ['Họ và tên', 260], ['Điện thoại / email', 320]], t.dauMoi, (r) => `<td>${esc(r.vaiTro)}</td><td>${r.ten ? esc(r.ten) : dash}</td><td>${r.lienHe ? esc(r.lienHe) : dash}</td>`)
+          + table([['Nguồn gói thầu', 200], ['Mã', 200], ['Giá trị phân bổ của gói (tỷ đồng)', 230, 'r'], ['Giá trúng thầu phân bổ (tỷ đồng)', 230, 'r']], t.phanBo,
+            (r) => `<td>${esc(r.loai)}</td><td>${esc(r.ma)}</td><td class="r num">${money(r.phanBo)}</td><td class="r num">${money(r.trung)}</td>`,
+            `<tfoot><tr><td></td><td colspan="2"><b>Tổng</b></td><td class="r num"><b>${ty(t.phanBo.reduce((a, r) => a + r.phanBo, 0), 2)}</b></td><td class="r num"><b>${ty(t.gia, 2)}</b></td></tr></tfoot>`),
+          'Hợp đồng khởi tạo từ gói đọc các thông tin này');
     };
     const tDg = () => {
       if (live && C.status === 'running') return tDgLive();
@@ -1041,17 +1236,25 @@
       const res = (v) => (v == null ? dash : v === 'Đạt' ? badge('Đạt', 'success') : typeof v === 'number' ? (v >= 70 ? badge(v + ' điểm', 'success') : badge(v + ' điểm', 'error')) : badge(v, 'error'));
       const win = g.winner && D.nccOf(g.winner);
       const lose = bidders.filter((b) => b.ncc !== g.winner).map((b) => [nccName(b.ncc), b.note || (b.cap !== 'Đạt' && b.cap != null ? 'Không đạt năng lực, kinh nghiệm' : b.tech != null && b.tech < 70 ? 'Không đạt điểm kỹ thuật tối thiểu' : 'Xếp hạng thấp hơn nhà thầu trúng thầu')]);
-      return card('Kết quả đánh giá nhà thầu', table([['Nhà thầu', 250], ['Hợp lệ', 100, 'c'], ['Năng lực', 120, 'c'], ['Kỹ thuật', 110, 'c'], ['Giá dự thầu (tỷ đồng)', 150, 'r'], ['Xếp hạng', 90, 'c'], ['Cảnh báo', 190]], bidders,
-          (b) => `<td>${clamp(nccName(b.ncc))}</td><td class="c">${res(b.valid)}</td><td class="c">${res(b.cap)}</td><td class="c">${res(b.tech)}</td><td class="r num">${money(b.price)}</td><td class="c">${rk(b)}</td>
-            <td>${low(b) ? badge('Giá thấp bất thường', 'warning') : b.price > g.price ? badge('Vượt giá gói thầu', 'error') : dash}</td>`), `Giá gói thầu ${ty(g.price, 2)} tỷ đồng`)
+      const sg = (x) => (Number(x) ? money(x) : dash);
+      return card('Kết quả đánh giá nhà thầu', table([['Nhà thầu', 220], ['Xếp hạng', 80, 'c'], ['Hợp lệ', 90, 'c'], ['Năng lực', 100, 'c'], ['Kỹ thuật', 100, 'c'], ['Giá dự thầu (tỷ đồng)', 120, 'r'],
+            ['Giá sau sửa lỗi, hiệu chỉnh, giảm giá', 150, 'r'], ['Cảnh báo', 160], ['Sửa lỗi', 90, 'r'], ['Hiệu chỉnh sai lệch', 100, 'r'], ['Giảm giá', 90, 'r']], bidders,
+          (b) => `<td>${clamp(nccName(b.ncc))}</td><td class="c">${rk(b)}</td><td class="c">${res(b.valid)}</td><td class="c">${res(b.cap)}</td><td class="c">${res(b.tech)}</td><td class="r num">${money(b.price)}</td>
+            <td class="r num"><b>${money(b.adjP)}</b></td><td>${low(b) ? badge('Giá thấp bất thường', 'warning') : b.adjP > g.price ? badge('Vượt giá gói thầu', 'error') : dash}</td>
+            <td class="r num">${sg((b.adj || [])[0])}</td><td class="r num">${sg((b.adj || [])[1])}</td><td class="r num">${sg((b.adj || [])[2])}</td>`), `Giá gói thầu ${ty(g.price, 2)} tỷ đồng · xếp hạng theo giá sau sửa lỗi, hiệu chỉnh sai lệch, trừ giảm giá`)
         + card('Làm rõ hồ sơ dự thầu', table([['Nhà thầu', 300], ['Ngày', 120], ['Nội dung yêu cầu làm rõ', 380], ['Trả lời', 260]],
           bidders.filter(low).map((b) => [nccName(b.ncc), '03/10/2026', 'Giải trình giá dự thầu thấp hơn 20% giá gói thầu', 'Đã giải trình — chưa chứng minh được khả năng thực hiện']),
           (r) => `<td>${clamp(r[0])}</td><td class="num">${esc(r[1])}</td><td>${clamp(r[2])}</td><td>${clamp(r[3])}</td>`))
-        + card('Kết quả lựa chọn nhà thầu', win && lv >= 4 ? `<div class="ginfo c3">${kv('Nhà thầu đề nghị trúng thầu', esc(win.name))}${kv('Giá trúng thầu', ty(bidders.find((b) => b.ncc === g.winner).price, 2) + ' tỷ đồng')}${kv('Loại hợp đồng', esc(cat('loai-hop-dong', g.contract)))}
+        + card('Kết quả lựa chọn nhà thầu', win && lv >= 4 ? `<div class="ginfo c3">${kv('Nhà thầu đề nghị trúng thầu', esc(win.name))}${kv('Giá trúng thầu', ty(bidders.find((b) => b.ncc === g.winner).adjP, 2) + ' tỷ đồng')}${kv('Loại hợp đồng', esc(cat('loai-hop-dong', g.contract)))}
             ${kv('Thời gian thực hiện', esc(g.execTime))}${kv('Quyết định phê duyệt KQLCNT', g.kq ? `${esc(g.kq[0])} ngày ${esc(g.kq[1])}` : badge('Chờ phê duyệt', 'warning'))}${kv('Thương thảo hợp đồng', badge('Thành công', 'success'))}</div>`
-          + table([['Nhà thầu không trúng thầu', 340], ['Lý do', 520]], lose, (r) => `<td>${clamp(r[0])}</td><td>${clamp(r[1])}</td>`) : '<div class="empty-t">Chưa có kết quả lựa chọn nhà thầu.</div>');
+          + table([['Nhà thầu không trúng thầu', 340], ['Lý do', 520]], lose, (r) => `<td>${clamp(r[0])}</td><td>${clamp(r[1])}</td>`) : '<div class="empty-t">Chưa có kết quả lựa chọn nhà thầu.</div>')
+        + traoCard();
     };
-    const tTh = () => card('Tình huống & kiến nghị', table([['Loại', 220], ['Ngày', 120], ['Nội dung', 520], ['Trạng thái', 220]], g.events || [],
+    /* T80 L5: gói chạy MS19 — xử lý tình huống 01 HSDT ở bước 3.4 (Điều 36 khoản 5) ghi thêm dòng; tình huống mẫu cùng loại coi như đã xử lý. */
+    const ghs = (cu.lcGiaHan || []).map((x) => ['Chỉ có 01 HSDT — gia hạn thời điểm đóng thầu', x.ngay, `Gia hạn lần ${x.lan}: đóng thầu ${x.dongCu} → ${x.dongMoi}, mở thầu ${x.moMoi}. Tờ trình ${x.soTtr || '-'}, công văn gia hạn ${x.soCv || '-'}, thông báo gia hạn TBMT ${x.soVb}. Lý do: ${x.lyDo}`, 'Đã gia hạn']);
+    const moNgay = live && cu.lcMoNgay && (g.bidders || []).length === 1 ? [['Chỉ có 01 HSDT — mở thầu ngay', cu.lcMoNgay, `Chủ đầu tư quyết định mở thầu ngay để đánh giá (Điều 36 khoản 5 điểm b)${cu.lcSoTtrXlth ? ` — tờ trình ${cu.lcSoTtrXlth}` : ''}.`, 'Đã xử lý']] : [];
+    const evs = (g.events || []).map((x) => (live && (ghs.length || moNgay.length) && /01 nhà thầu|01 HSDT/.test(x[0]) && !/^Đã/.test(x[3]) ? [x[0], x[1], x[2], 'Đã xử lý trong tổ chức LCNT'] : x)).concat(ghs, moNgay);
+    const tTh = () => card('Tình huống & kiến nghị', table([['Loại', 220], ['Ngày', 120], ['Nội dung', 520], ['Trạng thái', 220]], evs,
       (r) => `<td>${esc(r[0])}</td><td class="num">${esc(r[1])}</td><td>${clamp(r[2])}</td><td>${clamp(r[3])}</td>`), 'Huỷ thầu, xử lý tình huống, kiến nghị, tạm dừng ký hợp đồng');
     const kq = g.form === 'GIAO_NV' || g.form === 'TU_TH' || g.form === 'DAT_HANG';
     const kqCard = () => (live && C.status === 'running' ? waitCard('Kết quả', [route]) : g.kq ? card('Kết quả', `<div class="ginfo c3">${kv('Đơn vị thực hiện', esc(g.assignee))}${kv('Văn bản', `${esc(g.kq[0])} ngày ${esc(g.kq[1])}`)}${kv('Giá trị', ty(g.price, 2) + ' tỷ đồng')}</div>`) : emptyCard('Kết quả', 'Chưa có văn bản giao thực hiện.'));
@@ -1162,5 +1365,5 @@
   const lcCase = (code) => { const g = pkOf(code); if (!g) return null; const k = khOf(g.kh) || {};
     const s = k.src ? ((k.src[0] === 'KDT' ? Flow.findKdt(k.src[1]) : Flow.findDxms(k.src[1])) || {}) : {};
     return { title: g.name, unit: s.unit, value: g.price, owner: k.code ? ownerOf(k) : '', levelText: cat('hinh-thuc-lcnt', g.form), g }; };
-  window.Thau = { KH_SAMPLE, PK_SAMPLE, route, enter, reset, khBy, srcInfo, pkExtra, khAll, khOf, khCase, khFlowDone, lcCase, lcFlowDone, mauGoiY, totals, pkgsOf, pkOf, get PK() { return PK.map(pkM); }, KH_ST, PK_ST, KHL, LC, khStLabel, pkStLabel, khProg, pkRow, srcHref, kit, LEVEL, levelOf };
+  window.Thau = { KH_SAMPLE, PK_SAMPLE, lcRefPkgs, lcRefOf, lcCheck15, PP_DG, lcPpOf, lcXepHang, lcHs, lcTrao, lcTeam, certOf, certTxt, route, enter, reset, khBy, srcInfo, pkExtra, khAll, khOf, khCase, khFlowDone, lcCase, lcFlowDone, mauGoiY, totals, pkgsOf, pkOf, get PK() { return PK.map(pkM); }, KH_ST, PK_ST, KHL, LC, khStLabel, pkStLabel, khProg, pkRow, srcHref, kit, LEVEL, levelOf };
 })();
