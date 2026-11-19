@@ -63,9 +63,14 @@
     write: (v) => { const g = g0(), r = T().lcXepHang(v.lcDanhGia, T().lcPpOf(g, Flow.ui), g.price, Flow.ui.lcTyTrongKt);
       return Object.assign(pick(v, ['lcLamRo']), { lcDanhGia: r, lcKhongDat: r.filter((x) => !x.xepHang).map((x) => ({ ten: x.ten, lyDo: x.ghiChu || '' })) }); } });
   /* T80 L1: mua sắm trực tiếp thêm Kết quả thương thảo — Không thành → cổng G7 quay về 7.5 mời nhà thầu xếp hạng tiếp theo (Điều 15 khoản 3). */
+  const nccRows = () => (window.Catalog ? window.Catalog.rows('nha-cung-cap') : []);
+  const repOf = (code) => { const r = nccRows().find((x) => x.code === code) || {}; return { lcDaiDienNt: r.rep || '', lcChucVuNt: r.rep ? r.position || '' : '' }; };
   const thuongThao = (id) => ({ id, outputs: () => ['LC-BBTT'],
     schema: () => ({ components: [head(),
       sel('lcNhaThau', 'Nhà thầu đề nghị trúng thầu', req({ valuesKey: 'datOptions', layout: { columns: 10 } })),
+      /* T80 (sau L7): người đại diện / chức vụ của nhà thầu đọc danh mục Nhà cung cấp SCR-31 theo nhà thầu đang chọn (lọc FEEL), ghi vào biên bản thương thảo. */
+      tbl('Đại diện nhà thầu (danh mục Nhà cung cấp)', 'nccRep[item.ma = lcNhaThau]', [['rep', 'Người đại diện'], ['position', 'Chức vụ']]),
+      banner('Nhà thầu chưa khai báo người đại diện ở danh mục Nhà cung cấp — cập nhật danh mục trước khi in biên bản thương thảo.', '=count(nccRep[item.ma = lcNhaThau and item.rep = "-"]) = 0', 'warning'),
       num('lcGiaTT', 'Giá sau thương thảo (tỷ đồng)', req({ layout: { columns: 6 } })), dt('lcNgayTT', 'Ngày biên bản thương thảo', req({ layout: { columns: 8 } })),
       rad('lcTtKq', 'Kết quả thương thảo', req({ values: [{ label: 'Thành công', value: 'OK' }, { label: 'Không thành — mời nhà thầu xếp hạng tiếp theo của gói tham chiếu', value: 'KHONG' }],
         conditional: { hide: '=not(goiForm = "MSTT")' } })),
@@ -76,7 +81,7 @@
       ta('lcNoiDungTT', 'Nội dung khác')] }),
     notes: () => ['Thương thảo hợp đồng với nhà thầu xếp hạng thứ nhất (Điều 36); không thành công thì mời nhà thầu kế tiếp — chọn lại ở ô Nhà thầu đề nghị trúng thầu. Ngày biên bản thương thảo là trường trộn của mẫu hợp đồng.',
       'Mua sắm trực tiếp: chọn <b>Không thành</b> → cổng sau bước (đề xuất DX-19) quay lại gửi thư mời cho nhà thầu xếp hạng tiếp theo của gói tham chiếu (QC-12869 Điều 15 khoản 3).'],
-    write: (v) => pick(v, ['lcNhaThau', 'lcGiaTT', 'lcNgayTT', 'lcTtKq', 'lcNoiDungTT', 'lcTgThHd', 'lcBbTt']) });
+    write: (v) => Object.assign(pick(v, ['lcNhaThau', 'lcGiaTT', 'lcNgayTT', 'lcTtKq', 'lcNoiDungTT', 'lcTgThHd', 'lcBbTt']), repOf(v.lcNhaThau)) });
   /* T80 L1 (D-132 Q3 = A) — 7.6 kiểm tra điều kiện mua sắm trực tiếp (Điều 15 khoản 2); 7.5 thư mời thương thảo kèm dự thảo hợp đồng
      (Điều 15 khoản 4 điểm a — mua sắm trực tiếp; Điều 16 khoản 5 điểm a — chỉ định thầu rút gọn). Bước đề xuất DX-19, BPMN-MS19 chưa có. */
   const kiemTra15 = { id: 'dtms-ms19-t07-6-dieu-kien-mstt',
@@ -246,7 +251,8 @@
       goi: { code: g.code, ten: g.name, gia: ty(g.price), hinhThuc: cat('hinh-thuc-lcnt', g.form), phuongThuc: cat('phuong-thuc-lcnt', g.method), kh: g.kh },
       thongTin: [{ muc: 'Loại gói thầu', giaTri: cat('loai-goi-thau', g.type) }, { muc: 'Hình thức / phương thức LCNT', giaTri: `${cat('hinh-thuc-lcnt', g.form)}, ${cat('phuong-thuc-lcnt', g.method)}` },
         { muc: 'Loại hợp đồng', giaTri: cat('loai-hop-dong', g.contract) }, { muc: 'Thời gian lựa chọn nhà thầu', giaTri: g.selTime || '' }, { muc: 'Thời gian thực hiện gói thầu', giaTri: g.execTime || '' }],
-      nccOptions: (window.Catalog ? window.Catalog.rows('nha-cung-cap') : []).map((r) => ({ label: `${r.code} — ${r.name || r.short}`, value: r.code })),
+      nccRep: nccRows().map((r) => ({ ma: r.code, rep: r.rep || '-', position: r.rep ? r.position || '-' : '-' })),
+      nccOptions: nccRows().map((r) => ({ label: `${r.code} — ${r.name || r.short}`, value: r.code })),
       mauOptions: (window.Catalog ? window.Catalog.rows('mau-hop-dong') : []).filter((r) => r.active !== false).map((r) => ({ label: `${r.code} — ${r.name} (${r.tt})`, value: r.code })),
       lcMauHd: u.lcMauHd || T().mauGoiY(g), lcTt: mau ? mau.tt : '-', lcPpDanhGia: u.lcPpDanhGia || 'Giá thấp nhất', lcBaoDam: u.lcBaoDam != null ? u.lcBaoDam : 1.5,
       lcNgayDong: u.lcNgayDong || '', lcYeuCau: u.lcYeuCau || ((g.items || []).map((i) => `${i[0]}: ${i[2]} ${i[1]}`).join('; ')), lcNhaThauDk: u.lcNhaThauDk || bs[0][0],
@@ -360,6 +366,8 @@
       'LC-BCDG': `<p><b>Phương pháp đánh giá:</b> ${esc(v.lcPpGia)}.</p>` + T().lcXepHang(v.lcDanhGia, v.lcPpGia, g0().price, v.lcTyTrongKt).map((r) => `<p>${esc(r.ten)}: hợp lệ ${esc(r.hopLe)}, năng lực ${esc(r.nangLuc || 'Đạt')}, kỹ thuật ${esc(r.kyThuat)}`
         + ` — giá dự thầu ${esc(r.gia)} tỷ đồng, sau sửa lỗi, hiệu chỉnh sai lệch, trừ giảm giá ${esc(ty(r.giaSau))} tỷ đồng — ${r.xepHang ? 'xếp hạng ' + r.xepHang : 'không đạt' + (r.ghiChu ? ': ' + esc(r.ghiChu) : '')}.</p>`).join(''),
       'LC-BBTT': `<p>Thương thảo với ${esc((v.kq[0] || {}).giaTri)} ngày ${esc(v.lcNgayTT)}.</p>`
+        + (() => { const r = v.lcDaiDienNt ? { lcDaiDienNt: v.lcDaiDienNt, lcChucVuNt: v.lcChucVuNt } : repOf(v.lcNhaThau);
+          return `<p><b>Đại diện nhà thầu:</b> ${r.lcDaiDienNt ? `Ông/bà ${esc(r.lcDaiDienNt)}${r.lcChucVuNt ? ' — Chức vụ: ' + esc(r.lcChucVuNt) : ''}` : 'chưa khai báo ở danh mục Nhà cung cấp'}.</p>`; })()
         + `<table class="vtable"><thead><tr><th>TT</th><th>Nội dung thương thảo</th><th>Ý kiến nhà thầu</th><th>Nội dung hai bên thống nhất đưa vào hợp đồng</th></tr></thead><tbody>`
         + (v.lcBbTt || []).map((r, i) => `<tr><td>${i + 1}</td><td>${esc(r.noiDung)}</td><td>${esc(r.yKien || '')}</td><td>${esc(r.thongNhat)}</td></tr>`).join('') + '</tbody></table>'
         + `<p><b>Giá trúng thầu:</b> ${esc(ty(Number(v.lcGiaTT)))} tỷ đồng. <b>Thời gian thực hiện hợp đồng:</b> ${esc(v.lcTgThHd)}.</p>${v.lcNoiDungTT ? `<p>${esc(v.lcNoiDungTT)}</p>` : ''}`,

@@ -43,12 +43,21 @@ test('GT-2026-0045 (quốc tế): biên bản thương thảo dạng bảng; bư
   await expect(m.locator('[data-ef="lcBbTt::0::thongNhat"]')).toHaveValue(/^Theo mẫu /);
   await expect(m.locator('[data-ef="lcBbTt::3::noiDung"]')).toHaveValue('Điều kiện thanh toán');
   await expect(m.locator('[data-ef="lcTgThHd"]')).toHaveValue('120 ngày');
+  // Người đại diện / chức vụ của nhà thầu đang chọn đọc từ danh mục Nhà cung cấp (T80 L7).
+  await expect(m.getByRole('combobox').filter({ hasText: 'NCC-000010' })).toBeVisible();
+  const rep = await page.evaluate(() => { const r = Catalog.rows('nha-cung-cap').find((x) => x.code === 'NCC-000010') || {}; return [r.rep, r.position]; });
+  expect(rep[0]).toBeTruthy();
+  await expect(m).toContainText('Đại diện nhà thầu (danh mục Nhà cung cấp)');
+  await expect(m).toContainText(rep[0]);
+  await expect(m).toContainText(rep[1]);
+  await expect(m).not.toContainText('chưa khai báo người đại diện');
   await put(page, m.locator('[data-ef="lcTgThHd"]'), '100 ngày');
   await put(page, m.locator('[data-ef="lcBbTt::2::yKien"]'), 'Đề nghị giao làm 02 đợt.');
   await put(page, m.locator('[data-ef="lcBbTt::2::thongNhat"]'), 'Giao 02 đợt, đợt cuối trong 100 ngày.');
   await ok(page); await done(page);
   const bb = await page.evaluate((c) => Flow.caseOf(c).ui.lcBbTt.map((r) => [r.noiDung, r.yKien, r.thongNhat]), HS);
   expect(bb[2]).toEqual(['Tiến độ thực hiện', 'Đề nghị giao làm 02 đợt.', 'Giao 02 đợt, đợt cuối trong 100 ngày.']);
+  expect(await page.evaluate((c) => [Flow.caseOf(c).ui.lcDaiDienNt, Flow.caseOf(c).ui.lcChucVuNt], HS)).toEqual(rep);
 
   await run(page, G, 22, true);
   await openTask(page, '22');
@@ -59,6 +68,9 @@ test('GT-2026-0045 (quốc tế): biên bản thương thảo dạng bảng; bư
   // Hiệu lực HSDT 120 ngày (mặc định HSMT) kể từ thời điểm đóng thầu 30/11/2026.
   await expect(m).toContainText('Ngày hết hiệu lực HSDT của nhà thầu trúng thầu: 30/03/2027');
   await expect(m.locator('[data-ef="lcDauMoi::0::ten"]')).toHaveValue('Tạ Quỳnh Anh');
+  // Đầu mối nhà thầu gợi ý = người đại diện ở biên bản thương thảo; xoá đi thì bộ kiểm tra bắt nhập.
+  await expect(m.locator('[data-ef="lcDauMoi::1::ten"]')).toHaveValue(rep[0]);
+  await put(page, m.locator('[data-ef="lcDauMoi::1::ten"]'), '');
   await m.locator('[data-ef-chk="lcDangTai"]').check();
   await put(page, m.locator('[data-ef="lcBaoLanh"]'), '12');
   await ok(page);
