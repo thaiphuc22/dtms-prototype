@@ -6,7 +6,7 @@
    - Bắt đầu tour đưa hồ sơ demo tới bước cần xem (Flow.jumpToScene / jumpTo); hồ sơ đang chạy dở thì hỏi xác nhận trước.
    - Bước có `wait`: tự sang bước sau khi người xem làm xong; nút "Làm hộ" chạy `do`. Không thấy phần tử: popover giữa màn, ghi màn đã đổi.
    - index.html?tour=<1..7>: mở thẳng tour (liên kết từ HUONG-DAN.html).
-   T83 (plan docs/dtms/prototype-T83-huong-dan-tour-1911.md): tour chia tab theo cụm tính năng (TABS: Đề xuất mua sắm, Khoản đầu tư; Thầu, Hợp đồng sau T79 / T80);
+   T83 (plan docs/dtms/prototype-T83-huong-dan-tour-1911.md): tour chia tab theo cụm tính năng (TABS: Đề xuất mua sắm, Khoản đầu tư, Thầu, Hợp đồng);
    mã tour `<tab>-<n>` (vd dxms-8, kdt-2); số 1..7 cũ = dxms-1..7 (?tour=3 vẫn chạy). Tour mới dùng cảnh của bộ demo (Flow.jumpToScene) như Công cụ demo.
    Không làm Quản lý sản xuất (người dùng 19/11). Tab đang xem nhớ ở localStorage 'dtms-tour-tab' (bọc try/catch). */
 (function () {
@@ -53,6 +53,15 @@
   const pname = (id) => { const p = D.personas.find((x) => x.id === id); return p ? `${p.name} — ${p.role}` : ''; };
   function scene(set, n) {
     const sc = Flow.jumpToScene(n, set), ds = D.demoSets.find((d) => d.key === set);
+    /* Bộ Hợp đồng (như Công cụ demo): cảnh NEW / BASE mở Chi tiết hợp đồng ở tab của bộ; còn lại việc của vai trong các hồ sơ của hợp đồng. */
+    if (ds.hd) {
+      const tab = sc.tab || ds.tab, hdh = '#/hop-dong/' + encodeURIComponent(ds.hd);
+      if (sc.start === 'NEW' || sc.start === 'BASE') { window.HopDong.openTab(ds.hd, ds.tab || 'tt'); go(hdh); return; }
+      const pool = Flow.caseTokens(Flow.state.persona, ds.hd), mine = pool.find((k) => String(k.task) === String(sc.start)) || pool[0];
+      if (tab) window.HopDong.setTab(ds.hd, tab);
+      go(mine ? '#/task/' + mine.id : sc.go ? '#/' + sc.go : hdh);
+      return;
+    }
     if (sc.start === 'NEW') { go(ds.kdt ? '#/kdt/create' : (set === 'MS02' ? '#/dieu-chinh-dxms/create/' : '#/luong/create/') + encodeURIComponent(ds.dxms)); return; }
     if (sc.start === 'END') { go(sc.go ? '#/' + sc.go : '#/luong/' + encodeURIComponent(sc.dxms || ds.dxms)); return; }
     const t = Flow.state.tokens.find((k) => String(k.task) === String(sc.start)) || Flow.state.tokens[0];
@@ -194,10 +203,130 @@
       { sel: ['.vcard h3', 'Văn bản đầu ra'], title: 'Văn bản đầu ra', text: 'Văn bản bước sinh ra (dự thảo BM-00) xem trước, tải về ở thẻ <b>Văn bản đầu ra</b>.' },
       { sel: ['.vcard h3', 'Lịch sử hồ sơ'], title: 'Lịch sử hồ sơ', text: 'Các bước đã xử lý của hồ sơ gộp, ai xử lý, khi nào. Sau thẩm định, Tổng Giám đốc VHT duyệt hồ sơ gộp (không đồng ý thì về sửa BM-00).' }] },
   ];
+  /* ---------- Tour — tab Thầu (T83 S3; KHLCNT-2026-0016 chạy MS18, gói mẫu chạy MS19 bằng Flow.startKh / startLc như nút Chạy mẫu của màn Thầu) ---------- */
+  /* Mở việc bước `task` của hồ sơ `c` cho vai đang được giao. */
+  function openCase(c, task) {
+    for (const p of D.personas) {
+      const t = Flow.caseTokens(p.id).find((x) => x.caseCode === c && String(x.task) === String(task));
+      if (t) { Flow.setPersona(p.id); go('#/task/' + t.id); return; }
+    }
+  }
+  const KH0 = 'KHLCNT-2026-0016', GT0 = 'GT-2026-0045';
+  const kh = (target) => () => { const k = window.Thau.khOf(KH0); openCase(Flow.startKh(KH0, { level: window.Thau.levelOf(k), name: k.title, target }), target); };
+  const lc = (code, target) => () => openCase(Flow.startLc(code, { name: window.Thau.pkOf(code).name, target }), target);
+  const tabOf = (h, sel) => () => { go(h); setTimeout(() => { const b = find(sel); if (b) b.click(); }, 0); };
+  const TOURS_THAU = [
+    { n: 1, name: 'Lập và phê duyệt KHLCNT (MS18)', who: 'Thầu TTMS, Tổ thẩm định', doc: KH0, steps: [
+      { enter: () => { Flow.setPersona('thau'); go('#/khlcnt'); }, sel: '[data-go="khlcnt/create"]', title: 'Kế hoạch lựa chọn nhà thầu',
+        text: 'Menu <b>Quản lý thầu &gt; Kế hoạch lựa chọn nhà thầu</b>. <b>Thêm mới</b> là bước 1–2: tạo hồ sơ KHLCNT, chọn hồ sơ nguồn (ĐXMS / KĐT đã phê duyệt).' },
+      { enter: kh(3), sel: act('Hoàn thành tạo gói'), title: 'Bước 3 — Tạo gói, phân bổ hạng mục',
+        text: `Vai <b>${pname('thau')}</b>. Chia hạng mục của hồ sơ nguồn vào các gói thầu; bước 4 hoàn thiện thông tin từng gói (hình thức, phương thức, loại hợp đồng, giá gói).` },
+      { enter: kh(5), sel: act('Hoàn thành Tờ trình'), title: 'Bước 5 — Tờ trình KHLCNT', text: 'Lập Tờ trình phê duyệt KHLCNT từ danh sách gói.' },
+      { enter: kh(6), sel: act('Gửi Tổ thẩm định xác nhận'), title: 'Bước 6 — Chọn Tổ thẩm định',
+        text: 'Chọn thành viên Tổ thẩm định; hệ thống kiểm chứng chỉ đào tạo về đấu thầu của từng người và gửi việc xác nhận cam kết (bước 7–8).' },
+      { enter: kh(8), sel: act('Xác nhận cam kết'), title: 'Bước 8 — Xác nhận cam kết', text: 'Mỗi thành viên Tổ thẩm định xác nhận bản cam kết trên việc của mình.' },
+      { enter: kh(12), sel: act('Kết quả thẩm định'), title: 'Bước 12 — Thẩm định KHLCNT', text: 'Tổ thẩm định ghi kết quả thẩm định; chưa đạt thì Thầu TTMS chỉnh sửa KHLCNT / Tờ trình.' },
+      { enter: kh(13), sel: act('Ghi nhận ý kiến'), title: 'Bước 13 — Ý kiến Ban ĐTXD Tập đoàn',
+        text: 'KHLCNT-2026-0016 thuộc thẩm quyền Tập đoàn: Thầu TTMS ghi nhận phiếu nhận xét của Ban ĐTXD, giải trình rồi hoàn thiện dự thảo Quyết định, trình ký VOffice.' },
+      { enter: kh(21), sel: act('Đăng tải KHLCNT'), title: 'Bước 21 — Công khai KHLCNT',
+        text: 'Quyết định đã ký: xác nhận công khai; hệ thống đăng tải lên Cổng đấu thầu (bước 22) và mở các gói cho tổ chức lựa chọn nhà thầu (bước 23).' }] },
+    { n: 2, name: 'Đấu thầu rộng rãi tới KQLCNT (MS19)', who: 'Thầu TTMS / Tổ chuyên gia, Tổ thẩm định', doc: GT0, steps: [
+      { enter: lc(GT0, 1), sel: act('Khởi tạo tổ chức LCNT'), title: 'Bước 1 — Khởi tạo tổ chức LCNT',
+        text: `Vai <b>${pname('thau')}</b>. Gói đã có trong KHLCNT được phê duyệt: khởi tạo tổ chức lựa chọn nhà thầu, Tổ chuyên gia (vị trí, phân công, chứng chỉ). Hệ thống rẽ theo hình thức, phương thức của gói (bước 2).` },
+      { enter: lc(GT0, '3.1'), sel: act('Trình thẩm định HSMT'), title: 'Bước 3.1 — Lập HSMT',
+        text: 'Hồ sơ mời thầu: phương pháp đánh giá, bảo đảm dự thầu, hiệu lực HSDT, yêu cầu năng lực, kinh nghiệm, mẫu hợp đồng; trình thẩm định, phê duyệt.' },
+      { enter: lc(GT0, '3.3'), sel: act('Phát hành'), title: 'Bước 3.3 — Phát hành', text: 'Phát hành HSMT, đăng tải thông báo mời thầu; nhận HSDT tới thời điểm đóng thầu.' },
+      { enter: lc(GT0, '3.4'), sel: act('Hoàn thành mở thầu'), title: 'Bước 3.4 — Đóng thầu, mở HSDT',
+        text: 'Ghi danh sách HSDT đã mở. Chỉ có 01 HSDT thì chọn gia hạn thời điểm đóng thầu hoặc mở thầu ngay, kèm số tờ trình xử lý tình huống.' },
+      { enter: lc(GT0, '3.5'), sel: act('Hoàn thành đánh giá'), title: 'Bước 3.5 — Đánh giá HSDT',
+        text: 'Đánh giá từng nhà thầu: hợp lệ, năng lực, kỹ thuật, giá sau sửa lỗi, hiệu chỉnh sai lệch, trừ giảm giá; hệ thống xếp hạng theo phương pháp của HSMT. Nhà thầu không đạt phải ghi lý do.' },
+      { enter: lc(GT0, '3.6'), sel: act('Hoàn thành thương thảo'), title: 'Bước 3.6 — Thương thảo hợp đồng',
+        text: 'Thương thảo với nhà thầu xếp hạng thứ nhất: người đại diện, chức vụ của nhà thầu lấy từ danh mục Nhà cung cấp; biên bản thương thảo ghi theo bảng nội dung · ý kiến nhà thầu · nội dung thống nhất đưa vào hợp đồng.' },
+      { enter: lc(GT0, 13), sel: act('Trình thẩm định KQLCNT'), title: 'Bước 13 — Hồ sơ KQLCNT', text: 'Hoàn thiện hồ sơ kết quả lựa chọn nhà thầu, trình Tổ thẩm định (bước 14).' },
+      { enter: lc(GT0, 16), sel: act('Trình ký VOffice'), title: 'Bước 16 — Văn bản phê duyệt KQLCNT', text: 'Hoàn thiện Quyết định phê duyệt KQLCNT và trình ký trên VOffice, hoặc ký cứng rồi tải bằng chứng.' }] },
+    { n: 3, name: 'Mua sắm trực tiếp, chỉ định thầu rút gọn', who: 'Thầu TTMS / Tổ chuyên gia', doc: 'GT-2026-0048', steps: [
+      { enter: lc('GT-2026-0048', '7.6'), sel: act('Xác nhận đủ điều kiện'), title: 'Mua sắm trực tiếp — kiểm tra điều kiện',
+        text: 'GT-2026-0048: chọn gói tham chiếu đã có KQLCNT, nhập khối lượng, đơn giá từng hạng mục; hệ thống kiểm 4 điều kiện mua sắm trực tiếp. Có điều kiện không đạt thì không chuyển bước.' },
+      { enter: lc('GT-2026-0031', '7.5'), sel: act('Gửi thư mời thương thảo'), title: 'Chỉ định thầu rút gọn — thư mời thương thảo',
+        text: 'GT-2026-0031: gửi thư mời thương thảo kèm dự thảo hợp đồng cho nhà thầu, không lập HSYC, không đánh giá HSĐX.' },
+      { enter: lc('GT-2026-0031', '7.4'), sel: act('Hoàn thành thương thảo'), title: 'Thương thảo, hoàn thiện hợp đồng',
+        text: 'Ghi biên bản thương thảo rồi sang hồ sơ KQLCNT như đấu thầu rộng rãi. Mua sắm trực tiếp thương thảo không thành thì mời nhà thầu xếp hạng tiếp theo của gói tham chiếu.' }] },
+    { n: 4, name: 'Đăng tải KQLCNT, thư trao hợp đồng', who: 'Thầu TTMS', doc: GT0, steps: [
+      { enter: lc(GT0, 22), sel: act('Đăng tải KQLCNT'), title: 'Bước 22 — Công khai KQLCNT, trao hợp đồng',
+        text: 'Cùng bước xác nhận công khai: <b>thư chấp thuận HSDT và trao hợp đồng</b> (ngày thư, thời hạn hoàn thiện, ký kết, bảo đảm thực hiện hợp đồng) và <b>thông tin chuyển giao để ký hợp đồng</b> (đầu mối, thời gian giao hàng, điều kiện thanh toán).' },
+      { enter: tabOf('#/goi-thau/' + encodeURIComponent(GT0), '.dx-tabs [data-ttab="dg"]'), sel: '.dx-tabs [data-ttab="dg"]', title: 'Chi tiết gói thầu — Đánh giá & KQLCNT',
+        text: 'Tab <b>Đánh giá &amp; KQLCNT</b>: xếp hạng, nhà thầu không đạt và lý do, kết quả; sau bước 22 thêm thẻ thư trao hợp đồng và thông tin chuyển giao — hợp đồng tạo từ gói đọc lại các thông tin này.' },
+      { enter: tabOf('#/goi-thau/' + encodeURIComponent(GT0), '.dx-tabs [data-ttab="info"]'), sel: ['.vcard h3', 'Mốc văn bản'], title: 'Mốc văn bản',
+        text: 'Tab Thông tin chung, thẻ <b>Mốc văn bản</b>: số, ngày các văn bản của gói (KHLCNT, HSMT, thông báo mời thầu, đóng / mở thầu, KQLCNT, thư trao hợp đồng…) đọc lại từ các bước.' }] },
+    { n: 5, name: 'Nhà thầu, kiểm soát rủi ro, công khai', who: 'Thầu TTMS', doc: GT0, steps: [
+      { enter: () => { Flow.setPersona('thau'); go('#/nha-thau'); }, sel: '[data-nttab="cam"]', title: 'Nhà thầu & kiểm soát rủi ro',
+        text: 'Menu <b>Quản lý thầu &gt; Nhà thầu &amp; kiểm soát rủi ro</b>: nhà thầu, hãng sản xuất chiến lược và <b>nhà thầu bị cấm</b> — nhà thầu bị cấm không hiện khi chọn nhà cung cấp nhận yêu cầu báo giá.' },
+      { enter: () => go('#/cong-khai-thau'), sel: '[data-ck-tab="dt"]', title: 'Công khai & tích hợp đấu thầu',
+        text: 'Theo dõi đăng tải KHLCNT, thông báo mời thầu, KQLCNT lên Cổng đấu thầu và hạn đăng tải; gói <b>Mật</b> không đăng tải.' },
+      { sel: '[data-ck-tab="log"]', title: 'Nhật ký đồng bộ', text: 'Lịch sử gửi / nhận với Cổng đấu thầu: lần gửi, kết quả, lỗi để gửi lại.' }] },
+  ];
+
+  /* ---------- Tour — tab Hợp đồng (T83 S4; HĐ-2026-0052 và các bộ demo MS22, MS23, MS23.02, MS23.03, MS23.01, MS24) ---------- */
+  const HD0 = 'HĐ-2026-0052';
+  const TOURS_HD = [
+    { n: 1, name: 'Tạo hợp đồng', who: 'Chuyên viên Phòng Hợp đồng', doc: HD0, steps: [
+      { enter: () => { Flow.setPersona('phd'); go('#/hop-dong'); }, sel: '[data-go="hop-dong/create"]', title: 'Danh sách hợp đồng',
+        text: 'Menu <b>Quản lý hợp đồng &gt; Hợp đồng</b>. <b>Bấm Thêm mới</b> để tạo hợp đồng (bước 1 của MS22 — tiếp nhận kết quả lựa chọn nhà thầu).', wait: route(/#\/hop-dong\/create$/), do: () => go('#/hop-dong/create') },
+      { sel: '[data-vsel="hd-srck"]', title: 'Nguồn hình thành',
+        text: '<b>Gói thầu đã có KQLCNT</b> (luồng chính) hoặc <b>Tờ trình / ĐXMS đã phê duyệt</b> cho phần công việc không qua lựa chọn nhà thầu (theo đề xuất, chờ BA chốt).' },
+      { sel: '[data-vsel="hd-pkg"]', title: 'Gói thầu',
+        text: 'Chọn gói: nhà thầu, giá trúng thầu, hình thức, loại hợp đồng, hạng mục, phân bổ nguồn vốn sao chép từ KQLCNT, chỉ xem. Gói đã có thư trao hợp đồng thì hiện thêm <b>thông tin chuyển giao để ký hợp đồng</b> và điền sẵn đầu mối, thời gian thực hiện.' },
+      { sel: '#hd-save', title: 'Lưu', text: 'Đơn vị sử dụng, người chuyển tiền, đầu mối dự án, đầu mối KCS chọn ở đây (sửa được ở MS22 bước 1). <b>Lưu</b> tạo hợp đồng trạng thái Đang thương thảo.' }] },
+    { n: 2, name: 'Thương thảo, ký hợp đồng (MS22)', who: 'Phòng Hợp đồng, Đơn vị sử dụng, Thủ trưởng VHT', doc: HD0, steps: [
+      { enter: () => scene('MS22', 'H1'), sel: '[data-hd-newcase]', title: 'Tạo hồ sơ thương thảo, ký',
+        text: `Chi tiết hợp đồng ${HD0}, tab <b>Thương thảo &amp; ký kết</b>: <b>Tạo hồ sơ</b> bắt đầu quy trình MS22.` },
+      { enter: () => scene('MS22', 'H2'), sel: act('Hoàn thành phụ lục kỹ thuật'), title: 'Bước 2 — Phụ lục kỹ thuật',
+        text: `Vai <b>${pname('dvsd')}</b>. Đơn vị sử dụng lập phụ lục kỹ thuật, song song Phòng Hợp đồng soạn body hợp đồng, phụ lục giá (bước 3).` },
+      { enter: () => scene('MS22', 'H3'), sel: act('Hoàn thành thương thảo'), title: 'Bước 4 — Thương thảo với nhà thầu',
+        text: 'Gửi dự thảo, thương thảo; người đại diện, chức vụ nhà thầu gợi ý sẵn từ thư trao / danh mục Nhà cung cấp. Biên bản thương thảo đã ký tải lên là bắt buộc.' },
+      { enter: () => scene('MS22', 'H4'), sel: act('Cập nhật và kiểm tra lại'), title: 'Bước 6 — AI đối chiếu dự thảo',
+        text: 'AI đối chiếu dự thảo với HSMT (ví dụ bảo hành thấp hơn yêu cầu): sửa với nhà thầu hoặc sửa nội bộ rồi kiểm tra lại.' },
+      { enter: () => scene('MS22', 'H5'), sel: act('Phê duyệt và ký soạn thảo'), title: 'Bước 8 — Trưởng phòng Hợp đồng', text: `Vai <b>${pname('tphd')}</b>. Phê duyệt và ký soạn thảo, hoặc trả sửa nội bộ.` },
+      { enter: () => scene('MS22', 'H7'), sel: act('Phê duyệt và ký hợp đồng'), title: 'Bước 10 — Thủ trưởng VHT ký', text: `Vai <b>${pname('tgd')}</b>. Ký hợp đồng sau khi đủ chữ ký nháy (bước 9).` },
+      { enter: () => scene('MS22', 'H8'), sel: act('Gửi ký qua VContract'), title: 'Bước 12 — Gửi nhà thầu ký', text: 'Gửi nhà thầu ký qua VContract hoặc bản giấy ký cứng.' },
+      { enter: () => scene('MS22', 'H9'), sel: act('Ghi nhận đã ký đầy đủ'), title: 'Bước 13 — Hợp đồng có hiệu lực',
+        text: 'Ghi nhận đã ký đầy đủ: cấp số hợp đồng, hợp đồng sang <b>Đang thực hiện</b>, hệ thống sinh hồ sơ theo dõi thực hiện (MS23).' }] },
+    { n: 3, name: 'Theo dõi thực hiện, bàn giao (MS23, MS23.02)', who: 'Phòng Hợp đồng, Phòng Quản lý tài sản, Đơn vị sử dụng', doc: HD0, steps: [
+      { enter: () => scene('MS23', 'T2'), sel: ['.vcard h3', 'Thông tin AI trích xuất từ hợp đồng đã ký'], title: 'Tab Tiến độ thực hiện',
+        text: 'AI trích mốc giao hàng, nghiệm thu, thanh toán từ hợp đồng đã ký; đến mốc hệ thống tự nhắc.' },
+      { sel: ['.vcard h3', 'Mốc biên bản'], title: 'Mốc biên bản', text: 'HOC (bàn giao) · PAC · FAC · Thanh lý — mức nghiệm thu theo hợp đồng, thời hạn theo hợp đồng, ngày thực tế cập nhật khi biên bản ký xong.' },
+      { enter: () => scene('MS23', 'T3'), sel: act('Hoàn thành ghi nhận'), title: 'Ghi nhận thông báo giao hàng', text: 'Phòng Hợp đồng ghi nhận thông báo giao hàng của nhà thầu, thông báo các bộ phận và mở hồ sơ bàn giao (MS23.02).' },
+      { enter: () => scene('MS23.02', 'G4'), sel: actPrimary, title: 'Bàn giao — giao nhận, hồ sơ kho',
+        text: `Vai <b>${pname('qlts')}</b>. Ghi nhận giao nhận, hồ sơ kho; hàng nhập khẩu có thêm thông tin xuất nhập khẩu (tờ khai hải quan).` },
+      { enter: () => scene('MS23.02', 'G8'), sel: actPrimary, title: 'Biên bản bàn giao HOC', text: 'AI kiểm tra hồ sơ, soạn HOC; Phòng Hợp đồng hoàn thiện rồi trình ký. Ngày bàn giao thực tế ghi khi HOC ký đủ.' }] },
+    { n: 4, name: 'Nghiệm thu, thanh lý (MS23.03, MS23.04)', who: 'Phòng Hợp đồng, TTMS, lãnh đạo', doc: HD0, steps: [
+      { enter: () => scene('MS23.03', 'N2'), sel: act('Gửi báo cáo KCS'), title: 'Báo cáo KCS', text: `Vai <b>${pname('lan')}</b>. Trung tâm Mua sắm gửi báo cáo kiểm tra chất lượng tài sản.` },
+      { enter: () => scene('MS23.03', 'N3'), sel: act('Đủ hồ sơ, KCS đạt'), title: 'Kiểm tra căn cứ nghiệm thu', text: 'Phòng Hợp đồng kiểm tra chứng từ, kết quả KCS; thiếu thì yêu cầu bổ sung.' },
+      { enter: () => scene('MS23.03', 'N4'), sel: act('Hoàn thiện biên bản'), title: 'Biên bản nghiệm thu, phương án ký', text: 'Hoàn thiện biên bản nghiệm thu, chọn ký riêng hoặc ký chung với biên bản thanh lý.' },
+      { enter: () => scene('MS23.03', 'N8'), sel: act('Đồng ý và ký'), title: 'Tổng Giám đốc ký', text: `Vai <b>${pname('tgd')}</b>. Ký biên bản nghiệm thu sau Trưởng phòng Hợp đồng, Giám đốc, Văn thư.` },
+      { enter: () => scene('MS23.03', 'L3'), sel: act('Ghi nhận quyết toán'), title: 'Thanh lý — quyết toán giá trị', text: 'Nghiệm thu ký xong, đủ bảo lãnh: quyết toán giá trị, hoàn thiện và ký biên bản thanh lý.' },
+      { enter: () => scene('MS23.03', 'L8'), sel: ['.vcard h3', 'Hồ sơ thanh lý'], title: 'Tổng kết — Đã thanh lý', text: 'Tab Thanh lý: điều kiện thanh lý, hồ sơ thanh lý; hợp đồng <b>Đã thanh lý</b>.' }] },
+    { n: 5, name: 'Văn bản phát sinh (MS23.01)', who: 'Phòng Hợp đồng, Tổng Giám đốc', doc: HD0, steps: [
+      { enter: () => scene('MS23.01', 'V1'), sel: ['.vcard h3', 'Văn bản phát sinh'], title: 'Tab Văn bản phát sinh',
+        text: 'Phụ lục, văn bản sửa đổi sau khi ký; tạo hồ sơ từ tab Tiến độ hoặc tab này.' },
+      { sel: ['.vcard h3', 'Kiểm soát điều chỉnh'], title: 'Kiểm soát điều chỉnh', text: 'Giá trị sau điều chỉnh không vượt giá gói thầu / giá trị nguồn; thời gian phù hợp dự án.' },
+      { enter: () => scene('MS23.01', 'V2'), sel: act('Hoàn thành lập thông tin'), title: 'Lập thông tin, chọn loại văn bản', text: 'Chọn loại văn bản phát sinh; có sửa đổi thì lập đề xuất trình Tổng Giám đốc duyệt.' },
+      { enter: () => scene('MS23.01', 'V8'), sel: actPrimary, title: 'Tổng Giám đốc ký', text: `Vai <b>${pname('tgd')}</b>. Ký văn bản; Phòng Hợp đồng cập nhật bản ký đầy đủ, gửi lại nhà thầu.` }] },
+    { n: 6, name: 'Thanh toán theo đợt (MS24)', who: 'Phòng Hợp đồng, Phòng Tài chính, lãnh đạo', doc: HD0, steps: [
+      { enter: () => scene('MS24', 'P1'), sel: ['.vcard h3', 'Kế hoạch thanh toán'], title: 'Tab Thanh toán',
+        text: 'Kế hoạch thanh toán theo đợt của hợp đồng; đến đợt thì tạo hồ sơ thanh toán (quy trình MS24).' },
+      { enter: () => scene('MS24', 'P2'), sel: act('Đủ căn cứ thanh toán'), title: 'Kiểm tra căn cứ thanh toán', text: 'Phòng Hợp đồng kiểm tra căn cứ của đợt; thiếu thì yêu cầu bổ sung.' },
+      { enter: () => scene('MS24', 'P3'), sel: act('Cung cấp hoá đơn'), title: 'Hoá đơn', text: 'Xuất đề nghị thanh toán, cung cấp hoá đơn (số, ngày; nhiều hoá đơn).' },
+      { enter: () => scene('MS24', 'P4'), sel: act('Đồng ý và ký'), title: 'Bảng tổng hợp thanh toán', text: `Vai <b>${pname('tckt')}</b>. AI lập bảng tổng hợp; Phòng Tài chính ký, sau đó Thủ trưởng VHT, Văn thư, Tổng Giám đốc Tập đoàn ký.` },
+      { enter: () => scene('MS24', 'P9'), sel: act('Đã thanh toán'), title: 'Thanh toán tiền', text: 'Ghi nhận đã thanh toán, cập nhật trạng thái và minh chứng.' },
+      { enter: () => scene('MS24', 'P11'), sel: ['.vcard h3', 'Thông tin SAP'], title: 'Tổng kết — đồng bộ SAP', text: 'Đợt đã thanh toán, đồng bộ SAP; tab Thanh toán cập nhật số đã thanh toán, còn phải thanh toán.' }] },
+  ];
   /* id = <tab>-<n>; tab = cụm tính năng hiện ở hộp Hướng dẫn. */
   const TABS = [
     { key: 'dxms', name: 'Đề xuất mua sắm', tours: TOURS },
     { key: 'kdt', name: 'Khoản đầu tư', tours: TOURS_KDT },
+    { key: 'thau', name: 'Thầu', tours: TOURS_THAU },
+    { key: 'hd', name: 'Hợp đồng', tours: TOURS_HD },
   ];
   TABS.forEach((tb) => tb.tours.forEach((t) => { t.tab = tb.key; t.id = `${tb.key}-${t.n}`; t.doc = t.doc || D.dxmsCode0; }));
   const ALL = TABS.flatMap((tb) => tb.tours);
